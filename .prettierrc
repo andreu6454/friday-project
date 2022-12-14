@@ -1,0 +1,12 @@
+{
+  "semi": true,
+  "tabWidth": 2,
+  "printWidth": 90,
+  "singleQuote": true,
+  "bracketSpacing": true,
+  "arrowParents": "avoid",
+  "trailingComma": "all",
+  "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}
