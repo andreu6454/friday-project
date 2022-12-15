@@ -30,8 +30,8 @@ export const Register = () => {
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
-  const handleMouseDownPassword = () => {
-    setShowPassword(!showPassword);
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
   };
 
   const handleNavigate = () => {
