@@ -21,7 +21,7 @@ import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { AlertError } from '../../components/SnackBar/SnackBar';
+import { AlertError } from '../../components';
 import { loginUser } from '../../features/auth/middleware/authUser';
 import { useAuth } from '../../hooks';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
@@ -103,19 +103,20 @@ export const Login = () => {
             />
           </FormControl>
 
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  {...register('rememberMe')}
-                  checked={watch('rememberMe')}
-                  name="remember-me"
-                />
-              }
-              label="Remember me"
-            />
-          </FormGroup>
-          <Typography textAlign={'right'}>Forgot Password?</Typography>
+          <FormControlLabel
+            control={
+              <Checkbox
+                {...register('rememberMe')}
+                checked={watch('rememberMe')}
+                name="remember-me"
+              />
+            }
+            label="Remember me"
+          />
+
+          <Typography sx={{ cursor: 'pointer' }} textAlign={'right'}>
+            Forgot Password?
+          </Typography>
           <CardActions sx={{ display: 'flex', flexDirection: 'column', gap: '31px' }}>
             <Button
               onClick={handleSubmit(onSubmit)}

@@ -31,7 +31,6 @@ const { reducer, actions } = createSlice({
       })
       .addCase(loginUser.rejected, (state, { payload }) => {
         state.error = payload as string;
-        console.log(payload);
       });
   },
 });

@@ -1,5 +1,4 @@
-import { Alert, SnackbarContent } from '@mui/material';
-import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import { Alert, Snackbar } from '@mui/material';
 import React from 'react';
 
 import { setErrorMsg } from '../../features/auth/authSlice';
