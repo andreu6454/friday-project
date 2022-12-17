@@ -1,5 +1,3 @@
-import { AxiosResponse } from 'axios';
-
 import { instance } from './../config';
 
 export interface GetLoginType {
@@ -22,6 +20,15 @@ export interface ResponseLoginDataType {
   error?: string;
 }
 
+export interface ResponseRegisterDataType {
+  addedUser: object;
+  error?: string;
+}
+
+export interface getRegisterType {
+  email: string;
+  password: string;
+}
 export const authAPI = {
   me() {
     //TODO:me point
@@ -38,5 +45,8 @@ export const authAPI = {
       password,
       rememberMe,
     });
+  },
+  register({ email, password }: getRegisterType) {
+    return instance.post<ResponseRegisterDataType>('/auth/register', { email, password });
   },
 };

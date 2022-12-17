@@ -14,18 +14,46 @@ import {
   Typography,
 } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
 
+import { AlertError } from '../../components';
+import { registerUser } from '../../features/auth/middleware/authUser';
 import { useAuth } from '../../hooks';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppSelector } from '../../hooks/useAppSelector';
 import { appRoutes } from '../../routes/routes';
+
+interface IFormInput {
+  email: string;
+  password: string;
+  confirmedPassword: string;
+}
 
 export const Register = () => {
   const { isAuth } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
+  const { error, isRegistered } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
 
   const nav = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<IFormInput>({
+    defaultValues: {
+      email: 'vasya@gmail.com',
+      password: '213123321',
+      confirmedPassword: '213123321',
+    },
+  });
+  const password = useRef({});
+  password.current = watch('password', '');
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -33,10 +61,15 @@ export const Register = () => {
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
-
+  const onSubmit: SubmitHandler<IFormInput> = ({ email, password }: IFormInput) => {
+    dispatch(registerUser({ email, password }));
+  };
   const handleNavigate = () => {
     nav(appRoutes.DEFAULT);
   };
+  if (isRegistered) {
+    nav(appRoutes.DEFAULT);
+  }
   return isAuth ? (
     <Navigate to={appRoutes.PROFILE} />
   ) : (
@@ -46,15 +79,35 @@ export const Register = () => {
           <Typography variant={'h5'} fontWeight={'Bold'} textAlign={'center'}>
             Sign Up
           </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '24px', px: 1 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', px: 1 }}>
             <FormControl sx={{ m: 1 }} variant="standard">
-              <TextField id="outlined-helperText" label="Email" variant="standard" />
+              <TextField
+                id="outlined-helperText"
+                label="Email"
+                variant="standard"
+                {...register('email', { required: 'Email Address is required' })}
+                error={!!errors.email}
+              />
+              <Box height="24px">
+                {errors.email && (
+                  <Typography variant="body2" color="error">
+                    {errors.email.message}
+                  </Typography>
+                )}
+              </Box>
             </FormControl>
             <FormControl sx={{ m: 1 }} variant="standard">
               <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
               <Input
                 id="register-password"
                 type={showPassword ? 'text' : 'password'}
+                {...register('password', {
+                  required: true,
+                  minLength: {
+                    value: 8,
+                    message: 'Password must have at least 8 characters',
+                  },
+                })}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -66,7 +119,15 @@ export const Register = () => {
                     </IconButton>
                   </InputAdornment>
                 }
+                error={!!errors.confirmedPassword || !!errors.password}
               />
+              <Box height="24px">
+                {errors.password && (
+                  <Typography variant="body2" color="error">
+                    {errors.password.message}
+                  </Typography>
+                )}
+              </Box>
             </FormControl>
             <FormControl sx={{ m: 1 }} variant="standard">
               <InputLabel htmlFor="standard-adornment-password">
@@ -75,6 +136,11 @@ export const Register = () => {
               <Input
                 id="register-confirm-password"
                 type={showPassword ? 'text' : 'password'}
+                {...register('confirmedPassword', {
+                  required: true,
+                  validate: (value) =>
+                    value === password.current || 'The passwords do not match',
+                })}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -86,7 +152,15 @@ export const Register = () => {
                     </IconButton>
                   </InputAdornment>
                 }
+                error={!!errors.confirmedPassword}
               />
+              <Box height="24px">
+                {errors.confirmedPassword && (
+                  <Typography variant="body2" color="error">
+                    {errors.confirmedPassword.message}
+                  </Typography>
+                )}
+              </Box>
             </FormControl>
           </Box>
         </CardContent>
@@ -97,6 +171,7 @@ export const Register = () => {
             fullWidth
             variant="contained"
             sx={{ borderRadius: 30, bgcolor: '#366EFF', mt: 5 }}
+            onClick={handleSubmit(onSubmit)}
           >
             Sign Up
           </Button>
@@ -110,6 +185,7 @@ export const Register = () => {
           </Box>
         </CardActions>
       </Card>
+      <AlertError errorMsg={error} />
     </div>
   );
 };
