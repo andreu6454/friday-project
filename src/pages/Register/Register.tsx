@@ -14,12 +14,11 @@ import {
   Typography,
 } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 import { AlertError } from '../../components';
-import { setErrorMsg } from '../../features/auth/authSlice';
 import { registerUser } from '../../features/auth/middleware/authUser';
 import { useAuth } from '../../hooks';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
@@ -31,6 +30,7 @@ interface IFormInput {
   password: string;
   confirmedPassword: string;
 }
+
 export const Register = () => {
   const { isAuth } = useAuth();
 
@@ -40,13 +40,20 @@ export const Register = () => {
 
   const nav = useNavigate();
 
-  const { register, handleSubmit } = useForm<IFormInput>({
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<IFormInput>({
     defaultValues: {
       email: 'vasya@gmail.com',
       password: '213123321',
       confirmedPassword: '213123321',
     },
   });
+  const password = useRef({});
+  password.current = watch('password', '');
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -54,16 +61,8 @@ export const Register = () => {
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
-  const onSubmit: SubmitHandler<IFormInput> = ({
-    email,
-    password,
-    confirmedPassword,
-  }: IFormInput) => {
-    if (password === confirmedPassword) {
-      dispatch(registerUser({ email, password }));
-    } else {
-      dispatch(setErrorMsg('passwords should match'));
-    }
+  const onSubmit: SubmitHandler<IFormInput> = ({ email, password }: IFormInput) => {
+    dispatch(registerUser({ email, password }));
   };
   const handleNavigate = () => {
     nav(appRoutes.DEFAULT);
@@ -86,15 +85,22 @@ export const Register = () => {
                 id="outlined-helperText"
                 label="Email"
                 variant="standard"
-                {...register('email', { required: true })}
+                {...register('email', { required: 'Email Address is required' })}
               />
+              {errors.email && <p style={{ color: 'red' }}>{errors.email.message}</p>}
             </FormControl>
             <FormControl sx={{ m: 1 }} variant="standard">
               <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
               <Input
                 id="register-password"
                 type={showPassword ? 'text' : 'password'}
-                {...register('password', { required: true })}
+                {...register('password', {
+                  required: true,
+                  minLength: {
+                    value: 8,
+                    message: 'Password must have at least 8 characters',
+                  },
+                })}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -107,6 +113,9 @@ export const Register = () => {
                   </InputAdornment>
                 }
               />
+              {errors.password && (
+                <p style={{ color: 'red' }}>{errors.password.message}</p>
+              )}
             </FormControl>
             <FormControl sx={{ m: 1 }} variant="standard">
               <InputLabel htmlFor="standard-adornment-password">
@@ -115,7 +124,11 @@ export const Register = () => {
               <Input
                 id="register-confirm-password"
                 type={showPassword ? 'text' : 'password'}
-                {...register('confirmedPassword', { required: true })}
+                {...register('confirmedPassword', {
+                  required: true,
+                  validate: (value) =>
+                    value === password.current || 'The passwords do not match',
+                })}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -128,6 +141,9 @@ export const Register = () => {
                   </InputAdornment>
                 }
               />
+              {errors.confirmedPassword && (
+                <p style={{ color: 'red' }}>{errors.confirmedPassword.message}</p>
+              )}
             </FormControl>
           </Box>
         </CardContent>
