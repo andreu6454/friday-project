@@ -79,7 +79,7 @@ export const Register = () => {
           <Typography variant={'h5'} fontWeight={'Bold'} textAlign={'center'}>
             Sign Up
           </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '24px', px: 1 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', px: 1 }}>
             <FormControl sx={{ m: 1 }} variant="standard">
               <TextField
                 id="outlined-helperText"
@@ -88,7 +88,13 @@ export const Register = () => {
                 {...register('email', { required: 'Email Address is required' })}
                 error={!!errors.email}
               />
-              {errors.email && <p style={{ color: 'red' }}>{errors.email.message}</p>}
+              <Box height="24px">
+                {errors.email && (
+                  <Typography variant="body2" color="error">
+                    {errors.email.message}
+                  </Typography>
+                )}
+              </Box>
             </FormControl>
             <FormControl sx={{ m: 1 }} variant="standard">
               <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
@@ -115,9 +121,13 @@ export const Register = () => {
                 }
                 error={!!errors.confirmedPassword || !!errors.password}
               />
-              {errors.password && (
-                <p style={{ color: 'red' }}>{errors.password.message}</p>
-              )}
+              <Box height="24px">
+                {errors.password && (
+                  <Typography variant="body2" color="error">
+                    {errors.password.message}
+                  </Typography>
+                )}
+              </Box>
             </FormControl>
             <FormControl sx={{ m: 1 }} variant="standard">
               <InputLabel htmlFor="standard-adornment-password">
@@ -144,9 +154,13 @@ export const Register = () => {
                 }
                 error={!!errors.confirmedPassword}
               />
-              {errors.confirmedPassword && (
-                <p style={{ color: 'red' }}>{errors.confirmedPassword.message}</p>
-              )}
+              <Box height="24px">
+                {errors.confirmedPassword && (
+                  <Typography variant="body2" color="error">
+                    {errors.confirmedPassword.message}
+                  </Typography>
+                )}
+              </Box>
             </FormControl>
           </Box>
         </CardContent>
