@@ -15,17 +15,38 @@ import {
 } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import React, { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
 
+import { AlertError } from '../../components';
+import { setErrorMsg } from '../../features/auth/authSlice';
+import { registerUser } from '../../features/auth/middleware/authUser';
 import { useAuth } from '../../hooks';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppSelector } from '../../hooks/useAppSelector';
 import { appRoutes } from '../../routes/routes';
 
+interface IFormInput {
+  email: string;
+  password: string;
+  confirmedPassword: string;
+}
 export const Register = () => {
   const { isAuth } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
+  const { error, isRegistered } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
 
   const nav = useNavigate();
+
+  const { register, handleSubmit } = useForm<IFormInput>({
+    defaultValues: {
+      email: 'vasya@gmail.com',
+      password: '213123321',
+      confirmedPassword: '213123321',
+    },
+  });
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -33,10 +54,23 @@ export const Register = () => {
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
-
+  const onSubmit: SubmitHandler<IFormInput> = ({
+    email,
+    password,
+    confirmedPassword,
+  }: IFormInput) => {
+    if (password === confirmedPassword) {
+      dispatch(registerUser({ email, password }));
+    } else {
+      dispatch(setErrorMsg('passwords should match'));
+    }
+  };
   const handleNavigate = () => {
     nav(appRoutes.DEFAULT);
   };
+  if (isRegistered) {
+    nav(appRoutes.DEFAULT);
+  }
   return isAuth ? (
     <Navigate to={appRoutes.PROFILE} />
   ) : (
@@ -48,13 +82,19 @@ export const Register = () => {
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: '24px', px: 1 }}>
             <FormControl sx={{ m: 1 }} variant="standard">
-              <TextField id="outlined-helperText" label="Email" variant="standard" />
+              <TextField
+                id="outlined-helperText"
+                label="Email"
+                variant="standard"
+                {...register('email', { required: true })}
+              />
             </FormControl>
             <FormControl sx={{ m: 1 }} variant="standard">
               <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
               <Input
                 id="register-password"
                 type={showPassword ? 'text' : 'password'}
+                {...register('password', { required: true })}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -75,6 +115,7 @@ export const Register = () => {
               <Input
                 id="register-confirm-password"
                 type={showPassword ? 'text' : 'password'}
+                {...register('confirmedPassword', { required: true })}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -97,6 +138,7 @@ export const Register = () => {
             fullWidth
             variant="contained"
             sx={{ borderRadius: 30, bgcolor: '#366EFF', mt: 5 }}
+            onClick={handleSubmit(onSubmit)}
           >
             Sign Up
           </Button>
@@ -110,6 +152,7 @@ export const Register = () => {
           </Box>
         </CardActions>
       </Card>
+      <AlertError errorMsg={error} />
     </div>
   );
 };
