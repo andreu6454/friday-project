@@ -86,6 +86,7 @@ export const Register = () => {
                 label="Email"
                 variant="standard"
                 {...register('email', { required: 'Email Address is required' })}
+                error={!!errors.email}
               />
               {errors.email && <p style={{ color: 'red' }}>{errors.email.message}</p>}
             </FormControl>
@@ -112,6 +113,7 @@ export const Register = () => {
                     </IconButton>
                   </InputAdornment>
                 }
+                error={!!errors.confirmedPassword || !!errors.password}
               />
               {errors.password && (
                 <p style={{ color: 'red' }}>{errors.password.message}</p>
@@ -140,6 +142,7 @@ export const Register = () => {
                     </IconButton>
                   </InputAdornment>
                 }
+                error={!!errors.confirmedPassword}
               />
               {errors.confirmedPassword && (
                 <p style={{ color: 'red' }}>{errors.confirmedPassword.message}</p>
