@@ -8,14 +8,14 @@ type initialStateType = {
   isAuth: boolean;
   status: RequestStatusType;
   error: null | string;
-  isRegistered: boolean
+  isRegistered: boolean;
 };
 
 const initialState: initialStateType = {
   isAuth: false,
   status: 'idle',
   error: null,
-  isRegistered: false
+  isRegistered: false,
 };
 
 const { reducer, actions } = createSlice({
