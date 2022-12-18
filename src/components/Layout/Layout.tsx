@@ -8,9 +8,7 @@ export const Layout = () => {
   return (
     <>
       <Navbar />
-      <Container>
-        <Outlet />
-      </Container>
+      <Outlet />
     </>
   );
 };

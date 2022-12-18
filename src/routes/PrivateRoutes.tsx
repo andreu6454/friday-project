@@ -1,4 +1,4 @@
-import { LinearProgress } from '@mui/material';
+import { Container, LinearProgress } from '@mui/material';
 import { Navigate, Outlet } from 'react-router-dom';
 
 import { useAuth } from '../hooks';
@@ -11,5 +11,11 @@ export const PrivateRoutes = () => {
     return <Navigate to={appRoutes.DEFAULT} />;
   }
 
-  return !isAuth ? <LinearProgress /> : <Outlet />;
+  return !isAuth ? (
+    <LinearProgress />
+  ) : (
+    <Container>
+      <Outlet />
+    </Container>
+  );
 };
