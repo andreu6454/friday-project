@@ -1,48 +1,49 @@
 import AdbIcon from '@mui/icons-material/Adb';
+import { LinearProgress } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAuth } from '../../hooks';
-import { appRoutes } from '../../routes/routes';
+import { appRoutes } from '../../routes';
+import { useAppSelector } from '../../store/store';
 
 export const Navbar = () => {
   const nav = useNavigate();
-
-  const { isAuth } = useAuth();
+  const loading = useAppSelector((state) => state.auth.status);
 
   const handleNavigate = () => {
-    nav(appRoutes.DEFAULT);
+    nav(appRoutes.LOGIN);
   };
 
+  const pendingStatus = loading === 'loading';
+
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-        <Typography
-          variant="h6"
-          noWrap
-          component="a"
-          onClick={handleNavigate}
-          sx={{
-            mr: 2,
-            display: { xs: 'none', md: 'flex' },
-            fontFamily: 'monospace',
-            fontWeight: 700,
-            letterSpacing: '.3rem',
-            color: 'inherit',
-            textDecoration: 'none',
-            cursor: 'pointer',
-          }}
-        >
-          Learn cards
-        </Typography>
-      </Toolbar>
-    </AppBar>
+    <>
+      <AppBar position="static">
+        <Toolbar>
+          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            onClick={handleNavigate}
+            sx={{
+              mr: 2,
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
+              cursor: 'pointer',
+            }}
+          >
+            Learn cards
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      {pendingStatus && <LinearProgress />}
+    </>
   );
 };

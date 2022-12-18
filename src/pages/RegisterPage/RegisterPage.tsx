@@ -16,14 +16,12 @@ import {
 import IconButton from '@mui/material/IconButton';
 import React, { useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { AlertError } from '../../components';
-import { registerUser } from '../../features/auth/middleware/authUser';
-import { useAuth } from '../../hooks';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { useAppSelector } from '../../hooks/useAppSelector';
-import { appRoutes } from '../../routes/routes';
+import { appRoutes } from '../../routes';
+import { registerUser } from '../../store/middleware/authUser';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 
 interface IFormInput {
   email: string;
@@ -31,9 +29,7 @@ interface IFormInput {
   confirmedPassword: string;
 }
 
-export const Register = () => {
-  const { isAuth } = useAuth();
-
+export const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { error, isRegistered } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
@@ -67,13 +63,9 @@ export const Register = () => {
   const handleNavigate = () => {
     nav(appRoutes.DEFAULT);
   };
-  if (isRegistered) {
-    nav(appRoutes.DEFAULT);
-  }
-  return isAuth ? (
-    <Navigate to={appRoutes.PROFILE} />
-  ) : (
-    <div>
+
+  return (
+    <Box>
       <Card sx={{ width: 413, m: '40px auto', py: 3 }}>
         <CardContent>
           <Typography variant={'h5'} fontWeight={'Bold'} textAlign={'center'}>
@@ -186,6 +178,6 @@ export const Register = () => {
         </CardActions>
       </Card>
       <AlertError errorMsg={error} />
-    </div>
+    </Box>
   );
 };

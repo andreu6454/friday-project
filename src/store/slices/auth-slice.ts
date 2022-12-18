@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { loginUser, registerUser } from './middleware/authUser';
+import { loginUser, registerUser } from '../middleware/authUser';
+import { isAuthUser } from './../middleware/authUser';
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed';
 
@@ -19,7 +20,7 @@ const initialState: initialStateType = {
 };
 
 const { reducer, actions } = createSlice({
-  name: 'auth',
+  name: 'authSlice',
   initialState: initialState,
   reducers: {
     setErrorMsg: (state, { payload }) => {
@@ -34,11 +35,23 @@ const { reducer, actions } = createSlice({
       .addCase(loginUser.rejected, (state, { payload }) => {
         state.error = payload as string;
       })
+      //////////////
       .addCase(registerUser.fulfilled, (state) => {
         state.isRegistered = true;
       })
       .addCase(registerUser.rejected, (state, { payload }) => {
         state.error = payload as string;
+      })
+      //////////////
+      .addCase(isAuthUser.fulfilled, (state) => {
+        state.isAuth = true;
+        state.status = 'succeeded';
+      })
+      .addCase(isAuthUser.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(isAuthUser.rejected, (state) => {
+        state.status = 'failed';
       });
   },
 });
