@@ -21,7 +21,7 @@ import {
 import { Container } from '@mui/system';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 import { AlertError } from '../../components';
 import { appRoutes } from '../../routes';
@@ -39,6 +39,7 @@ export const LoginPage = () => {
 
   const errorMsg = useAppSelector((state) => state.auth.error);
   const loading = useAppSelector((state) => state.auth.status);
+  const isAuth = useAppSelector((state) => state.auth.isAuth);
 
   const nav = useNavigate();
   const dispatch = useAppDispatch();
@@ -68,6 +69,10 @@ export const LoginPage = () => {
   };
 
   const pendingStatus = loading === 'loading';
+
+  if (isAuth) {
+    return <Navigate to={appRoutes.PROFILE} />;
+  }
 
   if (pendingStatus) {
     return (
