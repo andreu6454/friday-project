@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed';
+import { RequestStatusType } from './types';
 
 const initialState = {
   isAuth: false,

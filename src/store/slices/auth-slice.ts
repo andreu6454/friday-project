@@ -2,8 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { loginUser, registerUser } from '../middleware/authUser';
 import { isAuthUser } from './../middleware/authUser';
-
-export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed';
+import { RequestStatusType } from './types';
 
 type initialStateType = {
   isAuth: boolean;

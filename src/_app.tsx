@@ -1,10 +1,39 @@
-import { useRoutes } from 'react-router-dom';
+import React from 'react';
+import { createHashRouter, RouteObject } from 'react-router-dom';
 
-import { routes } from './routes/index';
+import { Layout } from './components/Layout/Layout';
+import { LoginPage, ProfilePage, RegisterPage } from './pages';
+import { CardPacksPage } from './pages/CardPacksPage/CardPacksPage';
+import { appRoutes, PrivateRoutes } from './routes';
 
-function App() {
-  const content = useRoutes(routes);
-  return content;
-}
+const RoutesGlobal: RouteObject[] = [
+  {
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        element: <LoginPage />,
+      },
+      {
+        path: appRoutes.REGISTER,
+        element: <RegisterPage />,
+      },
+      {
+        element: <PrivateRoutes />,
+        children: [
+          {
+            index: true,
+            path: appRoutes.PROFILE,
+            element: <ProfilePage />,
+          },
+          {
+            path: appRoutes.CARDPACKS,
+            element: <CardPacksPage />,
+          },
+        ],
+      },
+    ],
+  },
+];
 
-export default App;
+export const routes = createHashRouter(RoutesGlobal);

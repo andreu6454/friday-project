@@ -1,11 +1,12 @@
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { grey } from '@mui/material/colors';
+import type {} from '@mui/x-data-grid/themeAugmentation';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
 
-import App from './_app';
+import { routes } from './_app';
 import reportWebVitals from './reportWebVitals';
 import { setupStore } from './store/store';
 
@@ -15,20 +16,37 @@ const themeLight = createTheme({
       default: grey[100],
     },
   },
+  components: {
+    MuiDataGrid: {
+      styleOverrides: {
+        columnSeparator: {
+          display: 'none',
+        },
+        columnHeader: {
+          fontWeight: 700,
+        },
+        columnHeaderTitle: {
+          fontWeight: 700,
+        },
+        columnHeaders: ({ theme }) => ({
+          backgroundColor: theme.palette.grey[300],
+        }),
+        root: {
+          backgroundColor: 'white',
+        },
+      },
+    },
+  },
 });
 const store = setupStore();
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <Provider store={store}>
-    <React.StrictMode>
-      <ThemeProvider theme={createTheme(themeLight)}>
-        <CssBaseline />
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ThemeProvider>
-    </React.StrictMode>
+    <ThemeProvider theme={createTheme(themeLight)}>
+      <CssBaseline />
+      <RouterProvider router={routes} />
+    </ThemeProvider>
   </Provider>,
 );
 

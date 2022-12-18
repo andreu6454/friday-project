@@ -4,10 +4,12 @@ import thunk from 'redux-thunk';
 
 import { appReducer } from './slices/app-slice';
 import { authSlice } from './slices/auth-slice';
+import { cardPacksSlice } from './slices/cards-slice';
 
 const rootReducer = combineReducers({
   app: appReducer,
   auth: authSlice,
+  cards: cardPacksSlice,
 });
 
 export const setupStore = () => {

@@ -43,7 +43,6 @@ export const Navbar = () => {
           </Typography>
         </Toolbar>
       </AppBar>
-      {pendingStatus && <LinearProgress />}
     </>
   );
 };
