@@ -7,6 +7,7 @@ import {
   CardActions,
   CardContent,
   Checkbox,
+  CircularProgress,
   FormControl,
   FormControlLabel,
   FormGroup,
@@ -17,16 +18,15 @@ import {
   Link,
   Typography,
 } from '@mui/material';
+import { Container } from '@mui/system';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { AlertError } from '../../components';
-import { loginUser } from '../../features/auth/middleware/authUser';
-import { useAuth } from '../../hooks';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { useAppSelector } from '../../hooks/useAppSelector';
-import { appRoutes } from '../../routes/routes';
+import { appRoutes } from '../../routes';
+import { loginUser } from '../../store/middleware/authUser';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 
 interface IFormInput {
   email: string;
@@ -34,18 +34,19 @@ interface IFormInput {
   rememberMe: boolean;
 }
 
-export const Login = () => {
+export const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
-  const dispatch = useAppDispatch();
   const errorMsg = useAppSelector((state) => state.auth.error);
+  const loading = useAppSelector((state) => state.auth.status);
+
   const nav = useNavigate();
-  const { isAuth } = useAuth();
+  const dispatch = useAppDispatch();
 
   const { register, handleSubmit, watch } = useForm<IFormInput>({
     defaultValues: {
       email: 'vasya@gmail.com',
-      password: '213123',
+      password: '213123321',
       rememberMe: true,
     },
   });
@@ -66,8 +67,23 @@ export const Login = () => {
     nav(appRoutes.REGISTER);
   };
 
-  if (isAuth) {
-    nav(appRoutes.PROFILE);
+  const pendingStatus = loading === 'loading';
+
+  if (pendingStatus) {
+    return (
+      <Container>
+        <Box
+          sx={{
+            display: 'flex',
+            width: '100%',
+            justifyContent: 'center',
+            mt: '10%',
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      </Container>
+    );
   }
 
   return (

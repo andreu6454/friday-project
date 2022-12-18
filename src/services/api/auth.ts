@@ -31,7 +31,7 @@ export interface getRegisterType {
 }
 export const authAPI = {
   me() {
-    //TODO:me point
+    return instance.post<ResponseLoginDataType>('/auth/me', {});
   },
   forgot() {
     //TODO: forgot point

@@ -3,11 +3,10 @@ import { grey } from '@mui/material/colors';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { RouterProvider } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
-import App from './App/App';
+import App from './_app';
 import reportWebVitals from './reportWebVitals';
-import { routesConfig } from './routes/routes-config';
 import { setupStore } from './store/store';
 
 const themeLight = createTheme({
@@ -25,7 +24,9 @@ root.render(
     <React.StrictMode>
       <ThemeProvider theme={createTheme(themeLight)}>
         <CssBaseline />
-        <RouterProvider router={routesConfig} />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </ThemeProvider>
     </React.StrictMode>
   </Provider>,
