@@ -16,7 +16,7 @@ import {
 import IconButton from '@mui/material/IconButton';
 import React, { useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 import { AlertError } from '../../components';
 import { appRoutes } from '../../routes';
@@ -63,7 +63,9 @@ export const RegisterPage = () => {
   const handleNavigate = () => {
     nav(appRoutes.DEFAULT);
   };
-
+  if (isRegistered) {
+    return <Navigate to={appRoutes.DEFAULT} />;
+  }
   return (
     <Box>
       <Card sx={{ width: 413, m: '40px auto', py: 3 }}>
