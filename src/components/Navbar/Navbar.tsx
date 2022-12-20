@@ -57,7 +57,9 @@ export const Navbar = () => {
                 display: 'flex',
               }}
             >
-              {name}
+              <Typography variant={'body1'} color={'white'} fontWeight={'bold'}>
+                {name}
+              </Typography>
               <Avatar alt="avatar" src={avatar} sx={{ ml: 1 }} />
             </Link>
           ) : (
