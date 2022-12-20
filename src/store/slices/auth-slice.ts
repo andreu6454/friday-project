@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { loginUser, registerUser } from '../middleware/authUser';
+import { loginUser, logOutUser, registerUser } from '../middleware/authUser';
 import { isAuthUser } from './../middleware/authUser';
 import { RequestStatusType } from './types';
 
@@ -30,16 +30,20 @@ const { reducer, actions } = createSlice({
     builder
       .addCase(loginUser.fulfilled, (state) => {
         state.isAuth = true;
+        state.status = 'succeeded';
       })
       .addCase(loginUser.rejected, (state, { payload }) => {
         state.error = payload as string;
+        state.status = 'failed';
       })
       //////////////
       .addCase(registerUser.fulfilled, (state) => {
         state.isRegistered = true;
+        state.status = 'succeeded';
       })
       .addCase(registerUser.rejected, (state, { payload }) => {
         state.error = payload as string;
+        state.status = 'failed';
       })
       //////////////
       .addCase(isAuthUser.fulfilled, (state) => {
@@ -50,6 +54,15 @@ const { reducer, actions } = createSlice({
         state.status = 'loading';
       })
       .addCase(isAuthUser.rejected, (state) => {
+        state.status = 'failed';
+      })
+      //////////////
+      .addCase(logOutUser.fulfilled, (state) => {
+        state.isAuth = false;
+        state.status = 'succeeded';
+      })
+      .addCase(logOutUser.rejected, (state, { payload }) => {
+        state.error = payload as string;
         state.status = 'failed';
       });
   },

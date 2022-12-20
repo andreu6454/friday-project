@@ -7,7 +7,7 @@ import { appRoutes } from './constants';
 export const PrivateRoutes = () => {
   const { isAuth, loading } = useAuth();
 
-  if (loading === 'failed') {
+  if (loading === 'failed' || !isAuth) {
     return <Navigate to={appRoutes.DEFAULT} />;
   }
 
