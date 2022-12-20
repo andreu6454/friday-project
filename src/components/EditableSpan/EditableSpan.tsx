@@ -1,6 +1,6 @@
-import { AddTask, Edit } from "@mui/icons-material";
-import { Box, TextField, Typography } from "@mui/material";
-import React, { ChangeEvent, useState } from "react";
+import { AddTask, Edit } from '@mui/icons-material';
+import { Box, TextField, Typography } from '@mui/material';
+import React, { ChangeEvent, useState } from 'react';
 
 type EditableSpanType = {
   Nickname: string;
