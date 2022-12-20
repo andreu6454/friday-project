@@ -26,7 +26,7 @@ export const changeUserName = createAsyncThunk<
   { rejectValue: string }
 >('changeUserName', async (params, thunkApi) => {
   try {
-    const response = await authAPI.updateUser(params.name);
+    const response = await authAPI.updateUser(params.name, '');
     return response.data;
   } catch (error) {
     return handlerAsyncError(error, thunkApi);
@@ -38,7 +38,7 @@ export const changeUserAvatar = createAsyncThunk<
   { rejectValue: string }
 >('changeUserAvatar', async (params, thunkApi) => {
   try {
-    const response = await authAPI.updateUser(params.avatar);
+    const response = await authAPI.updateUser('', params.avatar);
     return response.data;
   } catch (error) {
     return handlerAsyncError(error, thunkApi);

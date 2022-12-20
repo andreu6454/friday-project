@@ -1,5 +1,13 @@
-import { ArrowBack } from '@mui/icons-material';
-import { Avatar, Box, Button, Card, CircularProgress, Typography } from '@mui/material';
+import { AddAPhoto, ArrowBack } from '@mui/icons-material';
+import {
+  Avatar,
+  Badge,
+  Box,
+  Button,
+  Card,
+  CircularProgress,
+  Typography,
+} from '@mui/material';
 import { Container } from '@mui/system';
 import React, { useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom';
@@ -8,7 +16,11 @@ import { EditableSpan } from '../../components/EditableSpan/EditableSpan';
 import { useAuth } from '../../hooks';
 import { appRoutes } from '../../routes';
 import { logOutUser } from '../../store/middleware/authUser';
-import { changeUserName, getUserData } from '../../store/middleware/user';
+import {
+  changeUserAvatar,
+  changeUserName,
+  getUserData,
+} from '../../store/middleware/user';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 
 export const ProfilePage = () => {
@@ -19,6 +31,14 @@ export const ProfilePage = () => {
 
   const changeNameHandle = (name: string) => {
     dispatch(changeUserName({ name }));
+  };
+  const changePhotoHandle = () => {
+    dispatch(
+      changeUserAvatar({
+        avatar:
+          'https://abrakadabra.fun/uploads/posts/2022-03/1647337144_2-abrakadabra-fun-p-avatarka-dlya-estetiki-6.png',
+      }),
+    );
   };
   useEffect(() => {
     if (!user.email) {
@@ -72,7 +92,17 @@ export const ProfilePage = () => {
         </Typography>
 
         <Box display={'flex'} flexDirection={'column'} alignItems={'center'}>
-          <Avatar alt="avatar" src={user.avatar} sx={{ width: 96, height: 96, mt: 4 }} />
+          <Badge
+            overlap="circular"
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            badgeContent={<AddAPhoto onClick={changePhotoHandle} />}
+          >
+            <Avatar
+              alt="avatar"
+              src={user.avatar}
+              sx={{ width: 96, height: 96, mt: 4 }}
+            />
+          </Badge>
 
           <EditableSpan key={user._id} Nickname={user.name} callBack={changeNameHandle} />
 
