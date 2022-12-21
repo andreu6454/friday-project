@@ -24,9 +24,10 @@ import {
 import { useAppDispatch, useAppSelector } from '../../store/store';
 
 export const ProfilePage = () => {
-  const { isAuth, loading } = useAuth();
   const dispatch = useAppDispatch();
+  const status = useAppSelector((state) => state.auth.status);
   const { user } = useAppSelector((state) => state.user);
+
   const logOutHandle = () => dispatch(logOutUser());
 
   const changeNameHandle = (name: string) => {
@@ -41,34 +42,30 @@ export const ProfilePage = () => {
       }),
     );
   };
-  useEffect(() => {
-    if (!user.email) {
-      dispatch(getUserData());
-    }
-  }, []);
 
-  if (!isAuth) {
-    return <Navigate to={appRoutes.DEFAULT} />;
-  }
+  // useEffect(() => {
+  //   if (!user.email) {
+  //     dispatch(getUserData());
+  //   }
+  // }, []);
 
-  const pendingStatus = loading === 'loading';
+  // if (status === 'loading') {
+  //   return (
+  //     <Container>
+  //       <Box
+  //         sx={{
+  //           display: 'flex',
+  //           width: '100%',
+  //           justifyContent: 'center',
+  //           mt: '10%',
+  //         }}
+  //       >
+  //         <CircularProgress />
+  //       </Box>
+  //     </Container>
+  //   );
+  // }
 
-  if (pendingStatus) {
-    return (
-      <Container>
-        <Box
-          sx={{
-            display: 'flex',
-            width: '100%',
-            justifyContent: 'center',
-            mt: '10%',
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      </Container>
-    );
-  }
   return (
     <Box mt={2}>
       <Link

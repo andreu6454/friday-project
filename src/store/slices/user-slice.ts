@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { ResponseLoginDataType } from '../../services/api';
-import { changeUserAvatar, changeUserName, getUserData } from '../middleware/user';
+import { isAuthUser } from '../middleware/authUser';
+import { changeUserAvatar, changeUserName } from '../middleware/user';
 
 const initialState = {
   user: {} as ResponseLoginDataType,
@@ -10,10 +11,14 @@ const initialState = {
 const { reducer, actions } = createSlice({
   name: 'userSlice',
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    setUserData: (state, { payload }) => {
+      state.user = payload;
+    },
+  },
   extraReducers(builder) {
     builder
-      .addCase(getUserData.fulfilled, (state, { payload }) => {
+      .addCase(isAuthUser.fulfilled, (state, { payload }) => {
         state.user = payload;
       })
       .addCase(changeUserName.fulfilled, (state, { payload }) => {
@@ -24,5 +29,7 @@ const { reducer, actions } = createSlice({
       });
   },
 });
+
+export const { setUserData } = actions;
 
 export const userSlice = reducer;

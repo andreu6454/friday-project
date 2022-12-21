@@ -11,23 +11,24 @@ import { appRoutes } from '../../routes';
 import { useAppSelector } from '../../store/store';
 
 export const Navbar = () => {
-  // const nav = useNavigate();
+  const nav = useNavigate();
   const loading = useAppSelector((state) => state.auth.status);
   const name = useAppSelector((state) => state.user.user.name);
   const avatar = useAppSelector((state) => state.user.user.avatar);
-  const { isAuth } = useAuth();
+  const isAuth = useAppSelector((state) => state.auth.isAuth);
 
-  // const handleNavigate = () => {
-  //   nav(appRoutes.LOGIN);
-  // };
-
-  const pendingStatus = loading === 'loading';
+  const handleNavigate = () => {
+    nav(appRoutes.LOGIN);
+  };
 
   return (
     <>
       <AppBar position="static">
         <Toolbar>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <AdbIcon
+            onClick={handleNavigate}
+            sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
+          />
           <Typography
             variant="h6"
             noWrap
