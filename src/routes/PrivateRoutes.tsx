@@ -1,21 +1,17 @@
-import { Container, LinearProgress } from '@mui/material';
+import { Container } from '@mui/material';
 import { Navigate, Outlet } from 'react-router-dom';
 
-import { useAuth } from '../hooks';
+import { useAppSelector } from '../store/store';
 import { appRoutes } from './constants';
 
 export const PrivateRoutes = () => {
-  const { isAuth, loading } = useAuth();
+  const isAuth = useAppSelector((state) => state.auth.isAuth);
 
-  if (loading === 'failed') {
-    return <Navigate to={appRoutes.DEFAULT} />;
-  }
-
-  return !isAuth ? (
-    <LinearProgress />
-  ) : (
+  return isAuth ? (
     <Container>
       <Outlet />
     </Container>
+  ) : (
+    <Navigate to={appRoutes.LOGIN} />
   );
 };

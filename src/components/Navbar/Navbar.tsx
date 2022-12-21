@@ -9,12 +9,12 @@ import { appRoutes } from '../../routes';
 import { useAppSelector } from '../../store/store';
 
 export const Navbar = () => {
-  const nav = useNavigate();
+  // const nav = useNavigate();
   const loading = useAppSelector((state) => state.auth.status);
 
-  const handleNavigate = () => {
-    nav(appRoutes.LOGIN);
-  };
+  // const handleNavigate = () => {
+  //   nav(appRoutes.LOGIN);
+  // };
 
   const pendingStatus = loading === 'loading';
 
@@ -27,7 +27,6 @@ export const Navbar = () => {
             variant="h6"
             noWrap
             component="a"
-            onClick={handleNavigate}
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },

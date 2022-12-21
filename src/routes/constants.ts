@@ -4,5 +4,5 @@ export const appRoutes = {
   CARDPACKS: '/cardpacks',
   PROFILE: '/profile',
   REGISTER: '/register',
-  UNKNOWN: '*',
+  NOTFOUND: '*',
 };

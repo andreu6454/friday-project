@@ -1,39 +1,26 @@
-import React from 'react';
-import { createHashRouter, RouteObject } from 'react-router-dom';
+import {
+  createHashRouter,
+  createRoutesFromElements,
+  Navigate,
+  Route,
+} from 'react-router-dom';
 
 import { Layout } from './components/Layout/Layout';
-import { LoginPage, ProfilePage, RegisterPage } from './pages';
+import { LoginPage, ProfilePage } from './pages';
 import { CardPacksPage } from './pages/CardPacksPage/CardPacksPage';
+import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage';
 import { appRoutes, PrivateRoutes } from './routes';
 
-const RoutesGlobal: RouteObject[] = [
-  {
-    element: <Layout />,
-    children: [
-      {
-        index: true,
-        element: <LoginPage />,
-      },
-      {
-        path: appRoutes.REGISTER,
-        element: <RegisterPage />,
-      },
-      {
-        element: <PrivateRoutes />,
-        children: [
-          {
-            index: true,
-            path: appRoutes.PROFILE,
-            element: <ProfilePage />,
-          },
-          {
-            path: appRoutes.CARDPACKS,
-            element: <CardPacksPage />,
-          },
-        ],
-      },
-    ],
-  },
-];
-
-export const routes = createHashRouter(RoutesGlobal);
+export const routes = createHashRouter(
+  createRoutesFromElements(
+    <Route element={<Layout />}>
+      <Route element={<PrivateRoutes />}>
+        <Route path={appRoutes.PROFILE} element={<ProfilePage />} />
+        <Route path={appRoutes.CARDPACKS} element={<CardPacksPage />} />
+      </Route>
+      <Route path={appRoutes.LOGIN} element={<LoginPage />} />
+      <Route path={''} element={<Navigate to={appRoutes.PROFILE} />} />
+      <Route path={appRoutes.NOTFOUND} element={<NotFoundPage />} />
+    </Route>,
+  ),
+);
