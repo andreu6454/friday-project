@@ -11,11 +11,7 @@ const initialState = {
 const { reducer, actions } = createSlice({
   name: 'userSlice',
   initialState: initialState,
-  reducers: {
-    setUserData: (state, { payload }) => {
-      state.user = payload;
-    },
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
       .addCase(isAuthUser.fulfilled, (state, { payload }) => {
@@ -29,7 +25,5 @@ const { reducer, actions } = createSlice({
       });
   },
 });
-
-export const { setUserData } = actions;
 
 export const userSlice = reducer;
