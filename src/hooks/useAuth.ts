@@ -9,12 +9,8 @@ export const useAuth = () => {
 
   const dispatch = useAppDispatch();
 
-  console.log('hook');
-
   useEffect(() => {
-    if (!isAuth) {
-      dispatch(isAuthUser());
-    }
+    dispatch(isAuthUser());
   }, []);
 
   return { isAuth, loading };
