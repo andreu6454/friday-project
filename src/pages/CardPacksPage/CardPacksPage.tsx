@@ -1,5 +1,8 @@
 import { AccountCircle, Search } from '@mui/icons-material';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import SchoolIcon from '@mui/icons-material/School';
 import {
   Box,
   Button,
@@ -13,7 +16,12 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridColDef,
+  GridRenderCellParams,
+  GridRowsProp,
+} from '@mui/x-data-grid';
 import React, { FC, useEffect, useState } from 'react';
 
 import { DoubleSlider } from '../../components';
@@ -34,11 +42,28 @@ export interface ICardPack {
 }
 
 const columns: GridColDef[] = [
-  { field: 'name', headerName: 'Name', flex: 1 },
-  { field: 'cardsCount', headerName: 'Cards', flex: 1 },
+  { field: 'name', headerName: 'Name', flex: 1.5 },
+  { field: 'cardsCount', headerName: 'Cards', flex: 0.5 },
   { field: 'updated', headerName: 'Last Updates', flex: 1 },
   { field: 'created', headerName: 'Created by', flex: 1 },
-  { field: 'actions', headerName: 'Actions', flex: 1 },
+  {
+    field: 'actions',
+    headerName: 'Actions',
+    renderCell: (params: GridRenderCellParams<Date>) => (
+      <Box>
+        <IconButton>
+          <SchoolIcon />
+        </IconButton>
+        <IconButton>
+          <ModeEditIcon />
+        </IconButton>
+        <IconButton>
+          <DeleteForeverIcon />
+        </IconButton>
+      </Box>
+    ),
+    flex: 0.7,
+  },
 ];
 
 // const rows: GridRowsProp = [
@@ -64,6 +89,11 @@ export const CardPacksPage = () => {
   useEffect(() => {
     dispatch(fetchCardPacks({ page: 1, pageCount: 10 }));
   }, []);
+
+  const renderCells = (cardData ? cardData.cardPacks : []).map((el: ICardPack) => ({
+    id: el._id,
+    ...el,
+  }));
 
   return (
     <Box sx={{ mt: 2 }}>
@@ -122,10 +152,7 @@ export const CardPacksPage = () => {
       <DataGrid
         loading={loadingStatus}
         sx={{ height: '432px' }}
-        rows={(cardData ? cardData.cardPacks : []).map((el: ICardPack) => ({
-          id: el._id,
-          ...el,
-        }))}
+        rows={renderCells}
         columns={columns}
       />
     </Box>
