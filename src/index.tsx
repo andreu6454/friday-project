@@ -1,13 +1,13 @@
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import type {} from '@mui/x-data-grid/themeAugmentation';
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
 
 import { routes } from './_app';
 import reportWebVitals from './reportWebVitals';
+import { AuthProvider } from './routes/AuthProvider';
 import { setupStore } from './store/store';
 
 const themeLight = createTheme({
@@ -45,7 +45,9 @@ root.render(
   <Provider store={store}>
     <ThemeProvider theme={createTheme(themeLight)}>
       <CssBaseline />
-      <RouterProvider router={routes} />
+      <AuthProvider>
+        <RouterProvider router={routes} />
+      </AuthProvider>
     </ThemeProvider>
   </Provider>,
 );
