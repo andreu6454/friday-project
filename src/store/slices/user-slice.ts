@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { ResponseLoginDataType } from '../../services/api';
-import { isAuthUser, loginUser } from '../middleware/authUser';
+import { isAuthUser, loginUser, logOutUser } from '../middleware/authUser';
 import { changeUserAvatar, changeUserName } from '../middleware/user';
 
 const initialState = {
@@ -25,6 +25,9 @@ const { reducer, actions } = createSlice({
       })
       .addCase(changeUserAvatar.fulfilled, (state, { payload }) => {
         state.user.avatar = payload.updatedUser.avatar;
+      })
+      .addCase(logOutUser.fulfilled, (state) => {
+        state.user = {} as ResponseLoginDataType;
       });
   },
 });
