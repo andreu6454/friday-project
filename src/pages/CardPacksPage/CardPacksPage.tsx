@@ -27,6 +27,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { DoubleSlider } from '../../components';
 import { fetchCardPacks } from '../../store/middleware/cards';
 import { useAppDispatch, useAppSelector } from '../../store/store';
+import { formateDate } from '../../utils/formateDate';
 
 interface ICategory {
   category: 'all' | 'my';
@@ -45,7 +46,7 @@ const columns: GridColDef[] = [
   { field: 'name', headerName: 'Name', flex: 1.5 },
   { field: 'cardsCount', headerName: 'Cards', flex: 0.5 },
   { field: 'updated', headerName: 'Last Updates', flex: 1 },
-  { field: 'created', headerName: 'Created by', flex: 1 },
+  { field: 'user_name', headerName: 'Created by', flex: 1 },
   {
     field: 'actions',
     headerName: 'Actions',
@@ -66,12 +67,6 @@ const columns: GridColDef[] = [
   },
 ];
 
-// const rows: GridRowsProp = [
-//   { id: 1, name: 'Hello', col2: 'World' },
-//   { id: 2, cardsCount: 'DataGridPro', col2: 'is Awesome' },
-//   { id: 3, updated: 'MUI', col2: 'is Amazing' },
-// ];
-
 const StyledTextField = styled(TextField)`
   .MuiInputBase-root {
     background-color: ${({ theme }) => theme.palette.background.paper};
@@ -91,8 +86,9 @@ export const CardPacksPage = () => {
   }, []);
 
   const renderCells = (cardData ? cardData.cardPacks : []).map((el: ICardPack) => ({
-    id: el._id,
     ...el,
+    id: el._id,
+    updated: formateDate(el.updated),
   }));
 
   return (
