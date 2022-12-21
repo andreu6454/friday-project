@@ -9,18 +9,13 @@ import {
   Typography,
 } from '@mui/material';
 import { Container } from '@mui/system';
-import React, { useEffect } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { EditableSpan } from '../../components/EditableSpan/EditableSpan';
-import { useAuth } from '../../hooks';
 import { appRoutes } from '../../routes';
 import { logOutUser } from '../../store/middleware/authUser';
-import {
-  changeUserAvatar,
-  changeUserName,
-  getUserData,
-} from '../../store/middleware/user';
+import { changeUserAvatar, changeUserName } from '../../store/middleware/user';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 
 export const ProfilePage = () => {
@@ -43,28 +38,22 @@ export const ProfilePage = () => {
     );
   };
 
-  // useEffect(() => {
-  //   if (!user.email) {
-  //     dispatch(getUserData());
-  //   }
-  // }, []);
-
-  // if (status === 'loading') {
-  //   return (
-  //     <Container>
-  //       <Box
-  //         sx={{
-  //           display: 'flex',
-  //           width: '100%',
-  //           justifyContent: 'center',
-  //           mt: '10%',
-  //         }}
-  //       >
-  //         <CircularProgress />
-  //       </Box>
-  //     </Container>
-  //   );
-  // }
+  if (status === 'loading') {
+    return (
+      <Container>
+        <Box
+          sx={{
+            display: 'flex',
+            width: '100%',
+            justifyContent: 'center',
+            mt: '10%',
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      </Container>
+    );
+  }
 
   return (
     <Box mt={2}>

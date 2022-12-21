@@ -1,24 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import {
-  authAPI,
-  ResponseLoginDataType,
-  ResponseUpdateUserDataType,
-} from '../../services/api';
+import { authAPI, ResponseUpdateUserDataType } from '../../services/api';
 import { handlerAsyncError } from '../../utils';
-
-export const getUserData = createAsyncThunk<
-  ResponseLoginDataType,
-  void,
-  { rejectValue: string }
->('user/getUserData', async (_, thunkApi) => {
-  try {
-    const response = await authAPI.me();
-    return response.data;
-  } catch (error) {
-    return handlerAsyncError(error, thunkApi);
-  }
-});
 
 export const changeUserName = createAsyncThunk<
   ResponseUpdateUserDataType,
