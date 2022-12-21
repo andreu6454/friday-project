@@ -52,7 +52,7 @@ export const logOutUser = createAsyncThunk<
   ResponseLogOutDataType,
   void,
   { rejectValue: string }
->('logout', async (_, thunkApi) => {
+>('user/logout', async (_, thunkApi) => {
   try {
     const response = await authAPI.logOut();
     return response.data;

@@ -14,7 +14,7 @@ const { reducer, actions } = createSlice({
   extraReducers(builder) {
     builder
       .addCase(getUserData.fulfilled, (state, { payload }) => {
-        state.user = payload as ResponseLoginDataType;
+        state.user = payload;
       })
       .addCase(changeUserName.fulfilled, (state, { payload }) => {
         state.user.name = payload.updatedUser.name;

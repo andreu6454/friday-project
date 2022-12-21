@@ -33,10 +33,11 @@ export const ProfilePage = () => {
     dispatch(changeUserName({ name }));
   };
   const changePhotoHandle = () => {
+    const avatar =
+      'https://abrakadabra.fun/uploads/posts/2022-03/1647337144_2-abrakadabra-fun-p-avatarka-dlya-estetiki-6.png';
     dispatch(
       changeUserAvatar({
-        avatar:
-          'https://abrakadabra.fun/uploads/posts/2022-03/1647337144_2-abrakadabra-fun-p-avatarka-dlya-estetiki-6.png',
+        avatar,
       }),
     );
   };
@@ -69,23 +70,20 @@ export const ProfilePage = () => {
     );
   }
   return (
-    <Box>
-      <Box display={'flex'} mt={2}>
-        <Link
-          to={appRoutes.CARDPACKS}
-          style={{
-            color: 'black',
-            textDecoration: 'none',
-            alignItems: 'center',
-            display: 'flex',
-          }}
-        >
-          <ArrowBack />
-          <Typography variant={'body1'} fontWeight={'bold'}>
-            Back To Pack List
-          </Typography>
-        </Link>
-      </Box>
+    <Box mt={2}>
+      <Link
+        to={appRoutes.CARDPACKS}
+        style={{
+          gap: '8px',
+          color: 'black',
+          textDecoration: 'none',
+          alignItems: 'center',
+          display: 'flex',
+        }}
+      >
+        <ArrowBack />
+        <Typography variant={'body1'}>Back To Pack List</Typography>
+      </Link>
       <Card sx={{ width: '413px', m: '40px auto', py: 3 }}>
         <Typography variant={'h5'} fontWeight={'Bold'} textAlign={'center'}>
           Personal Information
@@ -95,7 +93,17 @@ export const ProfilePage = () => {
           <Badge
             overlap="circular"
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            badgeContent={<AddAPhoto onClick={changePhotoHandle} />}
+            badgeContent={
+              <AddAPhoto
+                fontSize="medium"
+                sx={{
+                  background: 'white',
+                  border: '3px solid white',
+                  borderRadius: '50%',
+                }}
+                onClick={changePhotoHandle}
+              />
+            }
           >
             <Avatar
               alt="avatar"
