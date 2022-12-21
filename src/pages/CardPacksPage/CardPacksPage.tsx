@@ -1,4 +1,4 @@
-import { AccountCircle, Search } from '@mui/icons-material';
+import { Search } from '@mui/icons-material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
@@ -7,22 +7,14 @@ import {
   Box,
   Button,
   IconButton,
-  Input,
   InputAdornment,
-  InputBase,
-  Slider,
   styled,
-  Tabs,
   TextField,
   Typography,
 } from '@mui/material';
-import {
-  DataGrid,
-  GridColDef,
-  GridRenderCellParams,
-  GridRowsProp,
-} from '@mui/x-data-grid';
-import React, { FC, useEffect, useState } from 'react';
+import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import { useEffect } from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 import { DoubleSlider } from '../../components';
 import { fetchCardPacks } from '../../store/middleware/cards';
@@ -77,19 +69,33 @@ export const CardPacksPage = () => {
   const cardData = useAppSelector((state) => state.cards.cardsData);
   const loading = useAppSelector((state) => state.cards.status);
 
-  const loadingStatus = loading === 'loading';
-
   const dispatch = useAppDispatch();
+
+  const loadingStatus = loading === 'loading';
 
   useEffect(() => {
     dispatch(fetchCardPacks({ page: 1, pageCount: 10 }));
   }, []);
 
-  const renderCells = (cardData ? cardData.cardPacks : []).map((el: ICardPack) => ({
-    ...el,
-    id: el._id,
-    updated: formateDate(el.updated),
-  }));
+  const renderActionsCells = (cardData ? cardData.cardPacks : []).map(
+    (el: ICardPack) => ({
+      ...el,
+      id: el._id,
+      updated: formateDate(el.updated),
+    }),
+  );
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const { myID } = useParams();
+
+  useEffect(() => {
+    console.log(myID);
+  }, [myID]);
+
+  const handleChangeCategory = () => {
+    setSearchParams({ myId: '639e379aea4807000491a3ea' });
+  };
 
   return (
     <Box sx={{ mt: 2 }}>
@@ -133,8 +139,8 @@ export const CardPacksPage = () => {
         >
           <Typography variant="body2">Show packs cards</Typography>
           <Box>
-            <Button variant="contained">MY</Button>
-            <Button>All</Button>
+            <Button onClick={handleChangeCategory}>MY</Button>
+            <Button variant="contained">All</Button>
           </Box>
         </Box>
         <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -148,7 +154,7 @@ export const CardPacksPage = () => {
       <DataGrid
         loading={loadingStatus}
         sx={{ height: '432px' }}
-        rows={renderCells}
+        rows={renderActionsCells}
         columns={columns}
       />
     </Box>
