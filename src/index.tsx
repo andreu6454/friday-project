@@ -1,6 +1,7 @@
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import type {} from '@mui/x-data-grid/themeAugmentation';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
@@ -42,14 +43,16 @@ const store = setupStore();
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <Provider store={store}>
-    <ThemeProvider theme={createTheme(themeLight)}>
-      <CssBaseline />
-      <AuthProvider>
-        <RouterProvider router={routes} />
-      </AuthProvider>
-    </ThemeProvider>
-  </Provider>,
+  <React.StrictMode>
+    <Provider store={store}>
+      <ThemeProvider theme={createTheme(themeLight)}>
+        <CssBaseline />
+        <AuthProvider>
+          <RouterProvider router={routes} />
+        </AuthProvider>
+      </ThemeProvider>
+    </Provider>
+  </React.StrictMode>,
 );
 
 reportWebVitals();
