@@ -1,52 +1,40 @@
-import { AccountCircle, Search } from '@mui/icons-material';
+import { Search } from '@mui/icons-material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import {
   Box,
   Button,
   IconButton,
-  Input,
   InputAdornment,
-  InputBase,
-  Slider,
   styled,
-  Tabs,
   TextField,
   Typography,
 } from '@mui/material';
-import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
-import React, { ChangeEvent, FC, useEffect, useState } from 'react';
+import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { DoubleSlider } from '../../components';
 import { useDebounce } from '../../hooks';
+import { MemoizedActions } from '../../sections/cardpacks-page/Actions';
+import { ICardPack } from '../../services/api/cards';
 import { fetchCardPacks } from '../../store/middleware/cards';
 import { useAppDispatch, useAppSelector } from '../../store/store';
-
-interface ICategory {
-  category: 'all' | 'my';
-}
-
-export interface ICardPack {
-  _id?: string;
-  user_id?: string;
-  name: string;
-  cardsCount: number;
-  created: string;
-  updated: string;
-}
+import { formateDate } from '../../utils/formateDate';
 
 const columns: GridColDef[] = [
-  { field: 'name', headerName: 'Name', flex: 1 },
-  { field: 'cardsCount', headerName: 'Cards', flex: 1 },
+  { field: 'name', headerName: 'Name', flex: 1.5 },
+  { field: 'cardsCount', headerName: 'Cards', flex: 0.5 },
   { field: 'updated', headerName: 'Last Updates', flex: 1 },
-  { field: 'created', headerName: 'Created by', flex: 1 },
-  { field: 'actions', headerName: 'Actions', flex: 1 },
+  { field: 'user_name', headerName: 'Created by', flex: 1 },
+  {
+    field: 'actions',
+    headerName: 'Actions',
+    renderCell: (params: GridRenderCellParams<ICardPack>) => (
+      <MemoizedActions {...params} />
+    ),
+    flex: 0.7,
+  },
 ];
-
-// const rows: GridRowsProp = [
-//   { id: 1, name: 'Hello', col2: 'World' },
-//   { id: 2, cardsCount: 'DataGridPro', col2: 'is Awesome' },
-//   { id: 3, updated: 'MUI', col2: 'is Amazing' },
-// ];
 
 const StyledTextField = styled(TextField)`
   .MuiInputBase-root {
@@ -57,24 +45,63 @@ const StyledTextField = styled(TextField)`
 export const CardPacksPage = () => {
   const cardData = useAppSelector((state) => state.cards.cardsData);
   const loading = useAppSelector((state) => state.cards.status);
-  const [searchValue, setSearchValue] = useState('');
 
-  const debouncedValue = useDebounce<string>(searchValue, 500);
-
-  const loadingStatus = loading === 'loading';
-
+  const [search, setSearch] = useSearchParams();
   const dispatch = useAppDispatch();
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value);
-  };
-  useEffect(() => {
-    dispatch(fetchCardPacks({ packName: debouncedValue, page: 1, pageCount: 10 }));
-  }, [debouncedValue]);
+  const category = search.get('category');
+  const packName = search.get('query') || '';
 
-  // useEffect(() => {
-  //   dispatch(fetchCardPacks({ page: 1, pageCount: 10 }));
-  // }, []);
+  const activeCategoryHandle = (cat: string) => {
+    search.set('category', cat);
+    setSearch(search);
+  };
+
+  const userId = '639e379aea4807000491a3ea';
+  const fetchActiveCategory = category === 'my' ? userId : '';
+  const loadingStatus = loading === 'loading';
+  const isActiveCategory = category === 'all';
+
+  useEffect(() => {
+    if (!category) {
+      search.set('category', 'all');
+      setSearch(search);
+      return;
+    }
+    console.log('useEFFFECT');
+    dispatch(
+      fetchCardPacks({
+        page: 1,
+        pageCount: 150,
+        user_id: fetchActiveCategory,
+        packName: search.get('query') || '',
+      }),
+    );
+  }, [category, packName]);
+
+  const renderActionsCells = (cardData ? cardData.cardPacks : []).map(
+    (el: ICardPack) => ({
+      ...el,
+      id: el._id,
+      updated: formateDate(el.updated),
+    }),
+  );
+
+  const onSearchChange = useDebounce((e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
+
+    if (text.length === 0) {
+      search.delete('query');
+      setSearch(search, {
+        replace: true,
+      });
+    } else {
+      search.set('query', text);
+      setSearch(search, {
+        replace: true,
+      });
+    }
+  }, 500);
 
   return (
     <Box sx={{ mt: 2 }}>
@@ -92,14 +119,14 @@ export const CardPacksPage = () => {
           <Typography variant="body2">Search</Typography>
 
           <StyledTextField
+            onChange={onSearchChange}
+            defaultValue={search.get('query') ?? ''}
             fullWidth
             hiddenLabel
             id="filled-size-small"
             variant="outlined"
             size="small"
             placeholder="Provide your text"
-            value={searchValue}
-            onChange={handleChange}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -120,8 +147,18 @@ export const CardPacksPage = () => {
         >
           <Typography variant="body2">Show packs cards</Typography>
           <Box>
-            <Button variant="contained">MY</Button>
-            <Button>All</Button>
+            <Button
+              variant={!isActiveCategory ? 'contained' : 'outlined'}
+              onClick={() => activeCategoryHandle('my')}
+            >
+              MY
+            </Button>
+            <Button
+              onClick={() => activeCategoryHandle('all')}
+              variant={isActiveCategory ? 'contained' : 'outlined'}
+            >
+              All
+            </Button>
           </Box>
         </Box>
         <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -135,10 +172,7 @@ export const CardPacksPage = () => {
       <DataGrid
         loading={loadingStatus}
         sx={{ height: '432px' }}
-        rows={(cardData ? cardData.cardPacks : []).map((el: ICardPack) => ({
-          id: el._id,
-          ...el,
-        }))}
+        rows={renderActionsCells}
         columns={columns}
       />
     </Box>

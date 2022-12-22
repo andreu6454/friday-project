@@ -25,6 +25,7 @@ export interface IGetCardsPacksParams {
   sortPacks?: string;
   page?: number;
   pageCount?: number;
+  user_id?: string;
 }
 
 export interface IAddCardPack {
