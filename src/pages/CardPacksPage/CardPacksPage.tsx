@@ -13,26 +13,16 @@ import {
   Typography,
 } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import { debounce } from 'lodash';
 import { useEffect } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 import { DoubleSlider } from '../../components';
+import { MemoizedActions } from '../../sections/cardpacks-page/Actions';
+import { ICardPack } from '../../services/api/cards';
 import { fetchCardPacks } from '../../store/middleware/cards';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { formateDate } from '../../utils/formateDate';
-
-interface ICategory {
-  category: 'all' | 'my';
-}
-
-export interface ICardPack {
-  _id?: string;
-  user_id?: string;
-  name: string;
-  cardsCount: number;
-  created: string;
-  updated: string;
-}
 
 const columns: GridColDef[] = [
   { field: 'name', headerName: 'Name', flex: 1.5 },
@@ -42,18 +32,8 @@ const columns: GridColDef[] = [
   {
     field: 'actions',
     headerName: 'Actions',
-    renderCell: (params: GridRenderCellParams<Date>) => (
-      <Box>
-        <IconButton>
-          <SchoolIcon />
-        </IconButton>
-        <IconButton>
-          <ModeEditIcon />
-        </IconButton>
-        <IconButton>
-          <DeleteForeverIcon />
-        </IconButton>
-      </Box>
+    renderCell: (params: GridRenderCellParams<ICardPack>) => (
+      <MemoizedActions {...params} />
     ),
     flex: 0.7,
   },
@@ -69,13 +49,37 @@ export const CardPacksPage = () => {
   const cardData = useAppSelector((state) => state.cards.cardsData);
   const loading = useAppSelector((state) => state.cards.status);
 
+  const [search, setSearch] = useSearchParams();
   const dispatch = useAppDispatch();
 
+  const category = search.get('category');
+  const packName = search.get('query') || '';
+
+  const activeCategoryHandle = (cat: string) => {
+    search.set('category', cat);
+    setSearch(search);
+  };
+
+  const userId = '639e379aea4807000491a3ea';
+  const fetchActiveCategory = category === 'my' ? userId : '';
   const loadingStatus = loading === 'loading';
+  const isActiveCategory = category === 'all';
 
   useEffect(() => {
-    dispatch(fetchCardPacks({ page: 1, pageCount: 10 }));
-  }, []);
+    if (!category) {
+      search.set('category', 'all');
+      setSearch(search);
+    }
+
+    dispatch(
+      fetchCardPacks({
+        page: 1,
+        pageCount: 150,
+        user_id: fetchActiveCategory,
+        packName: search.get('query') || '',
+      }),
+    );
+  }, [category, packName]);
 
   const renderActionsCells = (cardData ? cardData.cardPacks : []).map(
     (el: ICardPack) => ({
@@ -85,17 +89,21 @@ export const CardPacksPage = () => {
     }),
   );
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const onSearchChange = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
 
-  const { myID } = useParams();
-
-  useEffect(() => {
-    console.log(myID);
-  }, [myID]);
-
-  const handleChangeCategory = () => {
-    setSearchParams({ myId: '639e379aea4807000491a3ea' });
-  };
+    if (text.length === 0) {
+      search.delete('query');
+      setSearch(search, {
+        replace: true,
+      });
+    } else {
+      search.set('query', text);
+      setSearch(search, {
+        replace: true,
+      });
+    }
+  }, 1000);
 
   return (
     <Box sx={{ mt: 2 }}>
@@ -113,6 +121,8 @@ export const CardPacksPage = () => {
           <Typography variant="body2">Search</Typography>
 
           <StyledTextField
+            onChange={onSearchChange}
+            defaultValue={search.get('query') ?? ''}
             fullWidth
             hiddenLabel
             id="filled-size-small"
@@ -139,8 +149,18 @@ export const CardPacksPage = () => {
         >
           <Typography variant="body2">Show packs cards</Typography>
           <Box>
-            <Button onClick={handleChangeCategory}>MY</Button>
-            <Button variant="contained">All</Button>
+            <Button
+              variant={!isActiveCategory ? 'contained' : 'outlined'}
+              onClick={() => activeCategoryHandle('my')}
+            >
+              MY
+            </Button>
+            <Button
+              onClick={() => activeCategoryHandle('all')}
+              variant={isActiveCategory ? 'contained' : 'outlined'}
+            >
+              All
+            </Button>
           </Box>
         </Box>
         <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '8px' }}>
