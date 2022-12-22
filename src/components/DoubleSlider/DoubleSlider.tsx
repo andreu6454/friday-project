@@ -1,5 +1,4 @@
 import { Grid, Slider, styled, TextField } from '@mui/material';
-import { replace } from 'lodash';
 import React, { ChangeEvent } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
