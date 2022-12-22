@@ -1,24 +1,83 @@
-import { Slider } from '@mui/material';
-import React from 'react';
+import { Grid, Slider, styled, TextField } from '@mui/material';
+import { replace } from 'lodash';
+import React, { ChangeEvent } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
-function valuetext(value: number) {
-  return `${value}°C`;
-}
+import { useDebounce } from '../../hooks';
+
+const StyledTextField = styled(TextField)`
+  .MuiInputBase-root {
+    background-color: ${({ theme }) => theme.palette.background.paper};
+  }
+`;
 
 export const DoubleSlider = () => {
   const [value, setValue] = React.useState<number[]>([20, 37]);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleChange = (event: Event, newValue: number | number[]) => {
+  const handleChangeSlider = (event: Event, newValue: number | number[]) => {
     setValue(newValue as number[]);
+    handleQueryParams();
+  };
+
+  const handleQueryParams = useDebounce(() => {
+    searchParams.set('min', value[0].toString());
+    searchParams.set('max', value[1].toString());
+    setSearchParams(searchParams, {
+      replace: true,
+    });
+  }, 500);
+
+  const handleChangeStartValue = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setValue((prev) => [(prev[0] = +event.target.value), prev[1]]);
+  };
+
+  const handleChangeEndValue = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setValue((prev) => [prev[0], (prev[1] = +event.target.value)]);
   };
 
   return (
-    <Slider
-      getAriaLabel={() => 'Temperature range'}
-      value={value}
-      onChange={handleChange}
-      valueLabelDisplay="auto"
-      getAriaValueText={valuetext}
-    />
+    <Grid container spacing={3} alignItems="center" justifyContent="space-between">
+      <Grid item>
+        <StyledTextField
+          value={value[0]}
+          onChange={handleChangeStartValue}
+          size="small"
+          sx={{ width: '50px' }}
+          inputProps={{
+            inputMode: 'numeric',
+            pattern: '[0-9]*',
+            'aria-labelledby': 'input-slider',
+          }}
+        />
+      </Grid>
+      <Grid item sx={{ flexGrow: 1 }}>
+        <Slider
+          sx={{ minWidth: '100%' }}
+          getAriaLabel={() => 'Data filter range'}
+          value={value}
+          onChange={handleChangeSlider}
+          valueLabelDisplay="auto"
+          disableSwap
+        />
+      </Grid>
+      <Grid item>
+        <StyledTextField
+          value={value[1]}
+          size="small"
+          onChange={handleChangeEndValue}
+          sx={{ width: '50px' }}
+          inputProps={{
+            inputMode: 'numeric',
+            pattern: '[0-9]*',
+            'aria-labelledby': 'input-slider',
+          }}
+        />
+      </Grid>
+    </Grid>
   );
 };

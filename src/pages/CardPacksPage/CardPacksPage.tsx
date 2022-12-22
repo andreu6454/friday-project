@@ -10,8 +10,8 @@ import {
   Typography,
 } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
-import { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 import { DoubleSlider } from '../../components';
 import { useDebounce } from '../../hooks';
@@ -51,6 +51,8 @@ export const CardPacksPage = () => {
 
   const category = search.get('category');
   const packName = search.get('query') || '';
+  const min = search.get('min') || '';
+  const max = search.get('max') || '';
 
   const activeCategoryHandle = (cat: string) => {
     search.set('category', cat);
@@ -68,16 +70,18 @@ export const CardPacksPage = () => {
       setSearch(search);
       return;
     }
-    console.log('useEFFFECT');
+
     dispatch(
       fetchCardPacks({
         page: 1,
         pageCount: 150,
         user_id: fetchActiveCategory,
-        packName: search.get('query') || '',
+        packName: packName,
+        max: +max,
+        min: +min,
       }),
     );
-  }, [category, packName]);
+  }, [category, packName, min, max]);
 
   const renderActionsCells = (cardData ? cardData.cardPacks : []).map(
     (el: ICardPack) => ({
