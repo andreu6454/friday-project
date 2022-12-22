@@ -29,9 +29,24 @@ export interface getRegisterType {
   email: string;
   password: string;
 }
+
+export interface ResponseLogOutDataType {
+  info: string;
+  error?: string;
+}
+export interface ResponseUpdateUserDataType {
+  updatedUser: ResponseLoginDataType;
+  error?: string;
+}
 export const authAPI = {
   me() {
     return instance.post<ResponseLoginDataType>('/auth/me', {});
+  },
+  logOut() {
+    return instance.delete<ResponseLogOutDataType>('/auth/me', {});
+  },
+  updateUser(name = '', avatar = '') {
+    return instance.put<ResponseUpdateUserDataType>('/auth/me', { name, avatar });
   },
   forgot() {
     //TODO: forgot point

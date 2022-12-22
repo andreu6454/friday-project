@@ -32,7 +32,7 @@ export const handlerAsyncError = (error: any, thunkAPI: ThunkAPIType) => {
       console.warn('something happend');
       //The request was made but no response was received, `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in Node.js
     }
-    console.log(error);
+
     return thunkAPI.rejectWithValue(error.response?.data.error);
   }
 

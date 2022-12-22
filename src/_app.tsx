@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 
 import { Layout } from './components/Layout/Layout';
-import { LoginPage, ProfilePage } from './pages';
+import { LoginPage, ProfilePage, RegisterPage } from './pages';
 import { CardPacksPage } from './pages/CardPacksPage/CardPacksPage';
 import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage';
 import { appRoutes, PrivateRoutes } from './routes';
@@ -19,6 +19,7 @@ export const routes = createHashRouter(
         <Route path={appRoutes.CARDPACKS} element={<CardPacksPage />} />
       </Route>
       <Route path={appRoutes.LOGIN} element={<LoginPage />} />
+      <Route path={appRoutes.REGISTER} element={<RegisterPage />} />
       <Route path={''} element={<Navigate to={appRoutes.PROFILE} />} />
       <Route path={appRoutes.NOTFOUND} element={<NotFoundPage />} />
     </Route>,
