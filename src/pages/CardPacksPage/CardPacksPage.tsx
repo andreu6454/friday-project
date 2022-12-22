@@ -17,7 +17,7 @@ import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 
 import { DoubleSlider } from '../../components';
-import useDebounce from '../../hooks/useDebounce';
+import { useDebounce } from '../../hooks';
 import { fetchCardPacks } from '../../store/middleware/cards';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 
@@ -58,6 +58,7 @@ export const CardPacksPage = () => {
   const cardData = useAppSelector((state) => state.cards.cardsData);
   const loading = useAppSelector((state) => state.cards.status);
   const [searchValue, setSearchValue] = useState('');
+
   const debouncedValue = useDebounce<string>(searchValue, 500);
 
   const loadingStatus = loading === 'loading';
@@ -68,7 +69,7 @@ export const CardPacksPage = () => {
     setSearchValue(event.target.value);
   };
   useEffect(() => {
-    dispatch(fetchCardPacks({ packName: searchValue, page: 1, pageCount: 10 }));
+    dispatch(fetchCardPacks({ packName: debouncedValue, page: 1, pageCount: 10 }));
   }, [debouncedValue]);
 
   // useEffect(() => {
