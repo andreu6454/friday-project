@@ -1,8 +1,5 @@
 import { Search } from '@mui/icons-material';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import SchoolIcon from '@mui/icons-material/School';
 import {
   Box,
   Button,
@@ -13,11 +10,11 @@ import {
   Typography,
 } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
-import { debounce } from 'lodash';
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { DoubleSlider } from '../../components';
+import { useDebounce } from '../../hooks';
 import { MemoizedActions } from '../../sections/cardpacks-page/Actions';
 import { ICardPack } from '../../services/api/cards';
 import { fetchCardPacks } from '../../store/middleware/cards';
@@ -69,8 +66,9 @@ export const CardPacksPage = () => {
     if (!category) {
       search.set('category', 'all');
       setSearch(search);
+      return;
     }
-
+    console.log('useEFFFECT');
     dispatch(
       fetchCardPacks({
         page: 1,
@@ -89,7 +87,7 @@ export const CardPacksPage = () => {
     }),
   );
 
-  const onSearchChange = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
+  const onSearchChange = useDebounce((e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
 
     if (text.length === 0) {
@@ -103,7 +101,7 @@ export const CardPacksPage = () => {
         replace: true,
       });
     }
-  }, 1000);
+  }, 500);
 
   return (
     <Box sx={{ mt: 2 }}>
