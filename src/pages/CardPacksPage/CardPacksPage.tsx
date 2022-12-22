@@ -14,9 +14,10 @@ import {
   Typography,
 } from '@mui/material';
 import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
-import React, { FC, useEffect, useState } from 'react';
+import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 
 import { DoubleSlider } from '../../components';
+import { useDebounce } from '../../hooks';
 import { fetchCardPacks } from '../../store/middleware/cards';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 
@@ -56,14 +57,24 @@ const StyledTextField = styled(TextField)`
 export const CardPacksPage = () => {
   const cardData = useAppSelector((state) => state.cards.cardsData);
   const loading = useAppSelector((state) => state.cards.status);
+  const [searchValue, setSearchValue] = useState('');
+
+  const debouncedValue = useDebounce<string>(searchValue, 500);
 
   const loadingStatus = loading === 'loading';
 
   const dispatch = useAppDispatch();
 
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
+  };
   useEffect(() => {
-    dispatch(fetchCardPacks({ page: 1, pageCount: 10 }));
-  }, []);
+    dispatch(fetchCardPacks({ packName: debouncedValue, page: 1, pageCount: 10 }));
+  }, [debouncedValue]);
+
+  // useEffect(() => {
+  //   dispatch(fetchCardPacks({ page: 1, pageCount: 10 }));
+  // }, []);
 
   return (
     <Box sx={{ mt: 2 }}>
@@ -87,6 +98,8 @@ export const CardPacksPage = () => {
             variant="outlined"
             size="small"
             placeholder="Provide your text"
+            value={searchValue}
+            onChange={handleChange}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
