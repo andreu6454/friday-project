@@ -174,10 +174,12 @@ export const CardPacksPage = () => {
         </IconButton>
       </Box>
       <DataGrid
+        rowsPerPageOptions={[5, 10, 20]}
         loading={loadingStatus}
         sx={{ height: '432px' }}
         rows={renderActionsCells}
         columns={columns}
+        pagination
       />
     </Box>
   );
