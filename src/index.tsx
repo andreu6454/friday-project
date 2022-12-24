@@ -10,42 +10,15 @@ import { routes } from './_app';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './routes/AuthProvider';
 import { setupStore } from './store/store';
+import { theme } from './styles/styles';
 
-const themeLight = createTheme({
-  palette: {
-    background: {
-      default: grey[100],
-    },
-  },
-  components: {
-    MuiDataGrid: {
-      styleOverrides: {
-        columnSeparator: {
-          display: 'none',
-        },
-        columnHeader: {
-          fontWeight: 700,
-        },
-        columnHeaderTitle: {
-          fontWeight: 700,
-        },
-        columnHeaders: ({ theme }) => ({
-          backgroundColor: theme.palette.grey[300],
-        }),
-        root: {
-          backgroundColor: 'white',
-        },
-      },
-    },
-  },
-});
 const store = setupStore();
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={createTheme(themeLight)}>
+      <ThemeProvider theme={createTheme(theme)}>
         <CssBaseline />
         <AuthProvider>
           <RouterProvider router={routes} />
