@@ -3,6 +3,7 @@ import React, { ChangeEvent } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { useDebounce } from '../../hooks';
+import { useAppSelector } from '../../store/store';
 
 const StyledTextField = styled(TextField)`
   .MuiInputBase-root {
@@ -11,7 +12,10 @@ const StyledTextField = styled(TextField)`
 `;
 
 export const DoubleSlider = () => {
-  const [value, setValue] = React.useState<number[]>([20, 37]);
+  const minCount = useAppSelector((state) => state.cards.cardsData.minCardsCount);
+  const maxCount = useAppSelector((state) => state.cards.cardsData.maxCardsCount);
+
+  const [value, setValue] = React.useState<number[]>([minCount, maxCount]);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const handleChangeSlider = (event: Event, newValue: number | number[]) => {

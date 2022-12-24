@@ -1,17 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { ICardsPacks } from './../../services/api/cards';
+import { ICardPack, ICardsPacks } from './../../services/api/cards';
 import { fetchCardPacks } from './../middleware/cards';
 import { RequestStatusType } from './types';
 
 type initialStateType = {
-  cardsData: ICardsPacks | null;
+  cardsData: ICardsPacks;
   status: RequestStatusType;
   error: null | string;
 };
 
 const initialState: initialStateType = {
-  cardsData: null,
+  cardsData: {
+    cardPacks: [] as ICardPack[],
+    cardPacksTotalCount: 100,
+    maxCardsCount: 100,
+    minCardsCount: 0,
+    page: 1,
+    pageCount: 10,
+  },
   status: 'idle' as RequestStatusType,
   error: null,
 };
@@ -19,7 +26,18 @@ const initialState: initialStateType = {
 const { reducer, actions } = createSlice({
   name: 'cardsSlice',
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    setNewPage: (state, { payload }) => {
+      if (state.cardsData) {
+        state.cardsData.page = payload;
+      }
+    },
+    setPageCount: (state, { payload }) => {
+      if (state.cardsData) {
+        state.cardsData.pageCount = payload;
+      }
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchCardPacks.fulfilled, (state, { payload }) => {
@@ -35,5 +53,7 @@ const { reducer, actions } = createSlice({
       });
   },
 });
+
+export const { setNewPage, setPageCount } = actions;
 
 export const cardPacksSlice = reducer;
