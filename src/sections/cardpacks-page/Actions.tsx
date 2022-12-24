@@ -5,9 +5,10 @@ import { Box, IconButton } from '@mui/material';
 import { GridRenderCellParams } from '@mui/x-data-grid';
 import { memo } from 'react';
 
+import { useAppSelector } from '../../store/store';
+
 const Actions = (params: GridRenderCellParams<any, any, any>) => {
-  //   const userId = useAppSelector((state) => state.auth);
-  const userId = '639e379aea4807000491a3ea';
+  const userId = useAppSelector((state) => state.user.user._id);
 
   return (
     <Box>

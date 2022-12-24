@@ -61,7 +61,7 @@ export const CardPacksPage = () => {
     setSearch(search);
   };
 
-  const userId = '639e379aea4807000491a3ea';
+  const userId = useAppSelector((state) => state.user.user._id);
   const fetchActiveCategory = category === 'my' ? userId : '';
   const loadingStatus = loading === 'loading';
   const isActiveCategory = category === 'all';
