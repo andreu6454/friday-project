@@ -5,8 +5,7 @@ import {
   Button,
   IconButton,
   InputAdornment,
-  styled,
-  TextField,
+  Stack,
   Typography,
 } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
@@ -16,10 +15,12 @@ import { useSearchParams } from 'react-router-dom';
 import { DoubleSlider } from '../../components';
 import { useDebounce } from '../../hooks';
 import { MemoizedActions } from '../../sections/cardpacks-page/Actions';
+import { CustomPagination } from '../../sections/cardpacks-page/CustomPagination';
 import { ICardPack } from '../../services/api/cards';
 import { fetchCardPacks } from '../../store/middleware/cards';
 import { setNewPage, setPageCount } from '../../store/slices/cards-slice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
+import { StyledTextField } from '../../styles/styles';
 import { formateDate } from '../../utils/formateDate';
 
 const columns: GridColDef[] = [
@@ -36,12 +37,6 @@ const columns: GridColDef[] = [
     flex: 0.7,
   },
 ];
-
-const StyledTextField = styled(TextField)`
-  .MuiInputBase-root {
-    background-color: ${({ theme }) => theme.palette.background.paper};
-  }
-`;
 
 export const CardPacksPage = () => {
   const cardData = useAppSelector((state) => state.cards.cardsData);
@@ -180,20 +175,25 @@ export const CardPacksPage = () => {
           <FilterAltIcon />
         </IconButton>
       </Box>
-      <DataGrid
-        sx={{ height: '432px' }}
-        rowCount={totalCount}
-        rows={renderActionsCells}
-        loading={loadingStatus}
-        rowsPerPageOptions={[5]}
-        paginationMode="server"
-        pagination
-        page={page - 1}
-        pageSize={pageCount}
-        onPageChange={(newPage) => dispatch(setNewPage(newPage + 1))}
-        onPageSizeChange={(newPageSize) => dispatch(setPageCount(newPageSize))}
-        columns={columns}
-      />
+      <Stack spacing={4} direction="column">
+        <DataGrid
+          sx={{ minHeight: '432px' }}
+          rowCount={totalCount}
+          rows={renderActionsCells}
+          loading={loadingStatus}
+          paginationMode="server"
+          columns={columns}
+          hideFooter={true}
+        />
+        <CustomPagination
+          page={page}
+          pageCount={pageCount}
+          totalCount={totalCount}
+          onChangePage={setNewPage}
+          onChangePageSize={setPageCount}
+          rowsPerPageOptions={[10, 20, 50]}
+        />
+      </Stack>
     </Box>
   );
 };

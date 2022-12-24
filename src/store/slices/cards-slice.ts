@@ -4,11 +4,11 @@ import { ICardPack, ICardsPacks } from './../../services/api/cards';
 import { fetchCardPacks } from './../middleware/cards';
 import { RequestStatusType } from './types';
 
-type initialStateType = {
+interface initialStateType {
   cardsData: ICardsPacks;
   status: RequestStatusType;
   error: null | string;
-};
+}
 
 const initialState: initialStateType = {
   cardsData: {
