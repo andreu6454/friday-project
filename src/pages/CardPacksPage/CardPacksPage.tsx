@@ -1,6 +1,7 @@
 import { Search } from '@mui/icons-material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import {
+  Alert,
   Box,
   Button,
   IconButton,
@@ -12,7 +13,8 @@ import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { DoubleSlider } from '../../components';
+import { AlertError, DoubleSlider } from '../../components';
+import { AlertSuccess } from '../../components/AlerSuccess/AlertSucess';
 import { useDebounce } from '../../hooks';
 import { MemoizedActions } from '../../sections/cardpacks-page/Actions';
 import { CustomPagination } from '../../sections/cardpacks-page/CustomPagination';
@@ -41,6 +43,7 @@ const columns: GridColDef[] = [
 export const CardPacksPage = () => {
   const cardData = useAppSelector((state) => state.cards.cardsData);
   const loading = useAppSelector((state) => state.cards.status);
+  const errorMsg = useAppSelector((state) => state.cards.error);
 
   const page = useAppSelector((state) => state.cards.cardsData?.page);
   const pageCount = useAppSelector((state) => state.cards.cardsData?.pageCount);
@@ -207,6 +210,7 @@ export const CardPacksPage = () => {
           rowsPerPageOptions={[10, 20, 50]}
         />
       </Stack>
+      <AlertSuccess msg={'Success'} />
     </Box>
   );
 };

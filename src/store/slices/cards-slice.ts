@@ -8,6 +8,7 @@ interface initialStateType {
   cardsData: ICardsPacks;
   status: RequestStatusType;
   error: null | string;
+  actionStatus: null | string;
 }
 
 const initialState: initialStateType = {
@@ -20,6 +21,7 @@ const initialState: initialStateType = {
     pageCount: 10,
   },
   status: 'idle' as RequestStatusType,
+  actionStatus: null,
   error: null,
 };
 
@@ -37,10 +39,17 @@ const { reducer, actions } = createSlice({
         state.cardsData.pageCount = payload;
       }
     },
+    setActionStatus: (state) => {
+      state.actionStatus = null;
+    },
+    setError: (state) => {
+      state.error = null;
+    },
   },
   extraReducers(builder) {
     builder
       .addCase(fetchCardPacks.fulfilled, (state, { payload }) => {
+        state.error = null;
         state.cardsData = payload;
         state.status = 'succeeded';
       })
@@ -54,6 +63,7 @@ const { reducer, actions } = createSlice({
       /////////////
       .addCase(addNewCardPack.fulfilled, (state, { payload }) => {
         state.cardsData.cardPacks.unshift(payload.newCardsPack);
+        state.actionStatus = 'CardPack successfully added';
         state.status = 'succeeded';
       })
       .addCase(addNewCardPack.pending, (state) => {
@@ -72,6 +82,7 @@ const { reducer, actions } = createSlice({
           state.cardsData.cardPacks.splice(findIndexPack, 1);
         }
         state.status = 'succeeded';
+        state.actionStatus = 'CardPack successfully deleted';
       })
       .addCase(deleteCardPack.pending, (state) => {
         state.status = 'loading';
@@ -83,6 +94,6 @@ const { reducer, actions } = createSlice({
   },
 });
 
-export const { setNewPage, setPageCount } = actions;
+export const { setNewPage, setPageCount, setActionStatus, setError } = actions;
 
 export const cardPacksSlice = reducer;
