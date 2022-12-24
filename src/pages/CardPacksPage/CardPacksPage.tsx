@@ -111,7 +111,10 @@ export const CardPacksPage = () => {
 
   return (
     <Box sx={{ mt: 2 }}>
-      <Typography variant="h5">Pack list</Typography>
+      <Stack justifyContent="space-between" direction="row">
+        <Typography variant="h5">Pack list</Typography>
+        <Button variant="contained">Add new pack</Button>
+      </Stack>
       <Box
         sx={{
           display: 'flex',
