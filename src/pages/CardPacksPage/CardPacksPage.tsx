@@ -114,21 +114,20 @@ export const CardPacksPage = () => {
   };
 
   return (
-    <Box sx={{ mt: 2 }}>
+    <Box marginTop={2}>
       <Stack justifyContent="space-between" direction="row">
         <Typography variant="h5">Pack list</Typography>
         <Button variant="contained" onClick={addNewCardPackHandle}>
           Add new pack
         </Button>
       </Stack>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          mb: '24px',
-          mt: 5,
-          gap: '24px',
-        }}
+      {/* filter row */}
+      <Stack
+        justifyContent="space-between"
+        alignItems="center"
+        direction="row"
+        marginY={5}
+        gap={3}
       >
         <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <Typography variant="body2">Search</Typography>
@@ -151,17 +150,16 @@ export const CardPacksPage = () => {
             }}
           />
         </Box>
+        {/* pack category */}
         <Box
-          sx={{
-            flexGrow: 0.5,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '8px',
-          }}
+          flexGrow={'0.5'}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          gap={1}
         >
           <Typography variant="body2">Show packs cards</Typography>
-          <Box>
+          <Stack direction="row" gap={1}>
             <Button
               variant={!isActiveCategory ? 'contained' : 'outlined'}
               onClick={() => activeCategoryHandle('my')}
@@ -174,16 +172,21 @@ export const CardPacksPage = () => {
             >
               All
             </Button>
-          </Box>
+          </Stack>
         </Box>
+        {/* double slider */}
         <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <Typography variant="body2">Number of cards</Typography>
           <DoubleSlider />
         </Box>
-        <IconButton>
-          <FilterAltIcon />
-        </IconButton>
-      </Box>
+        {/* filter button */}
+        <Box alignSelf="flex-end">
+          <IconButton>
+            <FilterAltIcon />
+          </IconButton>
+        </Box>
+      </Stack>
+      {/* table */}
       <Stack spacing={4} direction="column">
         <DataGrid
           getRowId={(row) => row._id}
