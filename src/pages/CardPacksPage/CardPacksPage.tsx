@@ -17,7 +17,7 @@ import { useDebounce } from '../../hooks';
 import { MemoizedActions } from '../../sections/cardpacks-page/Actions';
 import { CustomPagination } from '../../sections/cardpacks-page/CustomPagination';
 import { ICardPack } from '../../services/api/cards';
-import { fetchCardPacks } from '../../store/middleware/cards';
+import { addNewCardPack, fetchCardPacks } from '../../store/middleware/cards';
 import { setNewPage, setPageCount } from '../../store/slices/cards-slice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { StyledTextField } from '../../styles/styles';
@@ -109,11 +109,17 @@ export const CardPacksPage = () => {
     }
   }, 500);
 
+  const addNewCardPackHandle = () => {
+    dispatch(addNewCardPack());
+  };
+
   return (
     <Box sx={{ mt: 2 }}>
       <Stack justifyContent="space-between" direction="row">
         <Typography variant="h5">Pack list</Typography>
-        <Button variant="contained">Add new pack</Button>
+        <Button variant="contained" onClick={addNewCardPackHandle}>
+          Add new pack
+        </Button>
       </Stack>
       <Box
         sx={{
@@ -180,6 +186,7 @@ export const CardPacksPage = () => {
       </Box>
       <Stack spacing={4} direction="column">
         <DataGrid
+          getRowId={(row) => row._id}
           sx={{ minHeight: '432px' }}
           rowCount={totalCount}
           rows={renderActionsCells}
