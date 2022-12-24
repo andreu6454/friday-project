@@ -3,16 +3,13 @@ import { Avatar, Button } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { useAuth } from '../../hooks';
 import { appRoutes } from '../../routes';
 import { useAppSelector } from '../../store/store';
 
 export const Navbar = () => {
   const nav = useNavigate();
-  const loading = useAppSelector((state) => state.auth.status);
   const name = useAppSelector((state) => state.user.user.name);
   const avatar = useAppSelector((state) => state.user.user.avatar);
   const isAuth = useAppSelector((state) => state.auth.isAuth);
