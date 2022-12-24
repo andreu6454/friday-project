@@ -33,3 +33,16 @@ export const addNewCardPack = createAsyncThunk<
     return handlerAsyncError(error, thunkApi);
   }
 });
+
+export const deleteCardPack = createAsyncThunk<
+  { deletedCardsPack: ICardPack },
+  { id: string },
+  { rejectValue: string }
+>('card/deleteCardPack', async ({ id }, thunkApi) => {
+  try {
+    const response = await cardsAPI.deleteCardPack(id);
+    return response.data;
+  } catch (error) {
+    return handlerAsyncError(error, thunkApi);
+  }
+});
