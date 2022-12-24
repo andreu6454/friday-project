@@ -15,7 +15,7 @@ const Actions = (params: GridRenderCellParams<any, any, any>) => {
       <IconButton>
         <SchoolIcon />
       </IconButton>
-      {userId === params.id && (
+      {userId === params.row.user_id && (
         <>
           <IconButton>
             <ModeEditIcon />

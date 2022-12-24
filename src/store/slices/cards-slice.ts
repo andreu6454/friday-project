@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { ICardPack, ICardsPacks } from './../../services/api/cards';
-import { fetchCardPacks } from './../middleware/cards';
+import { addNewCardPack, fetchCardPacks } from './../middleware/cards';
 import { RequestStatusType } from './types';
 
 interface initialStateType {
@@ -48,6 +48,18 @@ const { reducer, actions } = createSlice({
         state.status = 'loading';
       })
       .addCase(fetchCardPacks.rejected, (state, { payload }) => {
+        state.error = payload as string;
+        state.status = 'failed';
+      })
+      /////////////
+      .addCase(addNewCardPack.fulfilled, (state, { payload }) => {
+        state.cardsData.cardPacks.unshift(payload.newCardsPack);
+        state.status = 'succeeded';
+      })
+      .addCase(addNewCardPack.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(addNewCardPack.rejected, (state, { payload }) => {
         state.error = payload as string;
         state.status = 'failed';
       });

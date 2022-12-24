@@ -42,9 +42,9 @@ export const cardsAPI = {
       },
     });
   },
-  addCardPack(params: IAddCardPack) {
-    return instance.post('/cards/pack', {
-      ...params,
+  addCardPack(params?: IAddCardPack) {
+    return instance.post<{ newCardsPack: ICardPack }>('/cards/pack', {
+      cardsPack: {},
     });
   },
 };
