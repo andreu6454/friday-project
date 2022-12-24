@@ -5,21 +5,28 @@ import { Box, IconButton } from '@mui/material';
 import { GridRenderCellParams } from '@mui/x-data-grid';
 import { memo } from 'react';
 
+import { deleteCardPack } from '../../store/middleware/cards';
+import { useAppDispatch, useAppSelector } from '../../store/store';
+
 const Actions = (params: GridRenderCellParams<any, any, any>) => {
-  //   const userId = useAppSelector((state) => state.auth);
-  const userId = '639e379aea4807000491a3ea';
+  const userId = useAppSelector((state) => state.user.user._id);
+  const dispatch = useAppDispatch();
+
+  const deleteCardPackHandle = (id: string) => {
+    dispatch(deleteCardPack({ id }));
+  };
 
   return (
     <Box>
       <IconButton>
         <SchoolIcon />
       </IconButton>
-      {userId === params.id && (
+      {userId === params.row.user_id && (
         <>
           <IconButton>
             <ModeEditIcon />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={() => deleteCardPackHandle(params.row.id)}>
             <DeleteForeverIcon />
           </IconButton>
         </>

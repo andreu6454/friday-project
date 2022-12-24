@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { ICardPack, ICardsPacks } from './../../services/api/cards';
-import { fetchCardPacks } from './../middleware/cards';
+import { addNewCardPack, deleteCardPack, fetchCardPacks } from './../middleware/cards';
 import { RequestStatusType } from './types';
 
 interface initialStateType {
@@ -48,6 +48,35 @@ const { reducer, actions } = createSlice({
         state.status = 'loading';
       })
       .addCase(fetchCardPacks.rejected, (state, { payload }) => {
+        state.error = payload as string;
+        state.status = 'failed';
+      })
+      /////////////
+      .addCase(addNewCardPack.fulfilled, (state, { payload }) => {
+        state.cardsData.cardPacks.unshift(payload.newCardsPack);
+        state.status = 'succeeded';
+      })
+      .addCase(addNewCardPack.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(addNewCardPack.rejected, (state, { payload }) => {
+        state.error = payload as string;
+        state.status = 'failed';
+      })
+      /////////////
+      .addCase(deleteCardPack.fulfilled, (state, { payload }) => {
+        const findIndexPack = state.cardsData.cardPacks.findIndex(
+          (item) => item._id === payload.deletedCardsPack._id,
+        );
+        if (findIndexPack > -1) {
+          state.cardsData.cardPacks.splice(findIndexPack, 1);
+        }
+        state.status = 'succeeded';
+      })
+      .addCase(deleteCardPack.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(deleteCardPack.rejected, (state, { payload }) => {
         state.error = payload as string;
         state.status = 'failed';
       });
