@@ -1,4 +1,4 @@
-import { AddAPhoto, ArrowBack } from '@mui/icons-material';
+import { AddAPhoto } from '@mui/icons-material';
 import {
   Avatar,
   Badge,
@@ -10,7 +10,6 @@ import {
 } from '@mui/material';
 import { Container } from '@mui/system';
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 
 import { BackLinkButton } from '../../components';
 import { EditableSpan } from '../../components/EditableSpan/EditableSpan';
@@ -23,10 +22,8 @@ export const ProfilePage = () => {
   const dispatch = useAppDispatch();
   const status = useAppSelector((state) => state.auth.status);
   const { user } = useAppSelector((state) => state.user);
-  const nav = useNavigate();
   const logOutHandle = () => {
     dispatch(logOutUser());
-    nav(appRoutes.LOGIN);
   };
   const changeNameHandle = (name: string) => {
     dispatch(changeUserName({ name }));
