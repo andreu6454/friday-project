@@ -71,7 +71,7 @@ export const LoginPage = () => {
   const pendingStatus = loading === 'loading';
 
   if (isAuth) {
-    return <Navigate to={appRoutes.CARDPACKS} />;
+    return <Navigate to={appRoutes.PACKS} />;
   }
 
   if (pendingStatus) {

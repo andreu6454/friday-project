@@ -1,48 +1,54 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { ICardParams, ICardsResponse } from '../../services/api/cards';
 import { handlerAsyncError } from '../../utils';
-import {
-  cardsAPI,
-  ICardPack,
-  ICardsPacks,
-  IGetCardsPacksParams,
-} from './../../services/api/cards';
+import { cardsAPI, IAddNewCardRequest, ICard } from './../../services/api/cards';
 
-export const fetchCardPacks = createAsyncThunk<
-  ICardsPacks,
-  IGetCardsPacksParams,
+export const fetchCards = createAsyncThunk<
+  ICardsResponse,
+  ICardParams,
   { rejectValue: string }
->('card/packs', async (params, thunkApi) => {
+>('card/fetchCards', async (params, thunkApi) => {
   try {
-    const response = await cardsAPI.getCardsPacks({ ...params });
+    const response = await cardsAPI.getCards({ ...params });
     return response.data;
   } catch (error) {
     return handlerAsyncError(error, thunkApi);
   }
 });
 
-export const addNewCardPack = createAsyncThunk<
-  { newCardsPack: ICardPack },
-  void,
+export const addNewCard = createAsyncThunk<
+  { newCard: ICard },
+  IAddNewCardRequest,
   { rejectValue: string }
->('card/addNewPack', async (_, thunkApi) => {
+>('card/addNewCard', async ({ cardsPack_id }, thunkApi) => {
   try {
-    const response = await cardsAPI.addCardPack();
+    const response = await cardsAPI.addNewCard({
+      cardsPack_id,
+    });
     return response.data;
   } catch (error) {
     return handlerAsyncError(error, thunkApi);
   }
 });
 
-export const deleteCardPack = createAsyncThunk<
-  { deletedCardsPack: ICardPack },
-  { id: string },
+export const deleteCard = createAsyncThunk<
+  { deletedCard: ICard },
+  IAddNewCardRequest,
   { rejectValue: string }
->('card/deleteCardPack', async ({ id }, thunkApi) => {
+>('card/deleteCard', async ({ cardsPack_id }, thunkApi) => {
   try {
-    const response = await cardsAPI.deleteCardPack(id);
+    const response = await cardsAPI.addNewCard({
+      cardsPack_id,
+    });
     return response.data;
   } catch (error) {
     return handlerAsyncError(error, thunkApi);
   }
 });
+
+export const asyncCardActions = {
+  deleteCard,
+  addNewCard,
+  fetchCards,
+};

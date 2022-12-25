@@ -12,8 +12,8 @@ const StyledTextField = styled(TextField)`
 `;
 
 export const DoubleSlider = () => {
-  const minCount = useAppSelector((state) => state.cards.cardsData.minCardsCount);
-  const maxCount = useAppSelector((state) => state.cards.cardsData.maxCardsCount);
+  const minCount = useAppSelector((state) => state.packs.cardsData.minCardsCount);
+  const maxCount = useAppSelector((state) => state.packs.cardsData.maxCardsCount);
 
   const [value, setValue] = React.useState<number[]>([minCount, maxCount]);
   const [searchParams, setSearchParams] = useSearchParams();
