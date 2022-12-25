@@ -7,6 +7,7 @@ import { packActions } from './../store/slices/packs-slice';
 import { useAppSelector } from './../store/store';
 import { formateDate } from './../utils/formateDate';
 import { useActions } from './useActions';
+
 export const usePacksTableData = () => {
   const [search, setSearch] = useSearchParams();
 

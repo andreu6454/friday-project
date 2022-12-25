@@ -7,7 +7,7 @@ import { ReactPortal } from '../Portal/Portal';
 
 export const AlertSuccess = ({ msg = '' }: { msg: string | null }) => {
   const dispatch = useAppDispatch();
-  const actionStatus = useAppSelector((state) => state.cards.actionStatus);
+  const actionStatus = useAppSelector((state) => state.packs.actionStatus);
 
   const { setActionStatus } = packActions;
 

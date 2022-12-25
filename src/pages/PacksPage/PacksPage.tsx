@@ -12,8 +12,7 @@ import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 
 import { DoubleSlider } from '../../components';
 import { AlertSuccess } from '../../components/AlerSuccess/AlertSucess';
-import { useDebounce } from '../../hooks';
-import { usePacksTableData } from '../../hooks/usePacksTableData';
+import { useDebounce, usePacksTableData } from '../../hooks';
 import { MemoizedActions } from '../../sections/cardpacks-page/Actions';
 import { CustomPagination } from '../../sections/cardpacks-page/CustomPagination';
 import { ICardPack } from '../../services/api/packs';
@@ -49,8 +48,8 @@ export const CardPacksPage = () => {
     setPageCount,
   } = usePacksTableData();
 
-  const activeCategoryHandle = (cat: string) => {
-    search.set('category', cat);
+  const activeCategoryHandle = (newCategory: string) => {
+    search.set('category', newCategory);
     setSearch(search);
   };
 

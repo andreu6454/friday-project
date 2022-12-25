@@ -2,7 +2,7 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 import { BackLinkButton } from '../../components';
-import { useCardsTableData } from '../../hooks/useCardsTableData';
+import { useCardsTableData } from '../../hooks';
 import { appRoutes } from '../../routes';
 import { CustomPagination } from '../../sections/cardpacks-page/CustomPagination';
 
@@ -23,6 +23,7 @@ export const CardsPage = () => {
     setNewPage,
     setPageCount,
     cards,
+    status,
   } = useCardsTableData();
 
   return (
@@ -32,7 +33,7 @@ export const CardsPage = () => {
         <Typography variant="h5" alignSelf="flex-start" textAlign="left">
           Name Pack
         </Typography>
-        {!cards ? (
+        {!cards.length && status === 'succeeded' ? (
           <Stack alignItems="center" gap={3} marginTop={10}>
             <Typography variant="body2">
               This pack is empty. Click add new card to fill this pack

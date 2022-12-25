@@ -43,5 +43,6 @@ export const useCardsTableData = () => {
     setNewPage,
     setPageCount,
     cards,
+    status,
   };
 };

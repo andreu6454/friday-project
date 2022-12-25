@@ -7,6 +7,7 @@ import {
   packsAPI,
 } from '../../services/api/packs';
 import { handlerAsyncError } from '../../utils';
+import { cardActions } from '../slices';
 
 export const fetchPacks = createAsyncThunk<
   ICardsPacks,
@@ -15,6 +16,8 @@ export const fetchPacks = createAsyncThunk<
 >('card/packs', async (params, thunkApi) => {
   try {
     const response = await packsAPI.getCardsPacks({ ...params });
+    console.log('we in');
+    thunkApi.dispatch(cardActions.setLoadingStatus());
     return response.data;
   } catch (error) {
     return handlerAsyncError(error, thunkApi);

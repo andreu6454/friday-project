@@ -6,15 +6,20 @@ import { addNewCard } from './../middleware/cards';
 import { RequestStatusType } from './types';
 
 type initialStateType = {
-  cardsData: ICardsResponse;
+  cardsData: Pick<ICardsResponse, 'cards' | 'page' | 'pageCount' | 'cardsTotalCount'>;
   status: RequestStatusType;
   error: null | string;
   actionStatus: null | string;
 };
 
 const initialState: initialStateType = {
-  cardsData: {} as ICardsResponse,
-  status: 'idle' as RequestStatusType,
+  cardsData: {
+    cards: [],
+    page: 0,
+    pageCount: 10,
+    cardsTotalCount: 0,
+  },
+  status: 'loading' as RequestStatusType,
   actionStatus: null,
   error: null,
 };
@@ -32,6 +37,9 @@ const { reducer, actions } = createSlice({
       if (state.cardsData) {
         state.cardsData.pageCount = payload;
       }
+    },
+    setLoadingStatus: (state) => {
+      state.status = 'idle';
     },
     setActionStatus: (state) => {
       state.actionStatus = null;
