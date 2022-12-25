@@ -4,21 +4,28 @@ import SchoolIcon from '@mui/icons-material/School';
 import { Box, IconButton } from '@mui/material';
 import { GridRenderCellParams } from '@mui/x-data-grid';
 import { memo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import { appRoutes } from '../../routes';
 import { deleteCardPack } from '../../store/middleware/cards';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 
 const Actions = (params: GridRenderCellParams<any, any, any>) => {
   const userId = useAppSelector((state) => state.user.user._id);
   const dispatch = useAppDispatch();
+  const nav = useNavigate();
 
   const deleteCardPackHandle = (id: string) => {
     dispatch(deleteCardPack({ id }));
   };
 
+  const navToCardHandle = (packId: string) => {
+    nav(appRoutes.CARDS + `/${packId}`);
+  };
+
   return (
     <Box>
-      <IconButton>
+      <IconButton onClick={() => navToCardHandle(params.row._id)}>
         <SchoolIcon />
       </IconButton>
       {userId === params.row.user_id && (

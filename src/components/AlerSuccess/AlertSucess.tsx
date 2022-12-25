@@ -1,7 +1,6 @@
 import { Alert, Snackbar } from '@mui/material';
 import React from 'react';
 
-import { setErrorMsg } from '../../store/slices/auth-slice';
 import { setActionStatus } from '../../store/slices/cards-slice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { ReactPortal } from '../Portal/Portal';

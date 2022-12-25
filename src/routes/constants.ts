@@ -1,7 +1,8 @@
 export const appRoutes = {
   LOGIN: '/login',
   DEFAULT: '/',
-  CARDPACKS: '/cardpacks',
+  PACKS: '/packs',
+  CARDS: '/cards',
   PROFILE: '/profile',
   REGISTER: '/register',
   NOTFOUND: '*',

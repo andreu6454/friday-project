@@ -60,7 +60,7 @@ export const ProfilePage = () => {
   return (
     <Box mt={2}>
       <Link
-        to={appRoutes.CARDPACKS}
+        to={appRoutes.PACKS}
         style={{
           gap: '8px',
           color: 'black',
