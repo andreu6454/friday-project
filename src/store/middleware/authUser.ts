@@ -2,13 +2,18 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import {
   authAPI,
+  GetForgotPasswordDataType,
   GetLoginType,
   getRegisterType,
+  GetSetNewPasswordDataType,
+  ResponseForgotPasswordDataType,
   ResponseLoginDataType,
   ResponseLogOutDataType,
   ResponseRegisterDataType,
+  ResponseSetNewPasswordDataType,
 } from '../../services/api/auth';
 import { handlerAsyncError } from '../../utils/error-utils';
+import { setIsForgotEmail } from '../slices';
 
 export const loginUser = createAsyncThunk<
   ResponseLoginDataType,
@@ -55,6 +60,33 @@ export const logOutUser = createAsyncThunk<
 >('user/logout', async (_, thunkApi) => {
   try {
     const response = await authAPI.logOut();
+    return response.data;
+  } catch (error) {
+    return handlerAsyncError(error, thunkApi);
+  }
+});
+
+export const forgotPassword = createAsyncThunk<
+  ResponseForgotPasswordDataType,
+  GetForgotPasswordDataType,
+  { rejectValue: string }
+>('/auth/forgot', async (params, thunkApi) => {
+  try {
+    const response = await authAPI.forgot(params);
+    await thunkApi.dispatch(setIsForgotEmail(params.email));
+    return response.data;
+  } catch (error) {
+    return handlerAsyncError(error, thunkApi);
+  }
+});
+
+export const setNewPassword = createAsyncThunk<
+  ResponseSetNewPasswordDataType,
+  GetSetNewPasswordDataType,
+  { rejectValue: string }
+>('/auth/set-new-password', async (params, thunkApi) => {
+  try {
+    const response = await authAPI.newPassword(params);
     return response.data;
   } catch (error) {
     return handlerAsyncError(error, thunkApi);

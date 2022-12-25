@@ -9,11 +9,14 @@ import { Layout } from './components/Layout/Layout';
 import {
   CardPacksPage,
   CardsPage,
+  ForgotPasswordPage,
   LoginPage,
   NotFoundPage,
   ProfilePage,
   RegisterPage,
+  SetNewPasswordPage,
 } from './pages';
+import CheckEmailPage from './pages/ForgotPassword/CheckEmailPage/CheckEmailPage';
 import { appRoutes, PrivateRoutes } from './routes';
 
 export const routes = createHashRouter(
@@ -25,6 +28,9 @@ export const routes = createHashRouter(
         <Route path={appRoutes.CARDS + '/:id'} element={<CardsPage />} />
       </Route>
       <Route path={appRoutes.LOGIN} element={<LoginPage />} />
+      <Route path={appRoutes.FORGOT} element={<ForgotPasswordPage />} />
+      <Route path={appRoutes.CHECKEMAIL} element={<CheckEmailPage />} />
+      <Route path={appRoutes.SETPASSWORD} element={<SetNewPasswordPage />} />
       <Route path={appRoutes.REGISTER} element={<RegisterPage />} />
       <Route path={''} element={<Navigate to={appRoutes.PACKS} />} />
       <Route path={appRoutes.NOTFOUND} element={<NotFoundPage />} />
