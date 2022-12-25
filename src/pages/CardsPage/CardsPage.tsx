@@ -1,4 +1,11 @@
-import { Box, Button, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 import { BackLinkButton } from '../../components';
@@ -26,6 +33,23 @@ export const CardsPage = () => {
     status,
   } = useCardsTableData();
 
+  if (status === 'loading') {
+    return (
+      <Container>
+        <Box
+          sx={{
+            display: 'flex',
+            width: '100%',
+            justifyContent: 'center',
+            mt: '10%',
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      </Container>
+    );
+  }
+
   return (
     <Box marginTop={3}>
       <BackLinkButton link={appRoutes.PACKS}>Back To Pack List</BackLinkButton>
@@ -33,7 +57,7 @@ export const CardsPage = () => {
         <Typography variant="h5" alignSelf="flex-start" textAlign="left">
           Name Pack
         </Typography>
-        {!cards.length && status === 'succeeded' ? (
+        {!cards.length ? (
           <Stack alignItems="center" gap={3} marginTop={10}>
             <Typography variant="body2">
               This pack is empty. Click add new card to fill this pack
