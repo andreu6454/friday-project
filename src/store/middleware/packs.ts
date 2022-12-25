@@ -46,3 +46,9 @@ export const deletePack = createAsyncThunk<
     return handlerAsyncError(error, thunkApi);
   }
 });
+
+export const asyncPackActions = {
+  fetchPacks,
+  addNewPack,
+  deletePack,
+};

@@ -56,7 +56,7 @@ export const cardsAPI = {
     });
   },
   addNewCard(cardData: IAddNewCardRequest) {
-    return instance.post<{ newCard: ICardsResponse }>('/cards/card', {
+    return instance.post<{ newCard: ICard }>('/cards/card', {
       ...cardData,
     });
   },

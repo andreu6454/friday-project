@@ -1,26 +1,32 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { deleteCard, fetchCards } from '../middleware/cards';
-import { ICard, ICardsResponse } from './../../services/api/cards';
-import { addNewCard } from './../middleware/cards';
+import { ICardPack, ICardsPacks } from '../../services/api/packs';
+import { addNewPack, deletePack, fetchPacks } from '../middleware/packs';
 import { RequestStatusType } from './types';
 
-type initialStateType = {
-  cardsData: ICardsResponse;
+interface initialStateType {
+  cardsData: ICardsPacks;
   status: RequestStatusType;
   error: null | string;
   actionStatus: null | string;
-};
+}
 
 const initialState: initialStateType = {
-  cardsData: {} as ICardsResponse,
+  cardsData: {
+    cardPacks: [] as ICardPack[],
+    cardPacksTotalCount: 100,
+    maxCardsCount: 100,
+    minCardsCount: 0,
+    page: 1,
+    pageCount: 10,
+  },
   status: 'idle' as RequestStatusType,
   actionStatus: null,
   error: null,
 };
 
 const { reducer, actions } = createSlice({
-  name: 'cardsSlice',
+  name: 'packsSlice',
   initialState: initialState,
   reducers: {
     setNewPage: (state, { payload }) => {
@@ -42,54 +48,52 @@ const { reducer, actions } = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchCards.fulfilled, (state, { payload }) => {
-        state.cardsData = payload;
+      .addCase(fetchPacks.fulfilled, (state, { payload }) => {
         state.error = null;
+        state.cardsData = payload;
         state.status = 'succeeded';
       })
-      .addCase(fetchCards.pending, (state) => {
+      .addCase(fetchPacks.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchCards.rejected, (state, { payload }) => {
+      .addCase(fetchPacks.rejected, (state, { payload }) => {
         state.error = payload as string;
         state.status = 'failed';
       })
       /////////////
-      .addCase(addNewCard.fulfilled, (state, { payload }) => {
-        state.cardsData.cards.unshift(payload.newCard);
-        state.actionStatus = 'Card successfully added';
+      .addCase(addNewPack.fulfilled, (state, { payload }) => {
+        state.cardsData.cardPacks.unshift(payload.newCardsPack);
+        state.actionStatus = 'CardPack successfully added';
         state.status = 'succeeded';
       })
-      .addCase(addNewCard.pending, (state) => {
+      .addCase(addNewPack.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(addNewCard.rejected, (state, { payload }) => {
+      .addCase(addNewPack.rejected, (state, { payload }) => {
         state.error = payload as string;
         state.status = 'failed';
       })
       /////////////
-      .addCase(deleteCard.fulfilled, (state, { payload }) => {
-        const findIndexCard = state.cardsData.cards.findIndex(
-          (item) => item.cardsPack_id === payload.deletedCard.cardsPack_id,
+      .addCase(deletePack.fulfilled, (state, { payload }) => {
+        const findIndexPack = state.cardsData.cardPacks.findIndex(
+          (item) => item._id === payload.deletedCardsPack._id,
         );
-        if (findIndexCard > -1) {
-          state.cardsData.cards.splice(findIndexCard, 1);
+        if (findIndexPack > -1) {
+          state.cardsData.cardPacks.splice(findIndexPack, 1);
         }
         state.status = 'succeeded';
         state.actionStatus = 'CardPack successfully deleted';
       })
-      .addCase(deleteCard.pending, (state) => {
+      .addCase(deletePack.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(deleteCard.rejected, (state, { payload }) => {
+      .addCase(deletePack.rejected, (state, { payload }) => {
         state.error = payload as string;
         state.status = 'failed';
       });
   },
 });
 
-export const cardActions = {
-  ...actions,
-};
+export const packActions = { ...actions };
 
-export const cardsSlice = reducer;
+export const packsSlice = reducer;

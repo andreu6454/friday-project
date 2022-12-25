@@ -26,13 +26,16 @@
         "react",
         "@typescript-eslint",
         "prettier",
-        "simple-import-sort"
+        "simple-import-sort",
+        "react-hooks"
     ],
     "rules": {
         "prettier/prettier": "error",
         "arrow-body-style": "off",
         "prefer-arrow-callback": "off",
         "simple-import-sort/imports": "error",
-        "simple-import-sort/exports": "error"
+        "simple-import-sort/exports": "error",
+        "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+        "react-hooks/exhaustive-deps": "warn" // Checks effect dependencies
     }
 }

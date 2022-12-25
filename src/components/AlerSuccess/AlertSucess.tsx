@@ -1,13 +1,15 @@
 import { Alert, Snackbar } from '@mui/material';
 import React from 'react';
 
-import { setActionStatus } from '../../store/slices/cards-slice';
+import { packActions } from '../../store/slices';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { ReactPortal } from '../Portal/Portal';
 
 export const AlertSuccess = ({ msg = '' }: { msg: string | null }) => {
   const dispatch = useAppDispatch();
   const actionStatus = useAppSelector((state) => state.cards.actionStatus);
+
+  const { setActionStatus } = packActions;
 
   const [state, setState] = React.useState<{
     open: boolean;
