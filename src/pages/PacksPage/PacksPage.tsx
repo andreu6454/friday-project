@@ -1,7 +1,6 @@
 import { Search } from '@mui/icons-material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import {
-  Alert,
   Box,
   Button,
   IconButton,
@@ -10,20 +9,15 @@ import {
   Typography,
 } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
-import { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
 
 import { DoubleSlider } from '../../components';
 import { AlertSuccess } from '../../components/AlerSuccess/AlertSucess';
 import { useDebounce } from '../../hooks';
+import { usePacksTableData } from '../../hooks/usePacksTableData';
 import { MemoizedActions } from '../../sections/cardpacks-page/Actions';
 import { CustomPagination } from '../../sections/cardpacks-page/CustomPagination';
 import { ICardPack } from '../../services/api/packs';
-import { addNewPack, fetchPacks } from '../../store/middleware/packs';
-import { setNewPage, setPageCount } from '../../store/slices/cards-slice';
-import { useAppDispatch, useAppSelector } from '../../store/store';
 import { StyledTextField } from '../../styles/styles';
-import { formateDate } from '../../utils/formateDate';
 
 const columns: GridColDef[] = [
   { field: 'name', headerName: 'Name', flex: 1.5 },
@@ -41,59 +35,24 @@ const columns: GridColDef[] = [
 ];
 
 export const CardPacksPage = () => {
-  const cardData = useAppSelector((state) => state.cards.cardsData);
-  const loading = useAppSelector((state) => state.cards.status);
-
-  const page = useAppSelector((state) => state.cards.cardsData?.page);
-  const pageCount = useAppSelector((state) => state.cards.cardsData?.pageCount);
-  const totalCount = useAppSelector(
-    (state) => state.cards.cardsData?.cardPacksTotalCount,
-  );
-
-  const [search, setSearch] = useSearchParams();
-  const dispatch = useAppDispatch();
-
-  const category = search.get('category');
-  const packName = search.get('search_term') || '';
-  const min = search.get('min') || '';
-  const max = search.get('max') || '';
+  const {
+    search,
+    setSearch,
+    addNewPack,
+    isActiveCategory,
+    page,
+    totalCount,
+    renderActionsCells,
+    pageCount,
+    setNewPage,
+    loadingStatus,
+    setPageCount,
+  } = usePacksTableData();
 
   const activeCategoryHandle = (cat: string) => {
     search.set('category', cat);
     setSearch(search);
   };
-
-  const userId = useAppSelector((state) => state.user.user._id);
-  const fetchActiveCategory = category === 'my' ? userId : '';
-  const loadingStatus = loading === 'loading';
-  const isActiveCategory = category === 'all';
-
-  useEffect(() => {
-    if (!category) {
-      search.set('category', 'all');
-      setSearch(search);
-      return;
-    }
-
-    dispatch(
-      fetchPacks({
-        page: page,
-        pageCount: pageCount,
-        user_id: fetchActiveCategory,
-        packName: packName,
-        max: +max,
-        min: +min,
-      }),
-    );
-  }, [search, pageCount, page]);
-
-  const renderActionsCells = (cardData ? cardData.cardPacks : []).map(
-    (el: ICardPack) => ({
-      ...el,
-      id: el._id,
-      updated: formateDate(el.updated),
-    }),
-  );
 
   const onSearchChange = useDebounce((e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
@@ -112,7 +71,7 @@ export const CardPacksPage = () => {
   }, 500);
 
   const addNewCardPackHandle = () => {
-    dispatch(addNewPack());
+    addNewPack();
   };
 
   return (
