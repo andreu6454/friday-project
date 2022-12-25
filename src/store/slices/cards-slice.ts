@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { ICardPack, ICardsPacks } from './../../services/api/cards';
-import { addNewCardPack, deleteCardPack, fetchCardPacks } from './../middleware/cards';
+import { ICardPack, ICardsPacks } from '../../services/api/packs';
+import { addNewPack, deletePack, fetchPacks } from '../middleware/packs';
 import { RequestStatusType } from './types';
 
 interface initialStateType {
@@ -48,33 +48,33 @@ const { reducer, actions } = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchCardPacks.fulfilled, (state, { payload }) => {
+      .addCase(fetchPacks.fulfilled, (state, { payload }) => {
         state.error = null;
         state.cardsData = payload;
         state.status = 'succeeded';
       })
-      .addCase(fetchCardPacks.pending, (state) => {
+      .addCase(fetchPacks.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchCardPacks.rejected, (state, { payload }) => {
+      .addCase(fetchPacks.rejected, (state, { payload }) => {
         state.error = payload as string;
         state.status = 'failed';
       })
       /////////////
-      .addCase(addNewCardPack.fulfilled, (state, { payload }) => {
+      .addCase(addNewPack.fulfilled, (state, { payload }) => {
         state.cardsData.cardPacks.unshift(payload.newCardsPack);
         state.actionStatus = 'CardPack successfully added';
         state.status = 'succeeded';
       })
-      .addCase(addNewCardPack.pending, (state) => {
+      .addCase(addNewPack.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(addNewCardPack.rejected, (state, { payload }) => {
+      .addCase(addNewPack.rejected, (state, { payload }) => {
         state.error = payload as string;
         state.status = 'failed';
       })
       /////////////
-      .addCase(deleteCardPack.fulfilled, (state, { payload }) => {
+      .addCase(deletePack.fulfilled, (state, { payload }) => {
         const findIndexPack = state.cardsData.cardPacks.findIndex(
           (item) => item._id === payload.deletedCardsPack._id,
         );
@@ -84,10 +84,10 @@ const { reducer, actions } = createSlice({
         state.status = 'succeeded';
         state.actionStatus = 'CardPack successfully deleted';
       })
-      .addCase(deleteCardPack.pending, (state) => {
+      .addCase(deletePack.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(deleteCardPack.rejected, (state, { payload }) => {
+      .addCase(deletePack.rejected, (state, { payload }) => {
         state.error = payload as string;
         state.status = 'failed';
       });

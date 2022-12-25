@@ -1,46 +1,46 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { handlerAsyncError } from '../../utils';
 import {
-  cardsAPI,
   ICardPack,
   ICardsPacks,
   IGetCardsPacksParams,
-} from './../../services/api/cards';
+  packsAPI,
+} from '../../services/api/packs';
+import { handlerAsyncError } from '../../utils';
 
-export const fetchCardPacks = createAsyncThunk<
+export const fetchPacks = createAsyncThunk<
   ICardsPacks,
   IGetCardsPacksParams,
   { rejectValue: string }
 >('card/packs', async (params, thunkApi) => {
   try {
-    const response = await cardsAPI.getCardsPacks({ ...params });
+    const response = await packsAPI.getCardsPacks({ ...params });
     return response.data;
   } catch (error) {
     return handlerAsyncError(error, thunkApi);
   }
 });
 
-export const addNewCardPack = createAsyncThunk<
+export const addNewPack = createAsyncThunk<
   { newCardsPack: ICardPack },
   void,
   { rejectValue: string }
 >('card/addNewPack', async (_, thunkApi) => {
   try {
-    const response = await cardsAPI.addCardPack();
+    const response = await packsAPI.addCardPack();
     return response.data;
   } catch (error) {
     return handlerAsyncError(error, thunkApi);
   }
 });
 
-export const deleteCardPack = createAsyncThunk<
+export const deletePack = createAsyncThunk<
   { deletedCardsPack: ICardPack },
   { id: string },
   { rejectValue: string }
 >('card/deleteCardPack', async ({ id }, thunkApi) => {
   try {
-    const response = await cardsAPI.deleteCardPack(id);
+    const response = await packsAPI.deletePack(id);
     return response.data;
   } catch (error) {
     return handlerAsyncError(error, thunkApi);

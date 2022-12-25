@@ -1,4 +1,4 @@
-import { instance } from './../config';
+import { instance } from '../config';
 
 export interface ICardPack {
   _id: string;
@@ -34,7 +34,7 @@ export interface IAddCardPack {
   private?: false;
 }
 
-export const cardsAPI = {
+export const packsAPI = {
   getCardsPacks(params: IGetCardsPacksParams) {
     return instance.get('/cards/pack', {
       params: {
@@ -47,7 +47,7 @@ export const cardsAPI = {
       cardsPack: {},
     });
   },
-  deleteCardPack(cardPackId: string) {
+  deletePack(cardPackId: string) {
     return instance.delete('/cards/pack', { params: { id: cardPackId } });
   },
 };

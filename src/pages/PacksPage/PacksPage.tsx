@@ -13,13 +13,13 @@ import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { AlertError, DoubleSlider } from '../../components';
+import { DoubleSlider } from '../../components';
 import { AlertSuccess } from '../../components/AlerSuccess/AlertSucess';
 import { useDebounce } from '../../hooks';
 import { MemoizedActions } from '../../sections/cardpacks-page/Actions';
 import { CustomPagination } from '../../sections/cardpacks-page/CustomPagination';
-import { ICardPack } from '../../services/api/cards';
-import { addNewCardPack, fetchCardPacks } from '../../store/middleware/cards';
+import { ICardPack } from '../../services/api/packs';
+import { addNewPack, fetchPacks } from '../../store/middleware/packs';
 import { setNewPage, setPageCount } from '../../store/slices/cards-slice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { StyledTextField } from '../../styles/styles';
@@ -43,7 +43,6 @@ const columns: GridColDef[] = [
 export const CardPacksPage = () => {
   const cardData = useAppSelector((state) => state.cards.cardsData);
   const loading = useAppSelector((state) => state.cards.status);
-  const errorMsg = useAppSelector((state) => state.cards.error);
 
   const page = useAppSelector((state) => state.cards.cardsData?.page);
   const pageCount = useAppSelector((state) => state.cards.cardsData?.pageCount);
@@ -77,7 +76,7 @@ export const CardPacksPage = () => {
     }
 
     dispatch(
-      fetchCardPacks({
+      fetchPacks({
         page: page,
         pageCount: pageCount,
         user_id: fetchActiveCategory,
@@ -113,7 +112,7 @@ export const CardPacksPage = () => {
   }, 500);
 
   const addNewCardPackHandle = () => {
-    dispatch(addNewCardPack());
+    dispatch(addNewPack());
   };
 
   return (

@@ -7,7 +7,7 @@ import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { appRoutes } from '../../routes';
-import { deleteCardPack } from '../../store/middleware/cards';
+import { deletePack } from '../../store/middleware/packs';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 
 const Actions = (params: GridRenderCellParams<any, any, any>) => {
@@ -16,7 +16,7 @@ const Actions = (params: GridRenderCellParams<any, any, any>) => {
   const nav = useNavigate();
 
   const deleteCardPackHandle = (id: string) => {
-    dispatch(deleteCardPack({ id }));
+    dispatch(deletePack({ id }));
   };
 
   const navToCardHandle = (packId: string) => {
