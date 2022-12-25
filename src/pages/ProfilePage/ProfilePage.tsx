@@ -12,6 +12,7 @@ import { Container } from '@mui/system';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { BackLinkButton } from '../../components';
 import { EditableSpan } from '../../components/EditableSpan/EditableSpan';
 import { appRoutes } from '../../routes';
 import { logOutUser } from '../../store/middleware/authUser';
@@ -59,19 +60,7 @@ export const ProfilePage = () => {
 
   return (
     <Box mt={2}>
-      <Link
-        to={appRoutes.PACKS}
-        style={{
-          gap: '8px',
-          color: 'black',
-          textDecoration: 'none',
-          alignItems: 'center',
-          display: 'flex',
-        }}
-      >
-        <ArrowBack />
-        <Typography variant={'body1'}>Back To Pack List</Typography>
-      </Link>
+      <BackLinkButton link={appRoutes.PACKS} />
       <Card sx={{ width: '413px', m: '40px auto', py: 3 }}>
         <Typography variant={'h5'} fontWeight={'Bold'} textAlign={'center'}>
           Personal Information
