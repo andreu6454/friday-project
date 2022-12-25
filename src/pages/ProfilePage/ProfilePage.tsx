@@ -60,7 +60,7 @@ export const ProfilePage = () => {
 
   return (
     <Box mt={2}>
-      <BackLinkButton link={appRoutes.PACKS} />
+      <BackLinkButton link={appRoutes.PACKS}>Back To Pack List</BackLinkButton>
       <Card sx={{ width: '413px', m: '40px auto', py: 3 }}>
         <Typography variant={'h5'} fontWeight={'Bold'} textAlign={'center'}>
           Personal Information

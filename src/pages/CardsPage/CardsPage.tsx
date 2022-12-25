@@ -1,10 +1,13 @@
 import { Box, Button, Stack, Typography } from '@mui/material';
 import React from 'react';
 
+import { BackLinkButton } from '../../components';
+import { appRoutes } from '../../routes';
+
 export const CardsPage = () => {
   return (
     <Box marginTop={3}>
-      <Button variant="contained">Back to PackList </Button>
+      <BackLinkButton link={appRoutes.PACKS}>Back To Pack List</BackLinkButton>
       <Box display="flex" flexDirection="column" alignItems="center" marginY={3}>
         <Typography variant="h5" alignSelf="flex-start" textAlign="left">
           Name Pack
