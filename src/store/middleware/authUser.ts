@@ -2,13 +2,17 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import {
   authAPI,
+  GetForgotPasswordDataType,
   GetLoginType,
   getRegisterType,
+  GetSetNewPasswordDataType,
   ResponseLoginDataType,
   ResponseLogOutDataType,
+  ResponseNewPassword,
   ResponseRegisterDataType,
 } from '../../services/api/auth';
 import { handlerAsyncError } from '../../utils/error-utils';
+import { setIsForgotEmail } from '../slices';
 
 export const loginUser = createAsyncThunk<
   ResponseLoginDataType,
@@ -60,3 +64,39 @@ export const logOutUser = createAsyncThunk<
     return handlerAsyncError(error, thunkApi);
   }
 });
+
+export const forgotPassword = createAsyncThunk<
+  ResponseNewPassword,
+  GetForgotPasswordDataType,
+  { rejectValue: string }
+>('/auth/forgot', async (params, thunkApi) => {
+  try {
+    const response = await authAPI.forgot(params);
+    await thunkApi.dispatch(setIsForgotEmail(params.email));
+    return response.data;
+  } catch (error) {
+    return handlerAsyncError(error, thunkApi);
+  }
+});
+
+export const setNewPassword = createAsyncThunk<
+  ResponseNewPassword,
+  GetSetNewPasswordDataType,
+  { rejectValue: string }
+>('/auth/set-new-password', async (params, thunkApi) => {
+  try {
+    const response = await authAPI.newPassword(params);
+    return response.data;
+  } catch (error) {
+    return handlerAsyncError(error, thunkApi);
+  }
+});
+
+export const authAsyncActions = {
+  setNewPassword,
+  forgotPassword,
+  logOutUser,
+  loginUser,
+  registerUser,
+  isAuthUser,
+};

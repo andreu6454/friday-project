@@ -1,4 +1,7 @@
 export * from './CardsPage/CardsPage';
+export * from './ForgotPassword/CheckEmailPage/CheckEmailPage';
+export * from './ForgotPassword/ForgotPasswordPage/ForgotPasswordPage';
+export * from './ForgotPassword/SetNewPasswordPage/SetNewPasswordPage';
 export * from './LoginPage/LoginPage';
 export * from './NotFoundPage/NotFoundPage';
 export * from './PacksPage/PacksPage';
