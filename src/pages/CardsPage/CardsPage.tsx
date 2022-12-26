@@ -9,6 +9,7 @@ import {
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 import { BackLinkButton } from '../../components';
+import { TransitionsModal } from '../../components/Modal/Modal';
 import { useCardsTableData } from '../../hooks';
 import { appRoutes } from '../../routes';
 import { CustomPagination } from '../../sections/cardpacks-page/CustomPagination';
@@ -88,6 +89,7 @@ export const CardsPage = () => {
           </Stack>
         )}
       </Box>
+      <TransitionsModal />
     </Box>
   );
 };
