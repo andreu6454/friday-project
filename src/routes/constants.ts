@@ -7,6 +7,6 @@ export const appRoutes = {
   REGISTER: '/register',
   NOTFOUND: '*',
   FORGOT: '/forgot',
-  SETPASSWORD: '/set-new-password/*',
+  SETPASSWORD: '/set-new-password/:token',
   CHECKEMAIL: '/check-email',
 };
