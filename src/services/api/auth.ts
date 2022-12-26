@@ -38,11 +38,6 @@ export interface ResponseUpdateUserDataType {
   updatedUser: ResponseLoginDataType;
   error?: string;
 }
-export interface ResponseForgotPasswordDataType {
-  info: string;
-
-  error?: string;
-}
 export interface GetForgotPasswordDataType {
   email: string;
   from: string;
@@ -67,14 +62,14 @@ export const authAPI = {
     return instance.put<ResponseUpdateUserDataType>('/auth/me', { name, avatar });
   },
   forgot({ email, from, message }: GetForgotPasswordDataType) {
-    return instance.post<ResponseForgotPasswordDataType>('/auth/forgot', {
+    return instance.post<ResponseNewPassword>('/auth/forgot', {
       email,
       from,
       message,
     });
   },
   newPassword({ password, resetPasswordToken }: GetSetNewPasswordDataType) {
-    return instance.post<ResponseSetNewPasswordDataType>('/auth/set-new-password', {
+    return instance.post<ResponseNewPassword>('/auth/set-new-password', {
       password,
       resetPasswordToken,
     });

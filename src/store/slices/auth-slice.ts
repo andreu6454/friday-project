@@ -100,4 +100,5 @@ const { reducer, actions } = createSlice({
 
 export const { setErrorMsg, setIsForgotEmail } = actions;
 
+export const authActions = { ...actions };
 export const authSlice = reducer;

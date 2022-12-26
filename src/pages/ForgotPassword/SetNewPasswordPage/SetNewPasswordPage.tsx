@@ -17,30 +17,28 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { AlertError } from '../../../components';
+import { useActions } from '../../../hooks';
 import { appRoutes } from '../../../routes';
-import { setNewPassword } from '../../../store/middleware/authUser';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { authAsyncActions } from '../../../store/middleware/authUser';
+import { useAppSelector } from '../../../store/store';
 
-interface IFormInput {
-  password: string;
-}
 export const SetNewPasswordPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const isPasswordChanged = useAppSelector((state) => state.auth.isPasswordChanged);
   const errorMsg = useAppSelector((state) => state.auth.error);
 
   const location = useLocation();
-  const dispatch = useAppDispatch();
+  const { setNewPassword } = useActions(authAsyncActions);
   const nav = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInput>();
-  const onSubmit: SubmitHandler<IFormInput> = ({ password }: IFormInput) => {
+  } = useForm<{ password: string }>();
+  const onSubmit: SubmitHandler<{ password: string }> = ({ password }) => {
     const resetPasswordToken = location.pathname.slice(18);
-    dispatch(setNewPassword({ password, resetPasswordToken }));
+    setNewPassword({ password, resetPasswordToken });
   };
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);

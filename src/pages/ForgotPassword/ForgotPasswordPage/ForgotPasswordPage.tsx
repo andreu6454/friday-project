@@ -14,14 +14,14 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { AlertError } from '../../../components';
+import { useActions } from '../../../hooks';
 import { appRoutes } from '../../../routes';
-import { forgotPassword } from '../../../store/middleware/authUser';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { authAsyncActions } from '../../../store/middleware/authUser';
+import { useAppSelector } from '../../../store/store';
 
-}
 export const ForgotPasswordPage = () => {
   const nav = useNavigate();
-  const dispatch = useAppDispatch();
+  const { forgotPassword } = useActions(authAsyncActions);
 
   const isForgot = useAppSelector((state) => state.auth.isForgotEmail);
   const errorMsg = useAppSelector((state) => state.auth.error);
@@ -30,15 +30,15 @@ export const ForgotPasswordPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInput>();
-  const onSubmit: SubmitHandler<IFormInput> = ({ email }: IFormInput) => {
+  } = useForm<{ email: string }>();
+  const onSubmit: SubmitHandler<{ email: string }> = ({ email }) => {
     const from = `test-front-admin <ai73a@yandex.by>`;
     const message = `<div  style="padding: 15px">
 password recovery link: 
 <a href='http://localhost:3000/#/set-new-password/$token$'>
 click to change password</a>
 </div>`;
-    dispatch(forgotPassword({ email, from, message }));
+    forgotPassword({ email, from, message });
   };
 
   const handleNavigate = () => {

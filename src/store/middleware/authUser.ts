@@ -6,11 +6,10 @@ import {
   GetLoginType,
   getRegisterType,
   GetSetNewPasswordDataType,
-  ResponseForgotPasswordDataType,
   ResponseLoginDataType,
   ResponseLogOutDataType,
+  ResponseNewPassword,
   ResponseRegisterDataType,
-  ResponseSetNewPasswordDataType,
 } from '../../services/api/auth';
 import { handlerAsyncError } from '../../utils/error-utils';
 import { setIsForgotEmail } from '../slices';
@@ -67,7 +66,7 @@ export const logOutUser = createAsyncThunk<
 });
 
 export const forgotPassword = createAsyncThunk<
-  ResponseForgotPasswordDataType,
+  ResponseNewPassword,
   GetForgotPasswordDataType,
   { rejectValue: string }
 >('/auth/forgot', async (params, thunkApi) => {
@@ -81,7 +80,7 @@ export const forgotPassword = createAsyncThunk<
 });
 
 export const setNewPassword = createAsyncThunk<
-  ResponseSetNewPasswordDataType,
+  ResponseNewPassword,
   GetSetNewPasswordDataType,
   { rejectValue: string }
 >('/auth/set-new-password', async (params, thunkApi) => {
@@ -92,3 +91,12 @@ export const setNewPassword = createAsyncThunk<
     return handlerAsyncError(error, thunkApi);
   }
 });
+
+export const authAsyncActions = {
+  setNewPassword,
+  forgotPassword,
+  logOutUser,
+  loginUser,
+  registerUser,
+  isAuthUser,
+};
