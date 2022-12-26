@@ -18,8 +18,6 @@ import { appRoutes } from '../../../routes';
 import { forgotPassword } from '../../../store/middleware/authUser';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 
-interface IFormInput {
-  email: string;
 }
 export const ForgotPasswordPage = () => {
   const nav = useNavigate();
