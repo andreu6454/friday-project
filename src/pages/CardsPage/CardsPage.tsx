@@ -31,6 +31,7 @@ export const CardsPage = () => {
     setPageCount,
     cards,
     status,
+    packName,
   } = useCardsTableData();
 
   if (status === 'loading') {
@@ -55,7 +56,7 @@ export const CardsPage = () => {
       <BackLinkButton link={appRoutes.PACKS}>Back To Pack List</BackLinkButton>
       <Box display="flex" flexDirection="column" alignItems="center" marginY={3}>
         <Typography variant="h5" alignSelf="flex-start" textAlign="left">
-          Name Pack
+          {packName}
         </Typography>
         {!cards.length ? (
           <Stack alignItems="center" gap={3} marginTop={10}>

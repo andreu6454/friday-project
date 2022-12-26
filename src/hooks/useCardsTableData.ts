@@ -14,6 +14,7 @@ export const useCardsTableData = () => {
   const totalCount = useAppSelector((state) => state.cards.cardsData.cardsTotalCount);
   const page = useAppSelector((state) => state.cards.cardsData.page);
   const pageCount = useAppSelector((state) => state.cards.cardsData.pageCount);
+  const packName = useAppSelector((state) => state.cards.cardsData.packName);
 
   const isLoadingStatus = status === 'loading';
 
@@ -44,5 +45,6 @@ export const useCardsTableData = () => {
     setPageCount,
     cards,
     status,
+    packName,
   };
 };
