@@ -19,14 +19,13 @@ import {
   Typography,
 } from '@mui/material';
 import { Container } from '@mui/system';
+import { AlertError } from 'components';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
-
-import { AlertError } from '../../components';
-import { appRoutes } from '../../routes';
-import { loginUser } from '../../store/middleware/authUser';
-import { useAppDispatch, useAppSelector } from '../../store/store';
+import { appRoutes } from 'routes';
+import { loginUser } from 'store/middleware/authUser';
+import { useAppDispatch, useAppSelector } from 'store/store';
 
 interface IFormInput {
   email: string;

@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-
 import {
   authAPI,
   GetLoginType,
@@ -7,8 +6,8 @@ import {
   ResponseLoginDataType,
   ResponseLogOutDataType,
   ResponseRegisterDataType,
-} from '../../services/api/auth';
-import { handlerAsyncError } from '../../utils/error-utils';
+} from 'services/api/auth';
+import { handlerAsyncError } from 'utils/error-utils';
 
 export const loginUser = createAsyncThunk<
   ResponseLoginDataType,

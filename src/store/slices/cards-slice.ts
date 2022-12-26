@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { deleteCard, fetchCards } from 'store/middleware/cards';
 
-import { deleteCard, fetchCards } from '../middleware/cards';
 import { ICardsResponse } from './../../services/api/cards';
 import { addNewCard } from './../middleware/cards';
 import { RequestStatusType } from './types';

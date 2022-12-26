@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { loginUser, logOutUser, registerUser } from 'store/middleware/authUser';
 
-import { loginUser, logOutUser, registerUser } from '../middleware/authUser';
 import { isAuthUser } from './../middleware/authUser';
 import { RequestStatusType } from './types';
 

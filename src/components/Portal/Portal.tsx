@@ -1,7 +1,6 @@
 import { FC, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-
-import { createWrapperAndAppendToBody } from '../../utils/portal-wrapper';
+import { createWrapperAndAppendToBody } from 'utils/portal-wrapper';
 
 interface ReactPortalProps {
   children: ReactNode;

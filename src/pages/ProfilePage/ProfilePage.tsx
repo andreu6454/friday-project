@@ -9,14 +9,13 @@ import {
   Typography,
 } from '@mui/material';
 import { Container } from '@mui/system';
+import { BackLinkButton } from 'components';
+import { EditableSpan } from 'components/EditableSpan/EditableSpan';
 import { useNavigate } from 'react-router-dom';
-
-import { BackLinkButton } from '../../components';
-import { EditableSpan } from '../../components/EditableSpan/EditableSpan';
-import { appRoutes } from '../../routes';
-import { logOutUser } from '../../store/middleware/authUser';
-import { changeUserAvatar, changeUserName } from '../../store/middleware/user';
-import { useAppDispatch, useAppSelector } from '../../store/store';
+import { appRoutes } from 'routes';
+import { logOutUser } from 'store/middleware/authUser';
+import { changeUserAvatar, changeUserName } from 'store/middleware/user';
+import { useAppDispatch, useAppSelector } from 'store/store';
 
 export const ProfilePage = () => {
   const dispatch = useAppDispatch();

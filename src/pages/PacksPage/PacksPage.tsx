@@ -9,14 +9,15 @@ import {
   Typography,
 } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
-
-import { DoubleSlider } from '../../components';
-import { AlertSuccess } from '../../components/AlerSuccess/AlertSucess';
-import { useDebounce, usePacksTableData } from '../../hooks';
-import { MemoizedActions } from '../../sections/cardpacks-page/Actions';
-import { CustomPagination } from '../../sections/cardpacks-page/CustomPagination';
-import { ICardPack } from '../../services/api/packs';
-import { StyledTextField } from '../../styles/styles';
+import { DoubleSlider } from 'components';
+import { AlertSuccess } from 'components/AlerSuccess/AlertSucess';
+import { useDebounce, usePacksTableData } from 'hooks';
+import * as React from 'react';
+import { MemoizedActions } from 'sections/packs-page/Actions';
+import { CustomPagination } from 'sections/packs-page/CustomPagination';
+import { ModalWrapper } from 'sections/packs-page/ModalWrapper';
+import { ICardPack } from 'services/api/packs';
+import { StyledTextField } from 'styles/styles';
 
 const columns: GridColDef[] = [
   { field: 'name', headerName: 'Name', flex: 1.5 },
@@ -168,6 +169,7 @@ export const CardPacksPage = () => {
         />
       </Stack>
       <AlertSuccess msg={'Success'} />
+      <ModalWrapper />
     </Box>
   );
 };

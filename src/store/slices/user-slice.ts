@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-import { ResponseLoginDataType } from '../../services/api';
-import { isAuthUser, loginUser, logOutUser } from '../middleware/authUser';
-import { changeUserAvatar, changeUserName } from '../middleware/user';
+import { ResponseLoginDataType } from 'services/api';
+import { isAuthUser, loginUser, logOutUser } from 'store/middleware/authUser';
+import { changeUserAvatar, changeUserName } from 'store/middleware/user';
 
 const initialState = {
   user: {} as ResponseLoginDataType,

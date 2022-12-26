@@ -8,8 +8,7 @@ import {
 } from '@mui/material';
 import { AnyAction } from '@reduxjs/toolkit';
 import { ChangeEvent, FC } from 'react';
-
-import { useAppDispatch } from '../../store/store';
+import { useAppDispatch } from 'store/store';
 
 export interface CustomPaginationProps {
   page: number;

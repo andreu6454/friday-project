@@ -7,12 +7,10 @@ import {
   Typography,
 } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-
-import { BackLinkButton } from '../../components';
-import { TransitionsModal } from '../../components/Modal/Modal';
-import { useCardsTableData } from '../../hooks';
-import { appRoutes } from '../../routes';
-import { CustomPagination } from '../../sections/cardpacks-page/CustomPagination';
+import { BackLinkButton } from 'components';
+import { useCardsTableData } from 'hooks';
+import { appRoutes } from 'routes';
+import { CustomPagination } from 'sections/packs-page/CustomPagination';
 
 const columns: GridColDef[] = [
   { field: 'question', headerName: 'Question', flex: 1.5 },
@@ -89,7 +87,6 @@ export const CardsPage = () => {
           </Stack>
         )}
       </Box>
-      <TransitionsModal />
     </Box>
   );
 };

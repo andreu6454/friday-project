@@ -1,13 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-
 import {
   ICardPack,
   ICardsPacks,
   IGetCardsPacksParams,
   packsAPI,
-} from '../../services/api/packs';
-import { handlerAsyncError } from '../../utils';
-import { cardActions } from '../slices';
+} from 'services/api/packs';
+import { cardActions } from 'store/slices';
+import { handlerAsyncError } from 'utils';
 
 export const fetchPacks = createAsyncThunk<
   ICardsPacks,
