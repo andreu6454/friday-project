@@ -48,7 +48,7 @@ export interface GetForgotPasswordDataType {
   from: string;
   message: string;
 }
-export interface ResponseSetNewPasswordDataType {
+export interface ResponseNewPassword {
   info: string;
   error?: string;
 }
