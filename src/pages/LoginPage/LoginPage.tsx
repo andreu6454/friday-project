@@ -66,6 +66,9 @@ export const LoginPage = () => {
     nav(appRoutes.REGISTER);
   };
 
+  const handleForgotNavigate = () => {
+    nav(appRoutes.FORGOT);
+  };
   const pendingStatus = loading === 'loading';
 
   if (isAuth) {
@@ -120,9 +123,16 @@ export const LoginPage = () => {
             label="Remember me"
           />
 
-          <Typography sx={{ cursor: 'pointer' }} textAlign={'right'}>
+          <Link
+            onClick={handleForgotNavigate}
+            color={'#000000'}
+            sx={{ textAlign: 'right' }}
+            component="button"
+            variant="body2"
+            underline="none"
+          >
             Forgot Password?
-          </Typography>
+          </Link>
           <CardActions sx={{ display: 'flex', flexDirection: 'column', gap: '31px' }}>
             <Button
               onClick={handleSubmit(onSubmit)}
