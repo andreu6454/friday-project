@@ -8,6 +8,8 @@ import {
 import { cardActions } from 'store/slices';
 import { handlerAsyncError } from 'utils';
 
+import { IAddPackSubmit } from './../../sections/packs-page/NewPackModal';
+
 export const fetchPacks = createAsyncThunk<
   ICardsPacks,
   IGetCardsPacksParams,
@@ -24,11 +26,11 @@ export const fetchPacks = createAsyncThunk<
 
 export const addNewPack = createAsyncThunk<
   { newCardsPack: ICardPack },
-  void,
+  IAddPackSubmit,
   { rejectValue: string }
->('card/addNewPack', async (_, thunkApi) => {
+>('card/addNewPack', async (userData, thunkApi) => {
   try {
-    const response = await packsAPI.addCardPack();
+    const response = await packsAPI.addCardPack(userData);
     return response.data;
   } catch (error) {
     return handlerAsyncError(error, thunkApi);

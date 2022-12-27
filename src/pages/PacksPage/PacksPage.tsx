@@ -3,19 +3,24 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import {
   Box,
   Button,
+  Checkbox,
+  DialogActions,
+  FormControlLabel,
   IconButton,
   InputAdornment,
   Stack,
+  TextField,
   Typography,
 } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
-import { DoubleSlider } from 'components';
+import { BasicModal, DoubleSlider } from 'components';
 import { AlertSuccess } from 'components/AlerSuccess/AlertSucess';
 import { useDebounce, usePacksTableData } from 'hooks';
 import * as React from 'react';
-import { MemoizedActions } from 'sections/packs-page/Actions';
+import { useState } from 'react';
+import { MemoizedActionButtons } from 'sections/packs-page/ActionButtons';
 import { CustomPagination } from 'sections/packs-page/CustomPagination';
-import { ModalWrapper } from 'sections/packs-page/ModalWrapper';
+import { NewPackModal } from 'sections/packs-page/NewPackModal';
 import { ICardPack } from 'services/api/packs';
 import { StyledTextField } from 'styles/styles';
 
@@ -28,17 +33,21 @@ const columns: GridColDef[] = [
     field: 'actions',
     headerName: 'Actions',
     renderCell: (params: GridRenderCellParams<ICardPack>) => (
-      <MemoizedActions {...params} />
+      <MemoizedActionButtons {...params} />
     ),
     flex: 0.7,
   },
 ];
 
 export const CardPacksPage = () => {
+  const [openModal, setOpenModal] = useState<boolean>(false);
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
   const {
     search,
-    setSearch,
-    addNewPack,
     isActiveCategory,
     page,
     totalCount,
@@ -47,38 +56,15 @@ export const CardPacksPage = () => {
     setNewPage,
     loadingStatus,
     setPageCount,
+    activeCategoryHandle,
+    onSearchChange,
   } = usePacksTableData();
-
-  const activeCategoryHandle = (newCategory: string) => {
-    search.set('category', newCategory);
-    setSearch(search);
-  };
-
-  const onSearchChange = useDebounce((e: React.ChangeEvent<HTMLInputElement>) => {
-    const text = e.target.value;
-
-    if (text.length === 0) {
-      search.delete('search_term');
-      setSearch(search, {
-        replace: true,
-      });
-    } else {
-      search.set('search_term', text);
-      setSearch(search, {
-        replace: true,
-      });
-    }
-  }, 500);
-
-  const addNewCardPackHandle = () => {
-    addNewPack();
-  };
 
   return (
     <Box marginTop={2}>
       <Stack justifyContent="space-between" direction="row">
         <Typography variant="h5">Pack list</Typography>
-        <Button variant="contained" onClick={addNewCardPackHandle}>
+        <Button variant="contained" onClick={handleOpenModal}>
           Add new pack
         </Button>
       </Stack>
@@ -169,7 +155,7 @@ export const CardPacksPage = () => {
         />
       </Stack>
       <AlertSuccess msg={'Success'} />
-      <ModalWrapper />
+      <NewPackModal openModal={openModal} setOpenModal={setOpenModal} />
     </Box>
   );
 };

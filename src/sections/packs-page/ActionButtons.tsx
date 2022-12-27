@@ -9,7 +9,7 @@ import { appRoutes } from 'routes';
 import { deletePack } from 'store/middleware/packs';
 import { useAppDispatch, useAppSelector } from 'store/store';
 
-const Actions = (params: GridRenderCellParams<any, any, any>) => {
+const ActionButtons = (params: GridRenderCellParams<any, any, any>) => {
   const userId = useAppSelector((state) => state.user.user._id);
   const dispatch = useAppDispatch();
   const nav = useNavigate();
@@ -41,4 +41,4 @@ const Actions = (params: GridRenderCellParams<any, any, any>) => {
   );
 };
 
-export const MemoizedActions = memo(Actions);
+export const MemoizedActionButtons = memo(ActionButtons);

@@ -1,3 +1,4 @@
+import { IAddPackSubmit } from 'sections/packs-page/NewPackModal';
 import { instance } from 'services/config';
 
 export interface ICardPack {
@@ -28,12 +29,6 @@ export interface IGetCardsPacksParams {
   user_id?: string;
 }
 
-export interface IAddCardPack {
-  name: string;
-  deckCover?: string;
-  private?: false;
-}
-
 export const packsAPI = {
   getCardsPacks(params: IGetCardsPacksParams) {
     return instance.get('/cards/pack', {
@@ -42,9 +37,9 @@ export const packsAPI = {
       },
     });
   },
-  addCardPack(params?: IAddCardPack) {
+  addCardPack(userData: IAddPackSubmit) {
     return instance.post<{ newCardsPack: ICardPack }>('/cards/pack', {
-      cardsPack: {},
+      cardsPack: userData,
     });
   },
   deletePack(cardPackId: string) {

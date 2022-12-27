@@ -7,6 +7,7 @@ import { packActions } from './../store/slices/packs-slice';
 import { useAppSelector } from './../store/store';
 import { formateDate } from './../utils/formateDate';
 import { useActions } from './useActions';
+import { useDebounce } from './useDebounce';
 
 export const usePacksTableData = () => {
   const [search, setSearch] = useSearchParams();
@@ -55,10 +56,29 @@ export const usePacksTableData = () => {
     }),
   );
 
+  const activeCategoryHandle = (newCategory: string) => {
+    search.set('category', newCategory);
+    setSearch(search);
+  };
+
+  const onSearchChange = useDebounce((e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
+
+    if (text.length === 0) {
+      search.delete('search_term');
+      setSearch(search, {
+        replace: true,
+      });
+    } else {
+      search.set('search_term', text);
+      setSearch(search, {
+        replace: true,
+      });
+    }
+  }, 500);
+
   return {
     search,
-    setSearch,
-    addNewPack,
     isActiveCategory,
     page,
     totalCount,
@@ -67,5 +87,7 @@ export const usePacksTableData = () => {
     setNewPage,
     loadingStatus,
     setPageCount,
+    activeCategoryHandle,
+    onSearchChange,
   };
 };
