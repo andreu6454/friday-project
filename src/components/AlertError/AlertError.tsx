@@ -1,9 +1,8 @@
 import { Alert, Snackbar } from '@mui/material';
+import { ReactPortal } from 'components/Portal/Portal';
 import React from 'react';
-
-import { setErrorMsg } from '../../store/slices/auth-slice';
-import { useAppDispatch } from '../../store/store';
-import { ReactPortal } from '../Portal/Portal';
+import { setErrorMsg } from 'store/slices/auth-slice';
+import { useAppDispatch } from 'store/store';
 
 export const AlertError = ({ errorMsg = '' }: { errorMsg: string | null }) => {
   const dispatch = useAppDispatch();

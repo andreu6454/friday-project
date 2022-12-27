@@ -4,9 +4,8 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Link, useNavigate } from 'react-router-dom';
-
-import { appRoutes } from '../../routes';
-import { useAppSelector } from '../../store/store';
+import { appRoutes } from 'routes';
+import { useAppSelector } from 'store/store';
 
 export const Navbar = () => {
   const nav = useNavigate();

@@ -7,7 +7,6 @@ import {
   CardActions,
   CardContent,
   Checkbox,
-  CircularProgress,
   FormControl,
   FormControlLabel,
   FormGroup,
@@ -18,15 +17,14 @@ import {
   Link,
   Typography,
 } from '@mui/material';
-import { Container } from '@mui/system';
+import { AlertError } from 'components';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
-
-import { AlertError } from '../../components';
-import { appRoutes } from '../../routes';
-import { loginUser } from '../../store/middleware/authUser';
-import { useAppDispatch, useAppSelector } from '../../store/store';
+import { appRoutes } from 'routes';
+import { Preloader } from 'sections/login-page/Preloader';
+import { loginUser } from 'store/middleware/authUser';
+import { useAppDispatch, useAppSelector } from 'store/store';
 
 interface IFormInput {
   email: string;
@@ -78,20 +76,7 @@ export const LoginPage = () => {
   }
 
   if (pendingStatus) {
-    return (
-      <Container>
-        <Box
-          sx={{
-            display: 'flex',
-            width: '100%',
-            justifyContent: 'center',
-            mt: '10%',
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      </Container>
-    );
+    return <Preloader />;
   }
 
   return (

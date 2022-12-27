@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-
 import {
   authAPI,
   GetForgotPasswordDataType,
@@ -10,9 +9,9 @@ import {
   ResponseLogOutDataType,
   ResponseNewPassword,
   ResponseRegisterDataType,
-} from '../../services/api/auth';
-import { handlerAsyncError } from '../../utils/error-utils';
-import { setIsForgotEmail } from '../slices';
+} from 'services/api/auth';
+import { setIsForgotEmail } from 'store/slices';
+import { handlerAsyncError } from 'utils/error-utils';
 
 export const loginUser = createAsyncThunk<
   ResponseLoginDataType,

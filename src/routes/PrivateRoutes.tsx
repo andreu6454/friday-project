@@ -1,7 +1,7 @@
 import { Container } from '@mui/material';
 import { Navigate, Outlet } from 'react-router-dom';
+import { useAppSelector } from 'store/store';
 
-import { useAppSelector } from '../store/store';
 import { appRoutes } from './constants';
 
 export const PrivateRoutes = () => {

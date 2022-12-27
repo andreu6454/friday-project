@@ -9,21 +9,22 @@ import {
   Typography,
 } from '@mui/material';
 import { Container } from '@mui/system';
-import React from 'react';
-
-import { BackLinkButton } from '../../components';
-import { EditableSpan } from '../../components/EditableSpan/EditableSpan';
-import { appRoutes } from '../../routes';
-import { logOutUser } from '../../store/middleware/authUser';
-import { changeUserAvatar, changeUserName } from '../../store/middleware/user';
-import { useAppDispatch, useAppSelector } from '../../store/store';
+import { BackLinkButton } from 'components';
+import { EditableSpan } from 'components/EditableSpan/EditableSpan';
+import { useNavigate } from 'react-router-dom';
+import { appRoutes } from 'routes';
+import { logOutUser } from 'store/middleware/authUser';
+import { changeUserAvatar, changeUserName } from 'store/middleware/user';
+import { useAppDispatch, useAppSelector } from 'store/store';
 
 export const ProfilePage = () => {
   const dispatch = useAppDispatch();
   const status = useAppSelector((state) => state.auth.status);
   const { user } = useAppSelector((state) => state.user);
+  const nav = useNavigate();
   const logOutHandle = () => {
     dispatch(logOutUser());
+    nav(appRoutes.LOGIN);
   };
   const changeNameHandle = (name: string) => {
     dispatch(changeUserName({ name }));

@@ -1,9 +1,8 @@
 import { Grid, Slider, styled, TextField } from '@mui/material';
+import { useDebounce } from 'hooks';
 import React, { ChangeEvent } from 'react';
 import { useSearchParams } from 'react-router-dom';
-
-import { useDebounce } from '../../hooks';
-import { useAppSelector } from '../../store/store';
+import { useAppSelector } from 'store/store';
 
 const StyledTextField = styled(TextField)`
   .MuiInputBase-root {

@@ -1,12 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { deleteCard, fetchCards } from 'store/middleware/cards';
 
-import { deleteCard, fetchCards } from '../middleware/cards';
-import { ICard, ICardsResponse } from './../../services/api/cards';
+import { ICardsResponse } from './../../services/api/cards';
 import { addNewCard } from './../middleware/cards';
 import { RequestStatusType } from './types';
 
 type initialStateType = {
-  cardsData: Pick<ICardsResponse, 'cards' | 'page' | 'pageCount' | 'cardsTotalCount'>;
+  cardsData: Pick<
+    ICardsResponse,
+    'cards' | 'page' | 'pageCount' | 'cardsTotalCount' | 'packName'
+  >;
   status: RequestStatusType;
   error: null | string;
   actionStatus: null | string;
@@ -18,6 +21,7 @@ const initialState: initialStateType = {
     page: 0,
     pageCount: 10,
     cardsTotalCount: 0,
+    packName: '',
   },
   status: 'loading' as RequestStatusType,
   actionStatus: null,

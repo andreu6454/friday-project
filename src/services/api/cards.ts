@@ -1,4 +1,4 @@
-import { instance } from '../config';
+import { instance } from 'services/config';
 
 export interface ICardsResponse {
   cards: ICard[];
@@ -8,6 +8,7 @@ export interface ICardsResponse {
   page: number;
   pageCount: number;
   packUserId: string;
+  packName: string;
 }
 
 export interface ICard {

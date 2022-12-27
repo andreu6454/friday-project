@@ -9,6 +9,13 @@
         "plugin:@typescript-eslint/recommended",
         "plugin:prettier/recommended"
     ],
+    "settings": {
+        "import/resolver": {
+          "node": {
+            "moduleDirectory": ["node_modules", "src/"]
+          }
+        }
+      },
     "overrides": [
         {
             "files": ["**/*.{ts,tsx,js,jsx}"],
@@ -27,10 +34,19 @@
         "@typescript-eslint",
         "prettier",
         "simple-import-sort",
-        "react-hooks"
+        "react-hooks",
+        "no-relative-import-paths"
     ],
     "rules": {
-        "prettier/prettier": "error",
+        "no-relative-import-paths/no-relative-import-paths": [
+            "warn",
+            { "allowSameFolder": true, "rootDir": "src", "prefix": "" }
+          ],
+        "prettier/prettier": ["error", 
+        {
+            "endOfLine": "auto"
+        }
+    ],
         "arrow-body-style": "off",
         "prefer-arrow-callback": "off",
         "simple-import-sort/imports": "error",

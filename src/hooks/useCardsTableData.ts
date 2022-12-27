@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { ICard } from 'services/api/cards';
+import { asyncCardActions } from 'store/middleware/cards';
+import { cardActions } from 'store/slices/cards-slice';
+import { useAppSelector } from 'store/store';
+import { formateDate } from 'utils/formateDate';
 
-import { ICard } from '../services/api/cards';
-import { asyncCardActions } from '../store/middleware/cards';
-import { cardActions } from '../store/slices/cards-slice';
-import { useAppSelector } from '../store/store';
-import { formateDate } from '../utils/formateDate';
 import { useActions } from './useActions';
 
 export const useCardsTableData = () => {
@@ -14,6 +14,7 @@ export const useCardsTableData = () => {
   const totalCount = useAppSelector((state) => state.cards.cardsData.cardsTotalCount);
   const page = useAppSelector((state) => state.cards.cardsData.page);
   const pageCount = useAppSelector((state) => state.cards.cardsData.pageCount);
+  const packName = useAppSelector((state) => state.cards.cardsData.packName);
 
   const isLoadingStatus = status === 'loading';
 
@@ -44,5 +45,6 @@ export const useCardsTableData = () => {
     setPageCount,
     cards,
     status,
+    packName,
   };
 };

@@ -1,13 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-
 import {
   ICardPack,
   ICardsPacks,
   IGetCardsPacksParams,
   packsAPI,
-} from '../../services/api/packs';
-import { handlerAsyncError } from '../../utils';
-import { cardActions } from '../slices';
+} from 'services/api/packs';
+import { cardActions } from 'store/slices';
+import { handlerAsyncError } from 'utils';
+
+import { IAddPackSubmit } from './../../sections/packs-page/NewPackModal';
 
 export const fetchPacks = createAsyncThunk<
   ICardsPacks,
@@ -16,7 +17,6 @@ export const fetchPacks = createAsyncThunk<
 >('card/packs', async (params, thunkApi) => {
   try {
     const response = await packsAPI.getCardsPacks({ ...params });
-    console.log('we in');
     thunkApi.dispatch(cardActions.setLoadingStatus());
     return response.data;
   } catch (error) {
@@ -26,11 +26,11 @@ export const fetchPacks = createAsyncThunk<
 
 export const addNewPack = createAsyncThunk<
   { newCardsPack: ICardPack },
-  void,
+  IAddPackSubmit,
   { rejectValue: string }
->('card/addNewPack', async (_, thunkApi) => {
+>('card/addNewPack', async (userData, thunkApi) => {
   try {
-    const response = await packsAPI.addCardPack();
+    const response = await packsAPI.addCardPack(userData);
     return response.data;
   } catch (error) {
     return handlerAsyncError(error, thunkApi);

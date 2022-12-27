@@ -7,11 +7,10 @@ import {
   Typography,
 } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-
-import { BackLinkButton } from '../../components';
-import { useCardsTableData } from '../../hooks';
-import { appRoutes } from '../../routes';
-import { CustomPagination } from '../../sections/cardpacks-page/CustomPagination';
+import { BackLinkButton } from 'components';
+import { useCardsTableData } from 'hooks';
+import { appRoutes } from 'routes';
+import { CustomPagination } from 'sections/packs-page/CustomPagination';
 
 const columns: GridColDef[] = [
   { field: 'question', headerName: 'Question', flex: 1.5 },
@@ -31,6 +30,7 @@ export const CardsPage = () => {
     setPageCount,
     cards,
     status,
+    packName,
   } = useCardsTableData();
 
   if (status === 'loading') {
@@ -55,7 +55,7 @@ export const CardsPage = () => {
       <BackLinkButton link={appRoutes.PACKS}>Back To Pack List</BackLinkButton>
       <Box display="flex" flexDirection="column" alignItems="center" marginY={3}>
         <Typography variant="h5" alignSelf="flex-start" textAlign="left">
-          Name Pack
+          {packName}
         </Typography>
         {!cards.length ? (
           <Stack alignItems="center" gap={3} marginTop={10}>

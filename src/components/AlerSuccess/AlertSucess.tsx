@@ -1,9 +1,8 @@
 import { Alert, Snackbar } from '@mui/material';
+import { ReactPortal } from 'components/Portal/Portal';
 import React from 'react';
-
-import { packActions } from '../../store/slices';
-import { useAppDispatch, useAppSelector } from '../../store/store';
-import { ReactPortal } from '../Portal/Portal';
+import { packActions } from 'store/slices';
+import { useAppDispatch, useAppSelector } from 'store/store';
 
 export const AlertSuccess = ({ msg = '' }: { msg: string | null }) => {
   const dispatch = useAppDispatch();

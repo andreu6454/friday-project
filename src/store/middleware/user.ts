@@ -1,7 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-
-import { authAPI, ResponseUpdateUserDataType } from '../../services/api';
-import { handlerAsyncError } from '../../utils';
+import { authAPI, ResponseUpdateUserDataType } from 'services/api';
+import { handlerAsyncError } from 'utils';
 
 export const changeUserName = createAsyncThunk<
   ResponseUpdateUserDataType,
