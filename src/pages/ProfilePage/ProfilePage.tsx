@@ -22,10 +22,11 @@ export const ProfilePage = () => {
   const status = useAppSelector((state) => state.auth.status);
   const { user } = useAppSelector((state) => state.user);
   const nav = useNavigate();
+
   const logOutHandle = () => {
     dispatch(logOutUser());
-    nav(appRoutes.LOGIN);
   };
+
   const changeNameHandle = (name: string) => {
     dispatch(changeUserName({ name }));
   };

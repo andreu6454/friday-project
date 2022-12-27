@@ -9,15 +9,14 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { AlertError } from 'components';
+import { useActions } from 'hooks';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-
-import { AlertError } from '../../../components';
-import { useActions } from '../../../hooks';
-import { appRoutes } from '../../../routes';
-import { authAsyncActions } from '../../../store/middleware/authUser';
-import { useAppSelector } from '../../../store/store';
+import { appRoutes } from 'routes';
+import { authAsyncActions } from 'store/middleware/authUser';
+import { useAppSelector } from 'store/store';
 
 export const ForgotPasswordPage = () => {
   const nav = useNavigate();
@@ -91,19 +90,17 @@ click to change password</a>
             height={'60px'}
             justifyContent={'space-evenly'}
           >
-            <Link
+            <Typography
+              fontWeight="bold"
               color={'#000000'}
-              sx={{ opacity: 0.5, textAlign: 'center' }}
-              component="button"
+              sx={{ opacity: '0.5' }}
               variant="body2"
-              underline="none"
-              mb={2}
             >
               Did you remember your password?
-            </Link>
+            </Typography>
+
             <Link
               onClick={handleNavigate}
-              sx={{ textAlign: 'center' }}
               component="button"
               variant="body1"
               fontWeight="bold"

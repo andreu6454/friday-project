@@ -12,15 +12,14 @@ import {
   Typography,
 } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
+import { AlertError } from 'components';
+import { useActions } from 'hooks';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
-
-import { AlertError } from '../../../components';
-import { useActions } from '../../../hooks';
-import { appRoutes } from '../../../routes';
-import { authAsyncActions } from '../../../store/middleware/authUser';
-import { useAppSelector } from '../../../store/store';
+import { appRoutes } from 'routes';
+import { authAsyncActions } from 'store/middleware/authUser';
+import { useAppSelector } from 'store/store';
 
 export const SetNewPasswordPage = () => {
   const [showPassword, setShowPassword] = useState(false);

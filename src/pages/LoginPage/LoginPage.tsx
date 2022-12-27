@@ -143,16 +143,14 @@ export const LoginPage = () => {
               Sign In
             </Button>
             <Box display="flex" gap="7px" flexDirection="column" alignItems="center">
-              <Link
+              <Typography
                 fontWeight="bold"
                 color={'#000000'}
                 sx={{ opacity: '0.5' }}
-                component="button"
                 variant="body2"
-                underline="none"
               >
                 Already have an account?
-              </Link>
+              </Typography>
 
               <Link
                 onClick={handleNavigate}

@@ -2,9 +2,8 @@ import { MarkEmailUnreadOutlined } from '@mui/icons-material';
 import { Box, Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import { appRoutes } from '../../../routes';
-import { useAppSelector } from '../../../store/store';
+import { appRoutes } from 'routes';
+import { useAppSelector } from 'store/store';
 
 const CheckEmailPage = () => {
   const nav = useNavigate();
