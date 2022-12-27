@@ -8,7 +8,7 @@ import { RequestStatusType } from './types';
 type initialStateType = {
   cardsData: Pick<
     ICardsResponse,
-    'cards' | 'page' | 'pageCount' | 'cardsTotalCount' | 'packName'
+    'cards' | 'page' | 'pageCount' | 'cardsTotalCount' | 'packName' | 'packUserId'
   >;
   status: RequestStatusType;
   error: null | string;
@@ -21,6 +21,7 @@ const initialState: initialStateType = {
     page: 0,
     pageCount: 10,
     cardsTotalCount: 0,
+    packUserId: '',
     packName: '',
   },
   status: 'loading' as RequestStatusType,

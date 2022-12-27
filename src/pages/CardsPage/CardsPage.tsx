@@ -10,6 +10,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { BackLinkButton } from 'components';
 import { useCardsTableData } from 'hooks';
 import { appRoutes } from 'routes';
+import { Preloader } from 'sections/login-page/Preloader';
 import { CustomPagination } from 'sections/packs-page/CustomPagination';
 
 const columns: GridColDef[] = [
@@ -31,23 +32,11 @@ export const CardsPage = () => {
     cards,
     status,
     packName,
+    isUserPackOwner,
   } = useCardsTableData();
 
   if (status === 'loading') {
-    return (
-      <Container>
-        <Box
-          sx={{
-            display: 'flex',
-            width: '100%',
-            justifyContent: 'center',
-            mt: '10%',
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      </Container>
-    );
+    return <Preloader />;
   }
 
   return (
@@ -57,7 +46,7 @@ export const CardsPage = () => {
         <Typography variant="h5" alignSelf="flex-start" textAlign="left">
           {packName}
         </Typography>
-        {!cards.length ? (
+        {!cards.length && isUserPackOwner ? (
           <Stack alignItems="center" gap={3} marginTop={10}>
             <Typography variant="body2">
               This pack is empty. Click add new card to fill this pack
