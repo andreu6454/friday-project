@@ -56,9 +56,9 @@ export const cardsAPI = {
       },
     });
   },
-  addNewCard(cardData: IAddNewCardRequest) {
+  addNewCard(newCard: IAddNewCardRequest) {
     return instance.post<{ newCard: ICard }>('/cards/card', {
-      ...cardData,
+      card: { ...newCard },
     });
   },
   deleteCard(id: string) {

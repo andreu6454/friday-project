@@ -21,11 +21,9 @@ export const addNewCard = createAsyncThunk<
   { newCard: ICard },
   IAddNewCardRequest,
   { rejectValue: string }
->('card/addNewCard', async ({ cardsPack_id }, thunkApi) => {
+>('card/addNewCard', async (newCard, thunkApi) => {
   try {
-    const response = await cardsAPI.addNewCard({
-      cardsPack_id,
-    });
+    const response = await cardsAPI.addNewCard(newCard);
     return response.data;
   } catch (error) {
     return handlerAsyncError(error, thunkApi);

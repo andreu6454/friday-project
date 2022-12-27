@@ -83,7 +83,7 @@ const { reducer, actions } = createSlice({
       /////////////
       .addCase(deleteCard.fulfilled, (state, { payload }) => {
         const findIndexCard = state.cardsData.cards.findIndex(
-          (item) => item.cardsPack_id === payload.deletedCard.cardsPack_id,
+          (pack) => pack.cardsPack_id === payload.deletedCard.cardsPack_id,
         );
         if (findIndexCard > -1) {
           state.cardsData.cards.splice(findIndexCard, 1);

@@ -23,7 +23,7 @@ export const useCardsTableData = () => {
 
   const { id } = useParams();
 
-  const { fetchCards } = useActions(asyncCardActions);
+  const { fetchCards, addNewCard } = useActions(asyncCardActions);
   const { setNewPage, setPageCount, setLoadingStatus } = useActions(cardActions);
 
   const renderActionsCells = (cards ? cards : []).map((el: ICard) => ({
@@ -54,5 +54,6 @@ export const useCardsTableData = () => {
     status,
     packName,
     isUserPackOwner,
+    id,
   };
 };
