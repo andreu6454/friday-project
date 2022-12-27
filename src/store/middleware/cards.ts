@@ -2,7 +2,12 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ICardParams, ICardsResponse } from 'services/api/cards';
 import { handlerAsyncError } from 'utils';
 
-import { cardsAPI, IAddNewCardRequest, ICard } from './../../services/api/cards';
+import {
+  cardsAPI,
+  GradeType,
+  IAddNewCardRequest,
+  ICard,
+} from './../../services/api/cards';
 
 export const fetchCards = createAsyncThunk<
   ICardsResponse,
@@ -38,7 +43,21 @@ export const deleteCard = createAsyncThunk<
   try {
     const response = await cardsAPI.addNewCard({
       cardsPack_id,
+      grade: 0,
     });
+    return response.data;
+  } catch (error) {
+    return handlerAsyncError(error, thunkApi);
+  }
+});
+
+export const updateCardGrade = createAsyncThunk<
+  { updatedGrade: GradeType },
+  { grade: number; card_id: string },
+  { rejectValue: string }
+>('card/deleteCard', async ({ grade, card_id }, thunkApi) => {
+  try {
+    const response = await cardsAPI.grade(grade, card_id);
     return response.data;
   } catch (error) {
     return handlerAsyncError(error, thunkApi);
@@ -48,5 +67,6 @@ export const deleteCard = createAsyncThunk<
 export const asyncCardActions = {
   deleteCard,
   addNewCard,
+  updateCardGrade,
   fetchCards,
 };

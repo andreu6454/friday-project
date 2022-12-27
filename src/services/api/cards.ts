@@ -11,16 +11,32 @@ export interface ICardsResponse {
   packName: string;
 }
 
-export interface ICard {
-  answer: string;
-  question: string;
+export interface BaseCard {
   cardsPack_id: string;
+  shots?: number;
   grade: number;
-  shots: number;
+  answer?: string;
+  question?: string;
+}
+
+export type GradeType = Omit<ICard, 'answer' | 'question' | 'created' | 'updated'> & {
+  card_id: string;
+};
+
+export interface ICard extends BaseCard {
   user_id: string;
   created: string;
   updated: string;
   _id: string;
+}
+
+///////////////
+
+export interface IAddNewCardRequest extends BaseCard {
+  answerImg?: string;
+  questionImg?: string;
+  questionVideo?: string;
+  answerVideo?: string;
 }
 
 export interface ICardParams {
@@ -32,20 +48,6 @@ export interface ICardParams {
   sortCards?: string;
   page?: number;
   pageCount?: number;
-}
-
-///////////////
-
-export interface IAddNewCardRequest {
-  cardsPack_id: string;
-  question?: string;
-  answer?: string;
-  grade?: number;
-  shots?: number;
-  answerImg?: string;
-  questionImg?: string;
-  questionVideo?: string;
-  answerVideo?: string;
 }
 
 export const cardsAPI = {
@@ -72,6 +74,12 @@ export const cardsAPI = {
         _id,
         question,
       },
+    });
+  },
+  grade(grade: number, cardId: string) {
+    return instance.put<{ updatedGrade: GradeType }>('/cards/grade', {
+      grade,
+      card_id: cardId,
     });
   },
 };

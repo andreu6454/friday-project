@@ -10,6 +10,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { BackLinkButton } from 'components';
 import { useCardsTableData } from 'hooks';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { appRoutes } from 'routes';
 import { NewCardModal } from 'sections/card-page/NewCardModal';
 import { Preloader } from 'sections/login-page/Preloader';
@@ -24,33 +25,38 @@ const columns: GridColDef[] = [
 
 export const CardsPage = () => {
   const [openModal, setOpenModal] = useState(false);
+  const nav = useNavigate();
 
-  // const {
-  //   totalCount,
-  //   page,
-  //   renderActionsCells,
-  //   isLoadingStatus,
-  //   pageCount,
-  //   setNewPage,
-  //   setPageCount,
-  //   cards,
-  //   status,
-  //   packName,
-  //   isUserPackOwner,
-  //   id: packId,
-  // } = useCardsTableData();
+  const {
+    totalCount,
+    page,
+    renderActionsCells,
+    isLoadingStatus,
+    pageCount,
+    setNewPage,
+    setPageCount,
+    cards,
+    status,
+    packName,
+    isUserPackOwner,
+    id: packId,
+  } = useCardsTableData();
 
   const handleModal = () => {
     setOpenModal(true);
   };
 
-  // if (status === 'loading' && !cards.length) {
-  //   return <Preloader />;
-  // }
+  const learnHandleNavigate = () => {
+    nav('learn');
+  };
+
+  if (status === 'loading' && !cards.length) {
+    return <Preloader />;
+  }
 
   return (
     <Box marginTop={3}>
-      {/* <Stack direction={'row'} justifyContent="space-between">
+      <Stack direction={'row'} justifyContent="space-between">
         <BackLinkButton link={appRoutes.PACKS}>Back To Pack List</BackLinkButton>
         {isUserPackOwner && cards.length ? (
           <Button variant="contained" onClick={handleModal}>
@@ -58,7 +64,9 @@ export const CardsPage = () => {
           </Button>
         ) : null}
         {!isUserPackOwner && cards.length ? (
-          <Button variant="contained">Start Learn</Button>
+          <Button variant="contained" onClick={learnHandleNavigate}>
+            Start Learn
+          </Button>
         ) : null}
       </Stack>
       <Box display="flex" flexDirection="column" alignItems="center" marginY={3} gap={3}>
@@ -101,7 +109,7 @@ export const CardsPage = () => {
           </Stack>
         ) : null}
       </Box>
-      <NewCardModal packId={packId!} setOpenModal={setOpenModal} openModal={openModal} /> */}
+      <NewCardModal packId={packId!} setOpenModal={setOpenModal} openModal={openModal} />
     </Box>
   );
 };
