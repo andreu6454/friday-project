@@ -55,13 +55,7 @@ export const NewPackModal: FC<NewPackModalProps> = ({ openModal, setOpenModal })
         </FormControl>
         {/* pack name checkbox */}
         <FormControlLabel
-          control={
-            <Checkbox
-              {...register('private')}
-              checked={watch('private')}
-              name="private-pack"
-            />
-          }
+          control={<Checkbox {...register('private')} name="private-pack" />}
           label="Private Pack"
         />
         <DialogActions
@@ -71,7 +65,11 @@ export const NewPackModal: FC<NewPackModalProps> = ({ openModal, setOpenModal })
             justifyContent: 'space-between',
           }}
         >
-          <Button color="secondary" variant="outlined">
+          <Button
+            color="secondary"
+            variant="outlined"
+            onClick={() => setOpenModal(false)}
+          >
             Cancel
           </Button>
           <Button variant="contained" onClick={handleSubmit(onSubmit)}>
