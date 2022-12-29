@@ -6,14 +6,14 @@ import { cardActions } from './cards-slice';
 import { RequestStatusType } from './types';
 
 interface initialStateType {
-  cardsData: ICardsPacks;
+  packData: ICardsPacks;
   status: RequestStatusType;
   error: null | string;
   actionStatus: null | string;
 }
 
 const initialState: initialStateType = {
-  cardsData: {
+  packData: {
     cardPacks: [] as ICardPack[],
     cardPacksTotalCount: 100,
     maxCardsCount: 100,
@@ -31,13 +31,13 @@ const { reducer, actions } = createSlice({
   initialState: initialState,
   reducers: {
     setNewPage: (state, { payload }) => {
-      if (state.cardsData) {
-        state.cardsData.page = payload;
+      if (state.packData) {
+        state.packData.page = payload;
       }
     },
     setPageCount: (state, { payload }) => {
-      if (state.cardsData) {
-        state.cardsData.pageCount = payload;
+      if (state.packData) {
+        state.packData.pageCount = payload;
       }
     },
     setActionStatus: (state) => {
@@ -51,7 +51,7 @@ const { reducer, actions } = createSlice({
     builder
       .addCase(fetchPacks.fulfilled, (state, { payload }) => {
         state.error = null;
-        state.cardsData = payload;
+        state.packData = payload;
         state.status = 'succeeded';
       })
       .addCase(fetchPacks.pending, (state) => {
@@ -63,7 +63,7 @@ const { reducer, actions } = createSlice({
       })
       /////////////
       .addCase(addNewPack.fulfilled, (state, { payload }) => {
-        state.cardsData.cardPacks.unshift(payload.newCardsPack);
+        state.packData.cardPacks.unshift(payload.newCardsPack);
         state.actionStatus = 'CardPack successfully added';
         state.status = 'succeeded';
       })
@@ -76,11 +76,11 @@ const { reducer, actions } = createSlice({
       })
       /////////////
       .addCase(deletePack.fulfilled, (state, { payload }) => {
-        const findIndexPack = state.cardsData.cardPacks.findIndex(
+        const findIndexPack = state.packData.cardPacks.findIndex(
           (item) => item._id === payload.deletedCardsPack._id,
         );
         if (findIndexPack > -1) {
-          state.cardsData.cardPacks.splice(findIndexPack, 1);
+          state.packData.cardPacks.splice(findIndexPack, 1);
         }
         state.status = 'succeeded';
         state.actionStatus = 'CardPack successfully deleted';

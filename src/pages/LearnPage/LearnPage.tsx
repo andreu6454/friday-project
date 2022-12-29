@@ -13,7 +13,9 @@ import {
 import { BackLinkButton } from 'components';
 import { useActions } from 'hooks';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { appRoutes } from 'routes';
 import { Preloader } from 'sections/login-page/Preloader';
 import { ICard } from 'services/api/cards';
 import { asyncCardActions } from 'store/middleware/cards';
@@ -44,6 +46,7 @@ const grades1: Record<string, number> = {
 export const LearnPage = () => {
   const totalCount = useAppSelector((state) => state.cards.cardsData.cardsTotalCount);
   const cards = useAppSelector((state) => state.cards.cardsData.cards);
+  const packName = useAppSelector((state) => state.cards.cardsData.packName);
   const cardsStatus = useAppSelector((state) => state.cards.status);
   const isFetching = cardsStatus === 'loading';
 
@@ -76,15 +79,15 @@ export const LearnPage = () => {
     setGrade((event.target as HTMLInputElement).value);
   };
 
+  const nav = useNavigate();
+
   if (isFetching) {
     return <Preloader />;
   }
 
   return (
     <Box marginTop={3}>
-      {/* <BackLinkButton link={appRoutes.PACKS}>Back To Pack List</BackLinkButton> */}
-      <Button>Back to Pack lIst</Button>
-
+      <Button>Back To Pack List</Button>
       <Box
         sx={{
           display: 'flex',
@@ -92,7 +95,7 @@ export const LearnPage = () => {
           flexDirection: 'column',
         }}
       >
-        <Typography>Learn Pack Name</Typography>
+        <Typography>{packName}</Typography>
         <Card sx={{ width: '439px' }}>
           <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: '35px' }}>
             <Box>

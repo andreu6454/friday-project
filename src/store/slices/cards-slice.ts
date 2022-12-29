@@ -8,8 +8,8 @@ import { RequestStatusType } from './types';
 type initialStateType = {
   cardsData: Pick<
     ICardsResponse,
-    'cards' | 'page' | 'pageCount' | 'cardsTotalCount' | 'packName' | 'packUserId'
-  >;
+    'cards' | 'page' | 'pageCount' | 'cardsTotalCount' | 'packUserId'
+  > & { packName: string };
   status: RequestStatusType;
   error: null | string;
   actionStatus: null | string;
@@ -51,6 +51,9 @@ const { reducer, actions } = createSlice({
     },
     setError: (state) => {
       state.error = null;
+    },
+    setPackName: (state, { payload }) => {
+      state.cardsData.packName = payload;
     },
   },
   extraReducers(builder) {
