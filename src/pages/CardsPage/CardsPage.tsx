@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Container,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { BackLinkButton } from 'components';
 import { useCardsTableData } from 'hooks';
