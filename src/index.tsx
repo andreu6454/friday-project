@@ -15,16 +15,14 @@ const store = setupStore();
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <ThemeProvider theme={createTheme(theme)}>
-        <CssBaseline />
-        <AuthProvider>
-          <RouterProvider router={routes} />
-        </AuthProvider>
-      </ThemeProvider>
-    </Provider>
-  </React.StrictMode>,
+  <Provider store={store}>
+    <ThemeProvider theme={createTheme(theme)}>
+      <CssBaseline />
+      <AuthProvider>
+        <RouterProvider router={routes} />
+      </AuthProvider>
+    </ThemeProvider>
+  </Provider>,
 );
 
 reportWebVitals();

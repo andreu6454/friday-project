@@ -8,9 +8,10 @@ interface BackLinkButtonProps {
   children: ReactNode;
 }
 
-export const BackLinkButton: FC<BackLinkButtonProps> = ({ link, children }) => {
+export const BackLinkButton: FC<BackLinkButtonProps> = ({ link, children, ...props }) => {
   return (
     <Link
+      {...props}
       to={link}
       style={{
         gap: '8px',

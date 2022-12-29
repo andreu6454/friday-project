@@ -12,11 +12,11 @@ import { useDebounce } from './useDebounce';
 export const usePacksTableData = () => {
   const [search, setSearch] = useSearchParams();
 
-  const cardData = useAppSelector((state) => state.packs.cardsData);
+  const cardData = useAppSelector((state) => state.packs.packData);
   const loading = useAppSelector((state) => state.packs.status);
-  const page = useAppSelector((state) => state.packs.cardsData.page);
-  const pageCount = useAppSelector((state) => state.packs.cardsData.pageCount);
-  const totalCount = useAppSelector((state) => state.packs.cardsData.cardPacksTotalCount);
+  const page = useAppSelector((state) => state.packs.packData.page);
+  const pageCount = useAppSelector((state) => state.packs.packData.pageCount);
+  const totalCount = useAppSelector((state) => state.packs.packData.cardPacksTotalCount);
 
   const { setNewPage, setPageCount } = useActions(packActions);
   const { fetchPacks, addNewPack } = useActions(asyncPackActions);

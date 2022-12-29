@@ -14,7 +14,6 @@ export const useCardsTableData = () => {
   const totalCount = useAppSelector((state) => state.cards.cardsData.cardsTotalCount);
   const page = useAppSelector((state) => state.cards.cardsData.page);
   const pageCount = useAppSelector((state) => state.cards.cardsData.pageCount);
-  const packName = useAppSelector((state) => state.cards.cardsData.packName);
   const packUserId = useAppSelector((state) => state.cards.cardsData.packUserId);
   const loginUserId = useAppSelector((state) => state.user.user._id);
 
@@ -23,8 +22,9 @@ export const useCardsTableData = () => {
 
   const { id } = useParams();
 
-  const { fetchCards } = useActions(asyncCardActions);
-  const { setNewPage, setPageCount, setLoadingStatus } = useActions(cardActions);
+  const { fetchCards, addNewCard } = useActions(asyncCardActions);
+  const { setNewPage, setPageCount, setLoadingStatus, setPackName } =
+    useActions(cardActions);
 
   const renderActionsCells = (cards ? cards : []).map((el: ICard) => ({
     ...el,
@@ -52,7 +52,8 @@ export const useCardsTableData = () => {
     setPageCount,
     cards,
     status,
-    packName,
     isUserPackOwner,
+    setPackName,
+    id,
   };
 };

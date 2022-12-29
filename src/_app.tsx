@@ -1,3 +1,4 @@
+import { LearnPage } from 'pages/LearnPage/LearnPage';
 import {
   createHashRouter,
   createRoutesFromElements,
@@ -26,6 +27,7 @@ export const routes = createHashRouter(
         <Route path={appRoutes.PROFILE} element={<ProfilePage />} />
         <Route path={appRoutes.PACKS} element={<CardPacksPage />} />
         <Route path={appRoutes.CARDS + '/:id'} element={<CardsPage />} />
+        <Route path={appRoutes.CARDS + '/:id/learn'} element={<LearnPage />} />
       </Route>
       <Route path={appRoutes.LOGIN} element={<LoginPage />} />
       <Route path={appRoutes.FORGOT} element={<ForgotPasswordPage />} />
