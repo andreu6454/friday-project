@@ -55,7 +55,7 @@ export const updateCardGrade = createAsyncThunk<
   { updatedGrade: GradeType },
   { grade: number; card_id: string },
   { rejectValue: string }
->('card/deleteCard', async ({ grade, card_id }, thunkApi) => {
+>('card/updateCard', async ({ grade, card_id }, thunkApi) => {
   try {
     const response = await cardsAPI.grade(grade, card_id);
     return response.data;

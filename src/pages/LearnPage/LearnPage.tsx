@@ -14,6 +14,7 @@ import { BackLinkButton } from 'components';
 import { useActions } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Preloader } from 'sections/login-page/Preloader';
 import { ICard } from 'services/api/cards';
 import { asyncCardActions } from 'store/middleware/cards';
 import { useAppSelector } from 'store/store';
@@ -28,7 +29,6 @@ const getCard = (cards: ICard[]) => {
     },
     { sum: 0, id: -1 },
   );
-  console.log('test: ', sum, rand, res);
 
   return cards[res.id + 1];
 };
@@ -44,10 +44,12 @@ const grades1: Record<string, number> = {
 export const LearnPage = () => {
   const totalCount = useAppSelector((state) => state.cards.cardsData.cardsTotalCount);
   const cards = useAppSelector((state) => state.cards.cardsData.cards);
+  const cardsStatus = useAppSelector((state) => state.cards.status);
+  const isFetching = cardsStatus === 'loading';
 
   const [openAnswer, setOpenAnswer] = useState(false);
 
-  const [card, setCard] = useState<ICard | null>(null);
+  const [card, setCard] = useState<ICard>();
   const [grade, setGrade] = useState('не знал');
 
   const { fetchCards, updateCardGrade } = useActions(asyncCardActions);
@@ -74,6 +76,10 @@ export const LearnPage = () => {
     setGrade((event.target as HTMLInputElement).value);
   };
 
+  if (isFetching) {
+    return <Preloader />;
+  }
+
   return (
     <Box marginTop={3}>
       {/* <BackLinkButton link={appRoutes.PACKS}>Back To Pack List</BackLinkButton> */}
@@ -95,7 +101,7 @@ export const LearnPage = () => {
                 {card?.question}
               </Typography>
               <Typography variant="body2" sx={{ mt: '13px' }}>
-                Количество попыток ответов на вопрос: 10
+                Количество попыток ответов на вопрос: {card?.shots}
               </Typography>
             </Box>
             {openAnswer ? (

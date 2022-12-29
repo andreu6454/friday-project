@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { deleteCard, fetchCards } from 'store/middleware/cards';
 
 import { ICardsResponse } from './../../services/api/cards';
-import { addNewCard } from './../middleware/cards';
+import { addNewCard, updateCardGrade } from './../middleware/cards';
 import { RequestStatusType } from './types';
 
 type initialStateType = {
@@ -95,6 +95,22 @@ const { reducer, actions } = createSlice({
         state.status = 'loading';
       })
       .addCase(deleteCard.rejected, (state, { payload }) => {
+        state.error = payload as string;
+        state.status = 'failed';
+      })
+      .addCase(updateCardGrade.fulfilled, (state, { payload }) => {
+        const findIndexCard = state.cardsData.cards.findIndex(
+          (card) => card._id === payload.updatedGrade.card_id,
+        );
+        if (findIndexCard > -1) {
+          state.cardsData.cards[findIndexCard].shots = payload.updatedGrade.shots;
+        }
+        state.status = 'succeeded';
+      })
+      .addCase(updateCardGrade.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(updateCardGrade.rejected, (state, { payload }) => {
         state.error = payload as string;
         state.status = 'failed';
       });
