@@ -1,54 +1,11 @@
 import { instance } from 'services/config';
-
-export interface ICardsResponse {
-  cards: ICard[];
-  cardsTotalCount: number;
-  maxGrade: number;
-  minGrade: number;
-  page: number;
-  pageCount: number;
-  packUserId: string;
-  packName: string;
-}
-
-export interface BaseCard {
-  cardsPack_id: string;
-  shots?: number;
-  grade: number;
-  answer?: string;
-  question?: string;
-}
-
-export type GradeType = Omit<ICard, 'answer' | 'question' | 'created' | 'updated'> & {
-  card_id: string;
-};
-
-export interface ICard extends BaseCard {
-  user_id: string;
-  created: string;
-  updated: string;
-  _id: string;
-}
-
-///////////////
-
-export interface IAddNewCardRequest extends BaseCard {
-  answerImg?: string;
-  questionImg?: string;
-  questionVideo?: string;
-  answerVideo?: string;
-}
-
-export interface ICardParams {
-  cardAnswer?: string;
-  cardQuestion?: string;
-  cardsPack_id: string;
-  min?: number;
-  max?: number;
-  sortCards?: string;
-  page?: number;
-  pageCount?: number;
-}
+import {
+  GradeType,
+  IAddNewCardRequest,
+  ICard,
+  ICardParams,
+  ICardsResponse,
+} from 'services/type';
 
 export const cardsAPI = {
   getCards(params: ICardParams) {

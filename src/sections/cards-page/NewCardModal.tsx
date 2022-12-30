@@ -17,7 +17,7 @@ import React from 'react';
 import { FC } from 'react';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { IAddNewCardRequest } from 'services/api/cards';
+import { IAddNewCardRequest } from 'services/type';
 import { asyncCardActions } from 'store/middleware/cards';
 import { addNewPack, asyncPackActions } from 'store/middleware/packs';
 

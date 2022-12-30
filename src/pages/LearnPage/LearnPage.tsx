@@ -16,7 +16,7 @@ import { useActions } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import { ICard } from 'services/api/cards';
+import { ICard } from 'services/type';
 import { asyncCardActions } from 'store/middleware/cards';
 import { useAppSelector } from 'store/store';
 import { getCard } from 'utils';

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { ICardsResponse } from 'services/type';
 import { deleteCard, fetchCards } from 'store/middleware/cards';
 
-import { ICardsResponse } from './../../services/api/cards';
 import { addNewCard, updateCardGrade } from './../middleware/cards';
 import { RequestStatusType } from './types';
 
@@ -18,7 +18,7 @@ type initialStateType = {
 const initialState: initialStateType = {
   cardsData: {
     cards: [],
-    page: 0,
+    page: 1,
     pageCount: 10,
     cardsTotalCount: 0,
     packUserId: '',

@@ -7,17 +7,12 @@ import {
   FormControlLabel,
   Input,
   InputLabel,
-  TextField,
 } from '@mui/material';
-import { GridRenderCellParams } from '@mui/x-data-grid';
 import { BasicModal } from 'components';
 import { useActions } from 'hooks';
-import React from 'react';
 import { FC } from 'react';
-import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ICardPack } from 'services/api/packs';
-import { addNewPack, asyncPackActions } from 'store/middleware/packs';
+import { asyncPackActions } from 'store/middleware/packs';
 
 interface EditPackModalProps {
   openModal: boolean;

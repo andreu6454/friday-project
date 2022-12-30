@@ -1,6 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ICardParams, ICardsResponse } from 'services/api/cards';
-import { cardsAPI, GradeType, IAddNewCardRequest, ICard } from 'services/api/cards';
+import { cardsAPI } from 'services/api';
+import {
+  GradeType,
+  IAddNewCardRequest,
+  ICard,
+  ICardParams,
+  ICardsResponse,
+} from 'services/type';
 import { handlerAsyncError } from 'utils';
 
 export const fetchCards = createAsyncThunk<

@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { ICard } from 'services/api/cards';
+import { ICard } from 'services/type';
 import { asyncCardActions } from 'store/middleware/cards';
 import { cardActions } from 'store/slices/cards-slice';
 import { useAppSelector } from 'store/store';
@@ -16,15 +16,16 @@ export const useCardsTableData = () => {
   const pageCount = useAppSelector((state) => state.cards.cardsData.pageCount);
   const packUserId = useAppSelector((state) => state.cards.cardsData.packUserId);
   const loginUserId = useAppSelector((state) => state.user.user._id);
+  const packs = useAppSelector((state) => state.packs.packData.cardPacks);
+  const packName = useAppSelector((state) => state.cards.cardsData.packName);
 
   const isLoadingStatus = status === 'loading';
   const isUserPackOwner = packUserId === loginUserId;
 
   const { id } = useParams();
 
-  const { fetchCards, addNewCard } = useActions(asyncCardActions);
-  const { setNewPage, setPageCount, setLoadingStatus, setPackName } =
-    useActions(cardActions);
+  const { fetchCards } = useActions(asyncCardActions);
+  const { setNewPage, setPageCount, setPackName } = useActions(cardActions);
 
   const renderActionsCells = (cards ? cards : []).map((el: ICard) => ({
     ...el,
@@ -35,11 +36,15 @@ export const useCardsTableData = () => {
   useEffect(() => {
     if (id) {
       fetchCards({ cardsPack_id: id, page, pageCount });
+      const findIndexPack = packs.findIndex((pack) => pack._id === id);
+      const findPackName =
+        findIndexPack > -1 ? packs[findIndexPack].name : 'No pack Name';
+      setPackName(findPackName);
     }
 
-    return () => {
-      setLoadingStatus();
-    };
+    // return () => {
+    //   setLoadingStatus();
+    // };
   }, [page, pageCount]);
 
   return {
@@ -53,7 +58,7 @@ export const useCardsTableData = () => {
     cards,
     status,
     isUserPackOwner,
-    setPackName,
+    packName,
     id,
   };
 };

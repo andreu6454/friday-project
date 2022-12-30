@@ -12,10 +12,9 @@ import { NewCardModal } from 'sections/cards-page/NewCardModal';
 import { useAppSelector } from 'store/store';
 
 export const CardsPage = () => {
-  const packs = useAppSelector((state) => state.packs.packData.cardPacks);
-  const packName = useAppSelector((state) => state.cards.cardsData.packName);
-  const [openModal, setOpenModal] = useState(false);
   const nav = useNavigate();
+
+  const [openModal, setOpenModal] = useState(false);
 
   const {
     totalCount,
@@ -28,7 +27,7 @@ export const CardsPage = () => {
     cards,
     status,
     isUserPackOwner,
-    setPackName,
+    packName,
     id: packId,
   } = useCardsTableData();
 
@@ -39,12 +38,6 @@ export const CardsPage = () => {
   const learnHandleNavigate = () => {
     nav('learn');
   };
-
-  useEffect(() => {
-    const findIndexPack = packs.findIndex((pack) => pack._id === packId);
-    const findPackName = findIndexPack > -1 ? packs[findIndexPack].name : 'No pack Name';
-    setPackName(findPackName);
-  }, [packName]);
 
   if (status === 'loading' && !cards.length) {
     return <Preloader />;

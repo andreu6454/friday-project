@@ -6,7 +6,7 @@ import { GridRenderCellParams } from '@mui/x-data-grid';
 import { memo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { appRoutes } from 'routes';
-import { ICardPack } from 'services/api/packs';
+import { ICardPack } from 'services/type';
 import { deletePack } from 'store/middleware/packs';
 import { useAppDispatch, useAppSelector } from 'store/store';
 
