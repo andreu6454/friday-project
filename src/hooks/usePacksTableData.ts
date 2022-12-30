@@ -48,6 +48,16 @@ export const usePacksTableData = () => {
     });
   }, [search, pageCount, page]);
 
+  const clearFilterHandle = () => {
+    search.set('category', 'all');
+    search.delete('min');
+    search.delete('max');
+    search.delete('search_term');
+    setNewPage(1);
+    setPageCount(10);
+    setSearch(search);
+  };
+
   const renderActionsCells = (cardData ? cardData.cardPacks : []).map(
     (el: ICardPack) => ({
       ...el,
@@ -89,5 +99,6 @@ export const usePacksTableData = () => {
     setPageCount,
     activeCategoryHandle,
     onSearchChange,
+    clearFilterHandle,
   };
 };

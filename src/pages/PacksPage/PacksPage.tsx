@@ -54,6 +54,7 @@ const CardPacksPage = () => {
     setPageCount,
     activeCategoryHandle,
     onSearchChange,
+    clearFilterHandle,
   } = usePacksTableData();
 
   return (
@@ -124,7 +125,7 @@ const CardPacksPage = () => {
         </Box>
         {/* filter button */}
         <Box alignSelf="flex-end">
-          <IconButton>
+          <IconButton onClick={clearFilterHandle}>
             <FilterAltIcon />
           </IconButton>
         </Box>
