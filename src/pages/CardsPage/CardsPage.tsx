@@ -1,21 +1,13 @@
 import { Box, Button, Stack, Typography } from '@mui/material';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { BackLinkButton } from 'components';
+import { Preloader } from 'components/Preloader/Preloader';
 import { useCardsTableData } from 'hooks';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { appRoutes } from 'routes';
-import { NewCardModal } from 'sections/card-page/NewCardModal';
-import { Preloader } from 'sections/login-page/Preloader';
-import { CustomPagination } from 'sections/packs-page/CustomPagination';
+import { CardsTable } from 'sections/cards-page/CardsTable';
+import { NewCardModal } from 'sections/cards-page/NewCardModal';
 import { useAppSelector } from 'store/store';
-
-const columns: GridColDef[] = [
-  { field: 'question', headerName: 'Question', flex: 1.5 },
-  { field: 'answer', headerName: 'Answer', flex: 0.5 },
-  { field: 'updated', headerName: 'Last Updated', flex: 1 },
-  { field: 'grade', headerName: 'Grade', flex: 1 },
-];
 
 export const CardsPage = () => {
   const packs = useAppSelector((state) => state.packs.packData.cardPacks);
@@ -48,8 +40,8 @@ export const CardsPage = () => {
 
   useEffect(() => {
     const findIndexPack = packs.findIndex((pack) => pack._id === packId);
-    const pN = findIndexPack > -1 ? packs[findIndexPack].name : 'No pack Name';
-    setPackName(pN);
+    const findPackName = findIndexPack > -1 ? packs[findIndexPack].name : 'No pack Name';
+    setPackName(findPackName);
   }, [packName]);
 
   if (status === 'loading' && !cards.length) {
@@ -58,6 +50,9 @@ export const CardsPage = () => {
 
   return (
     <Box marginTop={3}>
+      {packId && (
+        <NewCardModal packId={packId} setOpenModal={setOpenModal} openModal={openModal} />
+      )}
       <Stack direction={'row'} justifyContent="space-between">
         <BackLinkButton link={appRoutes.PACKS}>Back To Pack List</BackLinkButton>
         {isUserPackOwner && cards.length ? (
@@ -84,34 +79,23 @@ export const CardsPage = () => {
               Add new card
             </Button>
           </Stack>
-        ) : (
-          <Typography variant="body2">This pack is empty.</Typography>
-        )}
+        ) : null}
+        {!cards.length && !isUserPackOwner ? (
+          <Typography variant="body2">This pack is empty</Typography>
+        ) : null}
 
         {cards.length ? (
-          <Stack spacing={4} direction="column" width="100%">
-            <DataGrid
-              getRowId={(row) => row._id}
-              sx={{ minHeight: '300px', minWidth: '100%' }}
-              rowCount={totalCount}
-              rows={renderActionsCells}
-              loading={isLoadingStatus}
-              paginationMode="server"
-              columns={columns}
-              hideFooter={true}
-            />
-            <CustomPagination
-              page={page}
-              pageCount={pageCount}
-              totalCount={totalCount}
-              onChangePage={setNewPage}
-              onChangePageSize={setPageCount}
-              rowsPerPageOptions={[10, 20, 50]}
-            />
-          </Stack>
+          <CardsTable
+            totalCount={totalCount}
+            page={page}
+            renderActionsCells={renderActionsCells}
+            isLoadingStatus={isLoadingStatus}
+            pageCount={pageCount}
+            setNewPage={setNewPage}
+            setPageCount={setPageCount}
+          />
         ) : null}
       </Box>
-      <NewCardModal packId={packId!} setOpenModal={setOpenModal} openModal={openModal} />
     </Box>
   );
 };
