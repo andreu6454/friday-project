@@ -132,7 +132,7 @@ const CardPacksPage = () => {
       {/* packs not found */}
       {!totalCount && (
         <Typography textAlign={'center'} mt={20}>
-          Колоды с данным именем не найдены. Измените параметры поиска
+          Колоды с данным фильтром не найдены. Измените параметры поиска
         </Typography>
       )}
       {/* table */}
