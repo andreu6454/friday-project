@@ -1,3 +1,4 @@
+import { ArrowBack } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -10,30 +11,15 @@ import {
   RadioGroup,
   Typography,
 } from '@mui/material';
-import { BackLinkButton } from 'components';
+import { Preloader } from 'components/Preloader/Preloader';
 import { useActions } from 'hooks';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate, useParams } from 'react-router-dom';
-import { appRoutes } from 'routes';
-import { Preloader } from 'sections/login-page/Preloader';
+import { Link, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { ICard } from 'services/api/cards';
 import { asyncCardActions } from 'store/middleware/cards';
 import { useAppSelector } from 'store/store';
-
-const getCard = (cards: ICard[]) => {
-  const sum = cards.reduce((acc, card) => acc + (6 - card.grade) * (6 - card.grade), 0);
-  const rand = Math.random() * sum;
-  const res = cards.reduce(
-    (acc: { sum: number; id: number }, card, i) => {
-      const newSum = acc.sum + (6 - card.grade) * (6 - card.grade);
-      return { sum: newSum, id: newSum < rand ? i : acc.id };
-    },
-    { sum: 0, id: -1 },
-  );
-
-  return cards[res.id + 1];
-};
+import { getCard } from 'utils';
 
 const grades1: Record<string, number> = {
   ['не знал']: 1,
@@ -79,7 +65,8 @@ const LearnPage = () => {
     setGrade((event.target as HTMLInputElement).value);
   };
 
-  const nav = useNavigate();
+  const nav = useLocation();
+  const href = nav.pathname.split('/').slice(0, -1).join('/');
 
   if (isFetching) {
     return <Preloader />;
@@ -87,7 +74,19 @@ const LearnPage = () => {
 
   return (
     <Box marginTop={3}>
-      <Button>Back To Pack List</Button>
+      <Link
+        to={href}
+        style={{
+          gap: '8px',
+          color: 'black',
+          textDecoration: 'none',
+          alignItems: 'center',
+          display: 'flex',
+        }}
+      >
+        <ArrowBack />
+        <Typography variant={'body1'}>Back to Pack List</Typography>
+      </Link>
       <Box
         sx={{
           display: 'flex',

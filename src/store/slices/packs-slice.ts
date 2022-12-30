@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ICardPack, ICardsPacks } from 'services/api/packs';
-import { addNewPack, deletePack, fetchPacks } from 'store/middleware/packs';
+import { addNewPack, deletePack, editPack, fetchPacks } from 'store/middleware/packs';
 
-import { cardActions } from './cards-slice';
 import { RequestStatusType } from './types';
 
 interface initialStateType {
@@ -91,6 +90,17 @@ const { reducer, actions } = createSlice({
       .addCase(deletePack.rejected, (state, { payload }) => {
         state.error = payload as string;
         state.status = 'failed';
+      })
+      /////////////
+      .addCase(editPack.fulfilled, (state, { payload }) => {
+        const findIndexPack = state.packData.cardPacks.findIndex(
+          (item) => item._id === payload.updatedCardsPack._id,
+        );
+        if (findIndexPack > -1) {
+          state.packData.cardPacks[findIndexPack].name = payload.updatedCardsPack.name;
+        }
+        state.status = 'succeeded';
+        state.actionStatus = 'CardPack successfully edited';
       });
   },
 });

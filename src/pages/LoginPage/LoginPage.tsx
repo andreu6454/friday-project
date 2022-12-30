@@ -18,11 +18,11 @@ import {
   Typography,
 } from '@mui/material';
 import { AlertError } from 'components';
+import { Preloader } from 'components/Preloader/Preloader';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { appRoutes } from 'routes';
-import { Preloader } from 'sections/login-page/Preloader';
 import { loginUser } from 'store/middleware/authUser';
 import { useAppDispatch, useAppSelector } from 'store/store';
 
