@@ -84,9 +84,10 @@ export const CardsPage = () => {
               Add new card
             </Button>
           </Stack>
-        ) : (
-          <Typography variant="body2">This pack is empty.</Typography>
-        )}
+        ) : null}
+        {!cards.length && !isUserPackOwner ? (
+          <Typography variant="body2">This pack is empty</Typography>
+        ) : null}
 
         {cards.length ? (
           <Stack spacing={4} direction="column" width="100%">
