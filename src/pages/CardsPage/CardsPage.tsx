@@ -1,5 +1,7 @@
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Person } from '@mui/icons-material';
+import { Box, Button, Select, Stack, Typography } from '@mui/material';
 import { BackLinkButton } from 'components';
+import { EditMenu } from 'components/Menu/EditMenu';
 import { Preloader } from 'components/Preloader/Preloader';
 import { useCardsTableData } from 'hooks';
 import { useEffect, useState } from 'react';
@@ -68,7 +70,10 @@ export const CardsPage = () => {
       </Stack>
       <Box display="flex" flexDirection="column" alignItems="center" marginY={3} gap={3}>
         <Typography variant="h5" alignSelf="flex-start" textAlign="left">
-          {packName}
+          <Stack direction={'row'}>
+            {packName}
+            <EditMenu />
+          </Stack>
         </Typography>
         {!cards.length && isUserPackOwner ? (
           <Stack alignItems="center" gap={3} marginTop={10}>
