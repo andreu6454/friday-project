@@ -3,19 +3,15 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import {
   Box,
   Button,
-  Checkbox,
-  DialogActions,
-  FormControlLabel,
   IconButton,
   InputAdornment,
   Stack,
-  TextField,
   Typography,
 } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
-import { BasicModal, DoubleSlider } from 'components';
+import { DoubleSlider } from 'components';
 import { AlertSuccess } from 'components/AlerSuccess/AlertSucess';
-import { useDebounce, usePacksTableData } from 'hooks';
+import { usePacksTableData } from 'hooks';
 import * as React from 'react';
 import { useState } from 'react';
 import { MemoizedActionButtons } from 'sections/packs-page/ActionButtons';
@@ -133,27 +129,36 @@ const CardPacksPage = () => {
           </IconButton>
         </Box>
       </Stack>
+      {/* packs not found */}
+      {!totalCount && (
+        <Typography textAlign={'center'} mt={20}>
+          Колоды с данным именем не найдены. Измените параметры поиска
+        </Typography>
+      )}
       {/* table */}
-      <Stack spacing={4} direction="column">
-        <DataGrid
-          getRowId={(row) => row._id}
-          sx={{ minHeight: '432px' }}
-          rowCount={totalCount}
-          rows={renderActionsCells}
-          loading={loadingStatus}
-          paginationMode="server"
-          columns={columns}
-          hideFooter={true}
-        />
-        <CustomPagination
-          page={page}
-          pageCount={pageCount}
-          totalCount={totalCount}
-          onChangePage={setNewPage}
-          onChangePageSize={setPageCount}
-          rowsPerPageOptions={[10, 20, 50]}
-        />
-      </Stack>
+      {!!totalCount && (
+        <Stack spacing={4} direction="column">
+          <DataGrid
+            getRowId={(row) => row._id}
+            sx={{ minHeight: '432px' }}
+            rowCount={totalCount}
+            rows={renderActionsCells}
+            loading={loadingStatus}
+            paginationMode="server"
+            columns={columns}
+            hideFooter={true}
+          />
+          <CustomPagination
+            page={page}
+            pageCount={pageCount}
+            totalCount={totalCount}
+            onChangePage={setNewPage}
+            onChangePageSize={setPageCount}
+            rowsPerPageOptions={[10, 20, 50]}
+          />
+        </Stack>
+      )}
+
       <AlertSuccess msg={'Success'} />
       <NewPackModal openModal={openModal} setOpenModal={setOpenModal} />
     </Box>
