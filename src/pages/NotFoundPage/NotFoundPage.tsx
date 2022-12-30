@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { appRoutes } from 'routes';
 
 import error404 from './404.svg';
-export const NotFoundPage = () => {
+
+const NotFoundPage = () => {
   const nav = useNavigate();
   const navigateHandle = () => {
     nav(appRoutes.DEFAULT);
@@ -49,3 +50,5 @@ export const NotFoundPage = () => {
     </Box>
   );
 };
+
+export default NotFoundPage;

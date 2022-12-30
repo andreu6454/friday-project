@@ -9,7 +9,7 @@ import { CardsTable } from 'sections/cards-page/CardsTable';
 import { NewCardModal } from 'sections/cards-page/NewCardModal';
 import { useAppSelector } from 'store/store';
 
-export const CardsPage = () => {
+const CardsPage = () => {
   const packs = useAppSelector((state) => state.packs.packData.cardPacks);
   const packName = useAppSelector((state) => state.cards.cardsData.packName);
   const [openModal, setOpenModal] = useState(false);
@@ -99,3 +99,5 @@ export const CardsPage = () => {
     </Box>
   );
 };
+
+export default CardsPage;

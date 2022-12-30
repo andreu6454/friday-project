@@ -18,7 +18,7 @@ import { appRoutes } from 'routes';
 import { authAsyncActions } from 'store/middleware/authUser';
 import { useAppSelector } from 'store/store';
 
-export const ForgotPasswordPage = () => {
+const ForgotPasswordPage = () => {
   const nav = useNavigate();
   const { forgotPassword } = useActions(authAsyncActions);
 
@@ -114,3 +114,5 @@ click to change password</a>
     </Box>
   );
 };
+
+export default ForgotPasswordPage;
