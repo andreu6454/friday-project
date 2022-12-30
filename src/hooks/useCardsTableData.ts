@@ -36,16 +36,14 @@ export const useCardsTableData = () => {
   useEffect(() => {
     if (id) {
       fetchCards({ cardsPack_id: id, page, pageCount });
-      const findIndexPack = packs.findIndex((pack) => pack._id === id);
-      const findPackName =
-        findIndexPack > -1 ? packs[findIndexPack].name : 'No pack Name';
-      setPackName(findPackName);
     }
-
-    // return () => {
-    //   setLoadingStatus();
-    // };
   }, [page, pageCount]);
+
+  useEffect(() => {
+    const findIndexPack = packs.findIndex((pack) => pack._id === id);
+    const findPackName = findIndexPack > -1 ? packs[findIndexPack].name : 'No pack Name';
+    setPackName(findPackName);
+  }, [packName]);
 
   return {
     page,

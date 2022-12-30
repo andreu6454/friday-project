@@ -1,15 +1,14 @@
-import { Person } from '@mui/icons-material';
-import { Box, Button, Select, Stack, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { BackLinkButton } from 'components';
-import { EditMenu } from 'components/Menu/EditMenu';
 import { Preloader } from 'components/Preloader/Preloader';
 import { useCardsTableData } from 'hooks';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { appRoutes } from 'routes';
 import { CardsTable } from 'sections/cards-page/CardsTable';
+import { HandleMenu } from 'sections/cards-page/HandleMenu';
 import { NewCardModal } from 'sections/cards-page/NewCardModal';
-import { useAppSelector } from 'store/store';
+import { EditPackModal } from 'sections/packs-page/EditPackModal';
 
 export const CardsPage = () => {
   const nav = useNavigate();
@@ -65,7 +64,7 @@ export const CardsPage = () => {
         <Typography variant="h5" alignSelf="flex-start" textAlign="left">
           <Stack direction={'row'}>
             {packName}
-            <EditMenu />
+            {packId && <HandleMenu packId={packId} packName={packName} />}
           </Stack>
         </Typography>
         {!cards.length && isUserPackOwner ? (

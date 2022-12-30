@@ -34,7 +34,7 @@ export const EditPackModal: FC<EditPackModalProps> = ({
 }) => {
   const { editPack } = useActions(asyncPackActions);
 
-  const { register, handleSubmit, watch, reset } = useForm<IEditPackSubmit>({
+  const { register, handleSubmit } = useForm<IEditPackSubmit>({
     defaultValues: {
       private: false,
       name: packName,

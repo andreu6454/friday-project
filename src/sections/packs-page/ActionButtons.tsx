@@ -27,15 +27,19 @@ const ActionButtons = (params: GridRenderCellParams<any, ICardPack>) => {
     nav(appRoutes.CARDS + `/${packId}`);
   };
 
+  const onOpenModalHandle = () => {
+    setOpenModal(true);
+  };
+
   return (
-    <Box {...params.row}>
+    <Box>
       <IconButton onClick={() => navToCardHandle(params.row._id)}>
         <SchoolIcon />
       </IconButton>
       {userId === params.row.user_id && (
         <>
-          <IconButton>
-            <ModeEditIcon onClick={() => setOpenModal(true)} />
+          <IconButton onClick={onOpenModalHandle}>
+            <ModeEditIcon />
           </IconButton>
           <IconButton onClick={() => deleteCardPackHandle(params.row._id)}>
             <DeleteForeverIcon />
