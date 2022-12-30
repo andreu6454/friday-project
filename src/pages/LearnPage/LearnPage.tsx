@@ -11,11 +11,11 @@ import {
   RadioGroup,
   Typography,
 } from '@mui/material';
+import { Preloader } from 'components/Preloader/Preloader';
 import { useActions } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import { Preloader } from 'sections/login-page/Preloader';
 import { ICard } from 'services/api/cards';
 import { asyncCardActions } from 'store/middleware/cards';
 import { useAppSelector } from 'store/store';
