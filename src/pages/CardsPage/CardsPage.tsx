@@ -17,7 +17,7 @@ const columns: GridColDef[] = [
   { field: 'grade', headerName: 'Grade', flex: 1 },
 ];
 
-export const CardsPage = () => {
+const CardsPage = () => {
   const packs = useAppSelector((state) => state.packs.packData.cardPacks);
   const packName = useAppSelector((state) => state.cards.cardsData.packName);
   const [openModal, setOpenModal] = useState(false);
@@ -115,3 +115,5 @@ export const CardsPage = () => {
     </Box>
   );
 };
+
+export default CardsPage;

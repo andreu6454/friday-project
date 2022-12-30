@@ -39,7 +39,7 @@ const columns: GridColDef[] = [
   },
 ];
 
-export const CardPacksPage = () => {
+const CardPacksPage = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const handleOpenModal = () => {
@@ -159,3 +159,5 @@ export const CardPacksPage = () => {
     </Box>
   );
 };
+
+export default CardPacksPage;

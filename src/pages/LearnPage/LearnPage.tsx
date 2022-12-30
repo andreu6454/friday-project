@@ -43,7 +43,7 @@ const grades1: Record<string, number> = {
   ['знал']: 5,
 };
 
-export const LearnPage = () => {
+const LearnPage = () => {
   const totalCount = useAppSelector((state) => state.cards.cardsData.cardsTotalCount);
   const cards = useAppSelector((state) => state.cards.cardsData.cards);
   const packName = useAppSelector((state) => state.cards.cardsData.packName);
@@ -151,3 +151,5 @@ export const LearnPage = () => {
     </Box>
   );
 };
+
+export default LearnPage;

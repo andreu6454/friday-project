@@ -32,7 +32,7 @@ interface IFormInput {
   rememberMe: boolean;
 }
 
-export const LoginPage = () => {
+const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const errorMsg = useAppSelector((state) => state.auth.error);
@@ -168,3 +168,5 @@ export const LoginPage = () => {
     </Card>
   );
 };
+
+export default LoginPage;

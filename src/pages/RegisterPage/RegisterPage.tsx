@@ -28,7 +28,7 @@ interface IFormInput {
   confirmedPassword: string;
 }
 
-export const RegisterPage = () => {
+const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { error, isRegistered } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
@@ -182,3 +182,5 @@ export const RegisterPage = () => {
     </Box>
   );
 };
+
+export default RegisterPage;
