@@ -3,16 +3,21 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import SchoolIcon from '@mui/icons-material/School';
 import { Box, IconButton } from '@mui/material';
 import { GridRenderCellParams } from '@mui/x-data-grid';
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { appRoutes } from 'routes';
+import { ICardPack } from 'services/api/packs';
 import { deletePack } from 'store/middleware/packs';
 import { useAppDispatch, useAppSelector } from 'store/store';
 
-const ActionButtons = (params: GridRenderCellParams<any, any, any>) => {
+import { EditPackModal } from './EditPackModal';
+
+const ActionButtons = (params: GridRenderCellParams<any, ICardPack>) => {
   const userId = useAppSelector((state) => state.user.user._id);
   const dispatch = useAppDispatch();
   const nav = useNavigate();
+
+  const [openModal, setOpenModal] = useState(false);
 
   const deleteCardPackHandle = (id: string) => {
     dispatch(deletePack({ id }));
@@ -23,20 +28,26 @@ const ActionButtons = (params: GridRenderCellParams<any, any, any>) => {
   };
 
   return (
-    <Box>
+    <Box {...params.row}>
       <IconButton onClick={() => navToCardHandle(params.row._id)}>
         <SchoolIcon />
       </IconButton>
       {userId === params.row.user_id && (
         <>
           <IconButton>
-            <ModeEditIcon />
+            <ModeEditIcon onClick={() => setOpenModal(true)} />
           </IconButton>
-          <IconButton onClick={() => deleteCardPackHandle(params.row.id)}>
+          <IconButton onClick={() => deleteCardPackHandle(params.row._id)}>
             <DeleteForeverIcon />
           </IconButton>
         </>
       )}
+      <EditPackModal
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        packId={params.row._id}
+        packName={params.row.name}
+      />
     </Box>
   );
 };

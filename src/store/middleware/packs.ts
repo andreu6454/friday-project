@@ -49,8 +49,22 @@ export const deletePack = createAsyncThunk<
   }
 });
 
+export const editPack = createAsyncThunk<
+  { updatedCardsPack: ICardPack },
+  { id: string; name: string },
+  { rejectValue: string }
+>('card/editCardPack', async ({ id, name }, thunkApi) => {
+  try {
+    const response = await packsAPI.editPack(id, name);
+    return response.data;
+  } catch (error) {
+    return handlerAsyncError(error, thunkApi);
+  }
+});
+
 export const asyncPackActions = {
   fetchPacks,
   addNewPack,
   deletePack,
+  editPack,
 };
