@@ -11,9 +11,9 @@ import {
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { DoubleSlider } from 'components';
 import { AlertSuccess } from 'components/AlerSuccess/AlertSucess';
+import { NoCoverImage } from 'components/NoCoverImage/NoCoverImage';
 import { usePacksTableData } from 'hooks';
-import * as React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { MemoizedActionButtons } from 'sections/packs-page/ActionButtons';
 import { CustomPagination } from 'sections/packs-page/CustomPagination';
 import { NewPackModal } from 'sections/packs-page/NewPackModal';
@@ -21,7 +21,28 @@ import { ICardPack } from 'services/type';
 import { StyledTextField } from 'styles/styles';
 
 const columns: GridColDef[] = [
-  { field: 'name', headerName: 'Name', flex: 1.5 },
+  {
+    field: 'name',
+    headerName: 'Name',
+    flex: 1.5,
+    renderCell: (params: GridRenderCellParams<any, ICardPack>) => {
+      return (
+        <Stack direction={'row'} alignItems={'center'} spacing={1}>
+          {params.row.deckCover ? (
+            <img
+              width={'50px'}
+              height={'30px'}
+              style={{ objectFit: 'cover' }}
+              src={params.row.deckCover}
+            />
+          ) : (
+            <NoCoverImage />
+          )}
+          <Typography>{params.row.name}</Typography>
+        </Stack>
+      );
+    },
+  },
   { field: 'cardsCount', headerName: 'Cards', flex: 0.5 },
   { field: 'updated', headerName: 'Last Updates', flex: 1 },
   { field: 'user_name', headerName: 'Created by', flex: 1 },
