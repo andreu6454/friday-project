@@ -33,8 +33,8 @@ const ActionButtons = (params: GridRenderCellParams<any, ICardPack>) => {
       </IconButton>
       {userId === params.row.user_id && (
         <>
-          <IconButton>
-            <ModeEditIcon onClick={() => setOpenEditModal(true)} />
+          <IconButton onClick={() => setOpenEditModal(true)}>
+            <ModeEditIcon />
           </IconButton>
           <IconButton onClick={() => setOpenDeleteModal(true)}>
             <DeleteForeverIcon />
