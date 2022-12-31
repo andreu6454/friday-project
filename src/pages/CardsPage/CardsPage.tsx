@@ -1,17 +1,19 @@
 import { Box, Button, Stack, Typography } from '@mui/material';
-import { BackLinkButton } from 'components';
+import { AlertError, BackLinkButton } from 'components';
 import { Preloader } from 'components/Preloader/Preloader';
-import { useCardsTableData } from 'hooks';
+import { useActions, useCardsTableData } from 'hooks';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { appRoutes } from 'routes';
 import { CardsTable } from 'sections/cards-page/CardsTable';
 import { EditPackMenu } from 'sections/cards-page/EditPackMenu';
 import { NewCardModal } from 'sections/cards-page/NewCardModal';
+import { cardActions } from 'store/slices';
 
 export const CardsPage = () => {
   const nav = useNavigate();
   const [openModal, setOpenModal] = useState(false);
+  const { setError } = useActions(cardActions);
 
   const {
     totalCount,
@@ -26,6 +28,7 @@ export const CardsPage = () => {
     isUserPackOwner,
     isPrivatePack,
     packName,
+    errorCardsMsg,
     id: packId,
   } = useCardsTableData();
 
@@ -100,6 +103,8 @@ export const CardsPage = () => {
           />
         ) : null}
       </Box>
+
+      <AlertError errorMsg={errorCardsMsg} onCloseAction={setError} />
     </Box>
   );
 };

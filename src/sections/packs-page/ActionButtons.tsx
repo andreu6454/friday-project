@@ -24,7 +24,7 @@ const ActionButtons = (params: GridRenderCellParams<any, ICardPack>) => {
   };
 
   return (
-    <Box {...params.row}>
+    <Box>
       <IconButton
         disabled={!params.row.cardsCount && userId !== params.row.user_id}
         onClick={() => navToCardHandle(params.row._id)}

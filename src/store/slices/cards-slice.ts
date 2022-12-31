@@ -45,8 +45,8 @@ const { reducer, actions } = createSlice({
     setActionStatus: (state) => {
       state.actionStatus = null;
     },
-    setError: (state) => {
-      state.error = null;
+    setError: (state, { payload }) => {
+      state.error = payload;
     },
     clearCardsData: (state) => {
       state.cardsData.cards = [];

@@ -1,10 +1,16 @@
 import { Alert, Snackbar } from '@mui/material';
+import { AnyAction } from '@reduxjs/toolkit';
 import { ReactPortal } from 'components/Portal/Portal';
-import React from 'react';
+import React, { FC } from 'react';
 import { setErrorMsg } from 'store/slices/auth-slice';
 import { useAppDispatch } from 'store/store';
 
-export const AlertError = ({ errorMsg = '' }: { errorMsg: string | null }) => {
+interface AlerErrorProps {
+  errorMsg: string | null;
+  onCloseAction: (action: any) => AnyAction;
+}
+
+export const AlertError: FC<AlerErrorProps> = ({ errorMsg = '', onCloseAction }) => {
   const dispatch = useAppDispatch();
 
   const [state, setState] = React.useState<{
@@ -20,7 +26,7 @@ export const AlertError = ({ errorMsg = '' }: { errorMsg: string | null }) => {
 
   const handleClose = () => {
     setState({ ...state, open: false });
-    dispatch(setErrorMsg(''));
+    dispatch(onCloseAction(''));
   };
 
   return (
