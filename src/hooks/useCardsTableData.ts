@@ -25,7 +25,7 @@ export const useCardsTableData = () => {
   const { id } = useParams();
 
   const { fetchCards } = useActions(asyncCardActions);
-  const { setNewPage, setPageCount, setPackName } = useActions(cardActions);
+  const { setNewPage, setPageCount } = useActions(cardActions);
 
   const renderActionsCells = (cards ? cards : []).map((el: ICard) => ({
     ...el,
@@ -38,12 +38,6 @@ export const useCardsTableData = () => {
       fetchCards({ cardsPack_id: id, page, pageCount });
     }
   }, [page, pageCount]);
-
-  useEffect(() => {
-    const findIndexPack = packs.findIndex((pack) => pack._id === id);
-    const findPackName = findIndexPack > -1 ? packs[findIndexPack].name : 'No pack Name';
-    setPackName(findPackName);
-  }, [packName]);
 
   return {
     page,

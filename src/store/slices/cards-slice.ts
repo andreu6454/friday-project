@@ -22,7 +22,7 @@ const initialState: initialStateType = {
     pageCount: 10,
     cardsTotalCount: 0,
     packUserId: '',
-    packName: '',
+    packName: 'No pack Name',
   },
   status: 'loading' as RequestStatusType,
   actionStatus: null,
@@ -51,9 +51,6 @@ const { reducer, actions } = createSlice({
     },
     setError: (state) => {
       state.error = null;
-    },
-    setPackName: (state, { payload }) => {
-      state.cardsData.packName = payload;
     },
   },
   extraReducers(builder) {

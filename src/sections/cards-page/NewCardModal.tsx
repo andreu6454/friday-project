@@ -1,25 +1,20 @@
 import {
   Box,
   Button,
-  Checkbox,
   DialogActions,
   FormControl,
-  FormControlLabel,
   Input,
   InputLabel,
   MenuItem,
   Select,
-  TextField,
 } from '@mui/material';
 import { BasicModal } from 'components';
 import { useActions } from 'hooks';
-import React from 'react';
 import { FC } from 'react';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { IAddNewCardRequest } from 'services/type';
 import { asyncCardActions } from 'store/middleware/cards';
-import { addNewPack, asyncPackActions } from 'store/middleware/packs';
 
 interface NewPackModalProps {
   openModal: boolean;
@@ -34,7 +29,7 @@ export const NewCardModal: FC<NewPackModalProps> = ({
 }) => {
   const { addNewCard } = useActions(asyncCardActions);
 
-  const { register, handleSubmit, watch, reset } = useForm<IAddNewCardRequest>({});
+  const { register, handleSubmit, reset } = useForm<IAddNewCardRequest>({});
   const [format, setFormat] = useState('text');
 
   const onSubmit: SubmitHandler<IAddNewCardRequest> = (newCard: IAddNewCardRequest) => {
