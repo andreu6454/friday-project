@@ -10,6 +10,7 @@ import { ICardPack } from 'services/api/packs';
 import { deletePack } from 'store/middleware/packs';
 import { useAppDispatch, useAppSelector } from 'store/store';
 
+import { DeletePackModal } from './DeletePackModal';
 import { EditPackModal } from './EditPackModal';
 
 const ActionButtons = (params: GridRenderCellParams<any, ICardPack>) => {
@@ -17,11 +18,8 @@ const ActionButtons = (params: GridRenderCellParams<any, ICardPack>) => {
   const dispatch = useAppDispatch();
   const nav = useNavigate();
 
-  const [openModal, setOpenModal] = useState(false);
-
-  const deleteCardPackHandle = (id: string) => {
-    dispatch(deletePack({ id }));
-  };
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const navToCardHandle = (packId: string) => {
     nav(appRoutes.CARDS + `/${packId}`);
@@ -38,16 +36,22 @@ const ActionButtons = (params: GridRenderCellParams<any, ICardPack>) => {
       {userId === params.row.user_id && (
         <>
           <IconButton>
-            <ModeEditIcon onClick={() => setOpenModal(true)} />
+            <ModeEditIcon onClick={() => setOpenEditModal(true)} />
           </IconButton>
-          <IconButton onClick={() => deleteCardPackHandle(params.row._id)}>
+          <IconButton onClick={() => setOpenDeleteModal(true)}>
             <DeleteForeverIcon />
           </IconButton>
         </>
       )}
       <EditPackModal
-        openModal={openModal}
-        setOpenModal={setOpenModal}
+        openModal={openEditModal}
+        setOpenModal={setOpenEditModal}
+        packId={params.row._id}
+        packName={params.row.name}
+      />
+      <DeletePackModal
+        openModal={openDeleteModal}
+        setOpenModal={setOpenDeleteModal}
         packId={params.row._id}
         packName={params.row.name}
       />
