@@ -23,9 +23,13 @@ export const fetchCards = createAsyncThunk<
     const findIndexPack = cardPacks.findIndex((pack) => pack._id === params.cardsPack_id);
     if (findIndexPack > -1) {
       //return data with packName
-      return { ...response.data, packName: cardPacks[findIndexPack].name };
+      return {
+        ...response.data,
+        packName: cardPacks[findIndexPack].name,
+        private: cardPacks[findIndexPack].private,
+      };
     }
-    return { ...response.data, packName: 'No pack Name' };
+    return { ...response.data, packName: 'No pack Name', private: false };
   } catch (error) {
     return handlerAsyncError(error, thunkApi);
   }

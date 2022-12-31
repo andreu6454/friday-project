@@ -5,19 +5,20 @@ import { EditMenu } from 'components/Menu/EditMenu';
 import React, { FC, useState } from 'react';
 import { EditPackModal } from 'sections/packs-page/EditPackModal';
 
-interface HandleMenuProps {
+interface EditCardPackMenuProps {
   packId: string;
   packName: string;
 }
 
-export const HandleMenu: FC<HandleMenuProps> = ({ packId, packName }) => {
+export const EditPackMenu: FC<EditCardPackMenuProps> = ({ packId, packName }) => {
   const [openEditModal, setOpenEditModal] = useState<boolean>(false);
+  // const privateStatus = useAppSelector(state => state.cards)
 
   const handleClose = () => {
     console.log('hanlde');
   };
 
-  const arr = [
+  const menuItems = [
     {
       id: 1,
       icon: EditIcon,
@@ -46,7 +47,7 @@ export const HandleMenu: FC<HandleMenuProps> = ({ packId, packName }) => {
         packId={packId}
         packName={packName}
       />
-      <EditMenu menuItems={arr} />
+      <EditMenu menuItems={menuItems} />
     </>
   );
 };

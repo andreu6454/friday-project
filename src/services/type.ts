@@ -61,6 +61,7 @@ export interface ICardPack {
   cardsCount: number;
   created: string;
   updated: string;
+  private: boolean;
 }
 
 export interface ICardsPacks {

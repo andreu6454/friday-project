@@ -43,14 +43,14 @@ const { reducer, actions } = createSlice({
         state.cardsData.pageCount = payload;
       }
     },
-    setLoadingStatus: (state) => {
-      state.status = 'idle';
-    },
     setActionStatus: (state) => {
       state.actionStatus = null;
     },
     setError: (state) => {
       state.error = null;
+    },
+    clearCardsData: (state) => {
+      state.cardsData.cards = [];
     },
   },
   extraReducers(builder) {

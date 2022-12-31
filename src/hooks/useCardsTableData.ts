@@ -16,7 +16,6 @@ export const useCardsTableData = () => {
   const pageCount = useAppSelector((state) => state.cards.cardsData.pageCount);
   const packUserId = useAppSelector((state) => state.cards.cardsData.packUserId);
   const loginUserId = useAppSelector((state) => state.user.user._id);
-  const packs = useAppSelector((state) => state.packs.packData.cardPacks);
   const packName = useAppSelector((state) => state.cards.cardsData.packName);
 
   const isLoadingStatus = status === 'loading';
@@ -25,7 +24,7 @@ export const useCardsTableData = () => {
   const { id } = useParams();
 
   const { fetchCards } = useActions(asyncCardActions);
-  const { setNewPage, setPageCount } = useActions(cardActions);
+  const { setNewPage, setPageCount, clearCardsData } = useActions(cardActions);
 
   const renderActionsCells = (cards ? cards : []).map((el: ICard) => ({
     ...el,
@@ -37,6 +36,11 @@ export const useCardsTableData = () => {
     if (id) {
       fetchCards({ cardsPack_id: id, page, pageCount });
     }
+
+    return () => {
+      /// clean cards data on unmount
+      clearCardsData();
+    };
   }, [page, pageCount]);
 
   return {

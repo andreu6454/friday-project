@@ -3,16 +3,15 @@ import EditIcon from '@mui/icons-material/Edit';
 import SchoolIcon from '@mui/icons-material/School';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { BackLinkButton } from 'components';
-import { EditMenu } from 'components/Menu/EditMenu';
 import { Preloader } from 'components/Preloader/Preloader';
 import { useCardsTableData } from 'hooks';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { appRoutes } from 'routes';
 import { CardsTable } from 'sections/cards-page/CardsTable';
-import { HandleMenu } from 'sections/cards-page/HandleMenu';
+import { EditPackMenu } from 'sections/cards-page/EditPackMenu';
 import { NewCardModal } from 'sections/cards-page/NewCardModal';
-import { EditPackModal } from 'sections/packs-page/EditPackModal';
+
 export const CardsPage = () => {
   const nav = useNavigate();
 
@@ -33,6 +32,8 @@ export const CardsPage = () => {
     id: packId,
   } = useCardsTableData();
 
+  const isFetching = status === 'loading';
+
   const handleModal = () => {
     setOpenModal(true);
   };
@@ -41,34 +42,7 @@ export const CardsPage = () => {
     nav('learn');
   };
 
-  const [openEditModal, setOpenEditModal] = useState<boolean>(false);
-
-  const handleClose = () => {
-    console.log('hanlde');
-  };
-
-  const arr = [
-    {
-      id: 1,
-      icon: EditIcon,
-      name: 'Edit',
-      action: () => setOpenEditModal(true),
-    },
-    {
-      id: 2,
-      icon: DeleteIcon,
-      name: 'Delete',
-      action: handleClose,
-    },
-    {
-      id: 3,
-      icon: SchoolIcon,
-      name: 'Learn',
-      action: handleClose,
-    },
-  ];
-
-  if (status === 'loading' && !cards.length) {
+  if (isFetching && !cards.length) {
     return <Preloader />;
   }
 
@@ -93,18 +67,10 @@ export const CardsPage = () => {
       <Box display="flex" flexDirection="column" alignItems="center" marginY={3} gap={3}>
         <Typography variant="h5" alignSelf="flex-start" textAlign="left">
           <Stack direction={'row'}>
-            {packName}
-            {/* {packId && <HandleMenu packId={packId} packName={packName} />} */}
-
-            {packId && (
-              <EditPackModal
-                openModal={openEditModal}
-                setOpenModal={setOpenEditModal}
-                packId={packId}
-                packName={packName}
-              />
-            )}
-            <EditMenu menuItems={arr} />
+            <Typography variant="h4">{packName}</Typography>
+            {packId && isUserPackOwner ? (
+              <EditPackMenu packId={packId} packName={packName} />
+            ) : null}
           </Stack>
         </Typography>
         {!cards.length && isUserPackOwner ? (
