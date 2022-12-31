@@ -17,7 +17,7 @@ import { logOutUser } from 'store/middleware/authUser';
 import { changeUserAvatar, changeUserName } from 'store/middleware/user';
 import { useAppDispatch, useAppSelector } from 'store/store';
 
-export const ProfilePage = () => {
+const ProfilePage = () => {
   const dispatch = useAppDispatch();
   const status = useAppSelector((state) => state.auth.status);
   const { user } = useAppSelector((state) => state.user);
@@ -107,3 +107,5 @@ export const ProfilePage = () => {
     </Box>
   );
 };
+
+export default ProfilePage;

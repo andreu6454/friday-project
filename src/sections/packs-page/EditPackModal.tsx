@@ -79,11 +79,7 @@ export const EditPackModal: FC<EditPackModalProps> = ({
             justifyContent: 'space-between',
           }}
         >
-          <Button
-            color="secondary"
-            variant="outlined"
-            onClick={() => setOpenModal(false)}
-          >
+          <Button variant="outlined" onClick={() => setOpenModal(false)}>
             Cancel
           </Button>
           <Button variant="contained" onClick={handleSubmit(onSubmit)}>

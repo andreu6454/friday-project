@@ -18,7 +18,7 @@ import { appRoutes } from 'routes';
 import { authAsyncActions } from 'store/middleware/authUser';
 import { useAppSelector } from 'store/store';
 
-export const ForgotPasswordPage = () => {
+const ForgotPasswordPage = () => {
   const nav = useNavigate();
   const { forgotPassword } = useActions(authAsyncActions);
 
@@ -34,7 +34,7 @@ export const ForgotPasswordPage = () => {
     const from = `test-front-admin <ai73a@yandex.by>`;
     const message = `<div  style="padding: 15px">
 password recovery link: 
-<a href='http://localhost:3000/#/set-new-password/$token$'>
+<a href='https://friday-project-two.vercel.app/#/set-new-password/$token$'>
 click to change password</a>
 </div>`;
     forgotPassword({ email, from, message });
@@ -114,3 +114,5 @@ click to change password</a>
     </Box>
   );
 };
+
+export default ForgotPasswordPage;

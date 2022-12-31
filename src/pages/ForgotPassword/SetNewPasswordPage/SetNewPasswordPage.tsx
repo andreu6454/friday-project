@@ -21,7 +21,7 @@ import { appRoutes } from 'routes';
 import { authAsyncActions } from 'store/middleware/authUser';
 import { useAppSelector } from 'store/store';
 
-export const SetNewPasswordPage = () => {
+const SetNewPasswordPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const isPasswordChanged = useAppSelector((state) => state.auth.isPasswordChanged);
   const errorMsg = useAppSelector((state) => state.auth.error);
@@ -108,3 +108,5 @@ export const SetNewPasswordPage = () => {
     </Box>
   );
 };
+
+export default SetNewPasswordPage;

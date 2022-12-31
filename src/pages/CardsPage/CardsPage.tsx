@@ -11,7 +11,6 @@ import { NewCardModal } from 'sections/cards-page/NewCardModal';
 
 export const CardsPage = () => {
   const nav = useNavigate();
-
   const [openModal, setOpenModal] = useState(false);
 
   const {
@@ -104,3 +103,5 @@ export const CardsPage = () => {
     </Box>
   );
 };
+
+export default CardsPage;
