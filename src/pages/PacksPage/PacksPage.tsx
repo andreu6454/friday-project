@@ -17,7 +17,7 @@ import { useState } from 'react';
 import { MemoizedActionButtons } from 'sections/packs-page/ActionButtons';
 import { CustomPagination } from 'sections/packs-page/CustomPagination';
 import { NewPackModal } from 'sections/packs-page/NewPackModal';
-import { ICardPack } from 'services/api/packs';
+import { ICardPack } from 'services/type';
 import { StyledTextField } from 'styles/styles';
 
 const columns: GridColDef[] = [

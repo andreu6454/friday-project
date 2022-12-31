@@ -15,11 +15,13 @@ import {
 } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { AlertError } from 'components';
+import { useActions } from 'hooks';
 import React, { useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { appRoutes } from 'routes';
 import { registerUser } from 'store/middleware/authUser';
+import { authActions } from 'store/slices';
 import { useAppDispatch, useAppSelector } from 'store/store';
 
 interface IFormInput {
@@ -32,6 +34,8 @@ const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { error, isRegistered } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
+
+  const { setErrorMsg } = useActions(authActions);
 
   const nav = useNavigate();
 
@@ -178,7 +182,7 @@ const RegisterPage = () => {
           </Box>
         </CardActions>
       </Card>
-      <AlertError errorMsg={error} />
+      <AlertError errorMsg={error} onCloseAction={setErrorMsg} />
     </Box>
   );
 };

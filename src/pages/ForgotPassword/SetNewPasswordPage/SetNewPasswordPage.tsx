@@ -19,12 +19,14 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { appRoutes } from 'routes';
 import { authAsyncActions } from 'store/middleware/authUser';
+import { authActions } from 'store/slices';
 import { useAppSelector } from 'store/store';
 
 const SetNewPasswordPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const isPasswordChanged = useAppSelector((state) => state.auth.isPasswordChanged);
   const errorMsg = useAppSelector((state) => state.auth.error);
+  const { setErrorMsg } = useActions(authActions);
 
   const location = useLocation();
   const { setNewPassword } = useActions(authAsyncActions);
@@ -104,7 +106,7 @@ const SetNewPasswordPage = () => {
           </Button>
         </CardActions>
       </Card>
-      <AlertError errorMsg={errorMsg} />
+      <AlertError errorMsg={errorMsg} onCloseAction={setErrorMsg} />
     </Box>
   );
 };

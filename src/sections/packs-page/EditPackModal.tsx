@@ -7,23 +7,20 @@ import {
   FormControlLabel,
   Input,
   InputLabel,
-  TextField,
 } from '@mui/material';
-import { GridRenderCellParams } from '@mui/x-data-grid';
 import { BasicModal } from 'components';
 import { useActions } from 'hooks';
-import React from 'react';
-import { FC } from 'react';
-import { useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { ICardPack } from 'services/api/packs';
-import { addNewPack, asyncPackActions } from 'store/middleware/packs';
+import React, { FC } from 'react';
+import { SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { asyncPackActions } from 'store/middleware/packs';
 
 interface EditPackModalProps {
   openModal: boolean;
   setOpenModal: (v: boolean) => void;
   packId: string;
   packName: string;
+  isPrivatePack: boolean;
 }
 
 export interface IEditPackSubmit {
@@ -36,12 +33,13 @@ export const EditPackModal: FC<EditPackModalProps> = ({
   setOpenModal,
   packId,
   packName,
+  isPrivatePack,
 }) => {
   const { editPack } = useActions(asyncPackActions);
 
-  const { register, handleSubmit, watch, reset } = useForm<IEditPackSubmit>({
+  const { register, handleSubmit, watch } = useForm<IEditPackSubmit>({
     defaultValues: {
-      private: false,
+      private: isPrivatePack,
       name: packName,
     },
   });
@@ -52,16 +50,26 @@ export const EditPackModal: FC<EditPackModalProps> = ({
   };
 
   return (
-    <BasicModal open={openModal} setOpen={setOpenModal} title="Add new pack">
+    <BasicModal open={openModal} setOpen={setOpenModal} title="Edit pack">
       <Box display="flex" flexDirection="column" gap={1}>
         {/* pack name input */}
         <FormControl variant="standard" sx={{ m: 1, minWidth: '347px' }}>
           <InputLabel htmlFor="standard-adornment-name">Pack Name</InputLabel>
-          <Input {...register('name', { required: true })} type={'text'} />
+          <Input
+            defaultValue={watch('name', packName)}
+            {...register('name', { required: true })}
+            type={'text'}
+          />
         </FormControl>
         {/* pack name checkbox */}
         <FormControlLabel
-          control={<Checkbox {...register('private')} name="private-pack" />}
+          control={
+            <Checkbox
+              checked={watch('private')}
+              {...register('private')}
+              name="private-pack"
+            />
+          }
           label="Private Pack"
         />
         <DialogActions

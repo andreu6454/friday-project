@@ -6,16 +6,14 @@ import { GridRenderCellParams } from '@mui/x-data-grid';
 import { memo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { appRoutes } from 'routes';
-import { ICardPack } from 'services/api/packs';
-import { deletePack } from 'store/middleware/packs';
-import { useAppDispatch, useAppSelector } from 'store/store';
+import { ICardPack } from 'services/type';
+import { useAppSelector } from 'store/store';
 
 import { DeletePackModal } from './DeletePackModal';
 import { EditPackModal } from './EditPackModal';
 
 const ActionButtons = (params: GridRenderCellParams<any, ICardPack>) => {
   const userId = useAppSelector((state) => state.user.user._id);
-  const dispatch = useAppDispatch();
   const nav = useNavigate();
 
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -26,7 +24,7 @@ const ActionButtons = (params: GridRenderCellParams<any, ICardPack>) => {
   };
 
   return (
-    <Box {...params.row}>
+    <Box>
       <IconButton
         disabled={!params.row.cardsCount && userId !== params.row.user_id}
         onClick={() => navToCardHandle(params.row._id)}
@@ -35,8 +33,8 @@ const ActionButtons = (params: GridRenderCellParams<any, ICardPack>) => {
       </IconButton>
       {userId === params.row.user_id && (
         <>
-          <IconButton>
-            <ModeEditIcon onClick={() => setOpenEditModal(true)} />
+          <IconButton onClick={() => setOpenEditModal(true)}>
+            <ModeEditIcon />
           </IconButton>
           <IconButton onClick={() => setOpenDeleteModal(true)}>
             <DeleteForeverIcon />
@@ -44,6 +42,7 @@ const ActionButtons = (params: GridRenderCellParams<any, ICardPack>) => {
         </>
       )}
       <EditPackModal
+        isPrivatePack={params.row.private}
         openModal={openEditModal}
         setOpenModal={setOpenEditModal}
         packId={params.row._id}

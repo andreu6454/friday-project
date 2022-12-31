@@ -1,56 +1,16 @@
-import { instance } from './../config';
+import { instance } from 'services/config';
+import {
+  GetForgotPasswordDataType,
+  GetLoginType,
+  getRegisterType,
+  GetSetNewPasswordDataType,
+  ResponseLoginDataType,
+  ResponseLogOutDataType,
+  ResponseNewPassword,
+  ResponseRegisterDataType,
+  ResponseUpdateUserDataType,
+} from 'services/type';
 
-export interface GetLoginType {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-}
-
-export interface ResponseLoginDataType {
-  _id: string;
-  email: string;
-  name: string;
-  avatar?: string;
-  publicCardPacksCount: number;
-  created: Date;
-  updated: Date;
-  isAdmin: boolean;
-  verified: boolean;
-  rememberMe: boolean;
-  error?: string;
-}
-
-export interface ResponseRegisterDataType {
-  addedUser: object;
-  error?: string;
-}
-
-export interface getRegisterType {
-  email: string;
-  password: string;
-}
-
-export interface ResponseLogOutDataType {
-  info: string;
-  error?: string;
-}
-export interface ResponseUpdateUserDataType {
-  updatedUser: ResponseLoginDataType;
-  error?: string;
-}
-export interface GetForgotPasswordDataType {
-  email: string;
-  from: string;
-  message: string;
-}
-export interface ResponseNewPassword {
-  info: string;
-  error?: string;
-}
-export interface GetSetNewPasswordDataType {
-  password: string;
-  resetPasswordToken: string;
-}
 export const authAPI = {
   me() {
     return instance.post<ResponseLoginDataType>('/auth/me', {});

@@ -16,11 +16,13 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { appRoutes } from 'routes';
 import { authAsyncActions } from 'store/middleware/authUser';
+import { authActions } from 'store/slices';
 import { useAppSelector } from 'store/store';
 
 const ForgotPasswordPage = () => {
   const nav = useNavigate();
   const { forgotPassword } = useActions(authAsyncActions);
+  const { setErrorMsg } = useActions(authActions);
 
   const isForgot = useAppSelector((state) => state.auth.isForgotEmail);
   const errorMsg = useAppSelector((state) => state.auth.error);
@@ -110,7 +112,7 @@ click to change password</a>
           </Box>
         </CardActions>
       </Card>
-      <AlertError errorMsg={errorMsg} />
+      <AlertError errorMsg={errorMsg} onCloseAction={setErrorMsg} />
     </Box>
   );
 };

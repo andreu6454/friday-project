@@ -1,6 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ICardParams, ICardsResponse } from 'services/api/cards';
-import { cardsAPI, GradeType, IAddNewCardRequest, ICard } from 'services/api/cards';
+import { cardsAPI } from 'services/api';
+import {
+  GradeType,
+  IAddNewCardRequest,
+  ICard,
+  ICardParams,
+  ICardsResponse,
+} from 'services/type';
+import { RootState } from 'store/store';
 import { handlerAsyncError } from 'utils';
 
 export const fetchCards = createAsyncThunk<
@@ -10,7 +17,19 @@ export const fetchCards = createAsyncThunk<
 >('card/fetchCards', async (params, thunkApi) => {
   try {
     const response = await cardsAPI.getCards({ ...params });
-    return response.data;
+    const { packs } = thunkApi.getState() as RootState;
+    const { cardPacks } = packs.packData;
+
+    const findIndexPack = cardPacks.findIndex((pack) => pack._id === params.cardsPack_id);
+    if (findIndexPack > -1) {
+      //return data with packName
+      return {
+        ...response.data,
+        packName: cardPacks[findIndexPack].name,
+        private: cardPacks[findIndexPack].private,
+      };
+    }
+    return { ...response.data, packName: 'No pack Name', private: false };
   } catch (error) {
     return handlerAsyncError(error, thunkApi);
   }

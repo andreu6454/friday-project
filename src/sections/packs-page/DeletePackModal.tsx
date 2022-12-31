@@ -3,7 +3,10 @@ import { BasicModal } from 'components';
 import { useActions } from 'hooks';
 import { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { asyncPackActions } from 'store/middleware/packs';
+import { useNavigate } from 'react-router-dom';
+import { appRoutes } from 'routes';
+import { asyncPackActions, deletePack } from 'store/middleware/packs';
+import { useAppDispatch } from 'store/store';
 
 interface DeletePackModalProps {
   openModal: boolean;
@@ -23,12 +26,21 @@ export const DeletePackModal: FC<DeletePackModalProps> = ({
   packId,
   packName,
 }) => {
-  const { deletePack } = useActions(asyncPackActions);
+  const dispatch = useAppDispatch();
+  const nav = useNavigate();
 
   const { handleSubmit } = useForm<IEditPackSubmit>();
 
   const onSubmit: SubmitHandler<IEditPackSubmit> = () => {
-    deletePack({ id: packId });
+    dispatch(deletePack({ id: packId }))
+      .unwrap()
+      .then(() => {
+        nav(-1);
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+
     setOpenModal(false);
   };
 

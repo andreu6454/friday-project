@@ -1,15 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { ICardsResponse } from 'services/type';
 import { deleteCard, fetchCards } from 'store/middleware/cards';
+import { editPack } from 'store/middleware/packs';
 
-import { ICardsResponse } from './../../services/api/cards';
 import { addNewCard, updateCardGrade } from './../middleware/cards';
 import { RequestStatusType } from './types';
 
 type initialStateType = {
-  cardsData: Pick<
-    ICardsResponse,
-    'cards' | 'page' | 'pageCount' | 'cardsTotalCount' | 'packUserId'
-  > & { packName: string };
+  cardsData: Omit<ICardsResponse, 'maxGrade' | 'minGrade'>;
   status: RequestStatusType;
   error: null | string;
   actionStatus: null | string;
@@ -18,11 +16,12 @@ type initialStateType = {
 const initialState: initialStateType = {
   cardsData: {
     cards: [],
-    page: 0,
+    page: 1,
     pageCount: 10,
     cardsTotalCount: 0,
     packUserId: '',
     packName: '',
+    private: false,
   },
   status: 'loading' as RequestStatusType,
   actionStatus: null,
@@ -43,17 +42,14 @@ const { reducer, actions } = createSlice({
         state.cardsData.pageCount = payload;
       }
     },
-    setLoadingStatus: (state) => {
-      state.status = 'idle';
-    },
     setActionStatus: (state) => {
       state.actionStatus = null;
     },
-    setError: (state) => {
-      state.error = null;
+    setError: (state, { payload }) => {
+      state.error = payload;
     },
-    setPackName: (state, { payload }) => {
-      state.cardsData.packName = payload;
+    clearCardsData: (state) => {
+      state.cardsData.cards = [];
     },
   },
   extraReducers(builder) {
@@ -101,6 +97,7 @@ const { reducer, actions } = createSlice({
         state.error = payload as string;
         state.status = 'failed';
       })
+      ///////////////////////
       .addCase(updateCardGrade.fulfilled, (state, { payload }) => {
         const findIndexCard = state.cardsData.cards.findIndex(
           (card) => card._id === payload.updatedGrade.card_id,
@@ -116,6 +113,10 @@ const { reducer, actions } = createSlice({
       .addCase(updateCardGrade.rejected, (state, { payload }) => {
         state.error = payload as string;
         state.status = 'failed';
+      })
+      /////////////////////////
+      .addCase(editPack.fulfilled, (state, { payload }) => {
+        state.cardsData.packName = payload.updatedCardsPack.name;
       });
   },
 });

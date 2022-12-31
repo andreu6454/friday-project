@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { ICardPack, ICardsPacks } from 'services/api/packs';
+import { ICardPack, ICardsPacks } from 'services/type';
 import { addNewPack, deletePack, editPack, fetchPacks } from 'store/middleware/packs';
 
 import { RequestStatusType } from './types';

@@ -1,8 +1,7 @@
 import { Box, Button, Typography } from '@mui/material';
+import error404 from 'assets/404.svg';
 import { useNavigate } from 'react-router-dom';
 import { appRoutes } from 'routes';
-
-import error404 from './404.svg';
 
 const NotFoundPage = () => {
   const nav = useNavigate();

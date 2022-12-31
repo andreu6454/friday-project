@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { ICard } from 'services/api/cards';
+import { ICard } from 'services/type';
 import { asyncCardActions } from 'store/middleware/cards';
 import { cardActions } from 'store/slices/cards-slice';
 import { useAppSelector } from 'store/store';
@@ -16,15 +16,17 @@ export const useCardsTableData = () => {
   const pageCount = useAppSelector((state) => state.cards.cardsData.pageCount);
   const packUserId = useAppSelector((state) => state.cards.cardsData.packUserId);
   const loginUserId = useAppSelector((state) => state.user.user._id);
+  const packName = useAppSelector((state) => state.cards.cardsData.packName);
+  const errorCardsMsg = useAppSelector((state) => state.cards.error);
+  const isPrivatePack = useAppSelector((state) => state.cards.cardsData.private);
 
   const isLoadingStatus = status === 'loading';
   const isUserPackOwner = packUserId === loginUserId;
 
   const { id } = useParams();
 
-  const { fetchCards, addNewCard } = useActions(asyncCardActions);
-  const { setNewPage, setPageCount, setLoadingStatus, setPackName } =
-    useActions(cardActions);
+  const { fetchCards } = useActions(asyncCardActions);
+  const { setNewPage, setPageCount, clearCardsData } = useActions(cardActions);
 
   const renderActionsCells = (cards ? cards : []).map((el: ICard) => ({
     ...el,
@@ -38,7 +40,8 @@ export const useCardsTableData = () => {
     }
 
     return () => {
-      setLoadingStatus();
+      /// clean cards data on unmount
+      clearCardsData();
     };
   }, [page, pageCount]);
 
@@ -53,7 +56,9 @@ export const useCardsTableData = () => {
     cards,
     status,
     isUserPackOwner,
-    setPackName,
+    packName,
+    isPrivatePack,
     id,
+    errorCardsMsg,
   };
 };

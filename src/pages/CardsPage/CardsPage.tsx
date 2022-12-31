@@ -1,19 +1,19 @@
 import { Box, Button, Stack, Typography } from '@mui/material';
-import { BackLinkButton } from 'components';
+import { AlertError, BackLinkButton } from 'components';
 import { Preloader } from 'components/Preloader/Preloader';
-import { useCardsTableData } from 'hooks';
-import { useEffect, useState } from 'react';
+import { useActions, useCardsTableData } from 'hooks';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { appRoutes } from 'routes';
 import { CardsTable } from 'sections/cards-page/CardsTable';
+import { EditPackMenu } from 'sections/cards-page/EditPackMenu';
 import { NewCardModal } from 'sections/cards-page/NewCardModal';
-import { useAppSelector } from 'store/store';
+import { cardActions } from 'store/slices';
 
-const CardsPage = () => {
-  const packs = useAppSelector((state) => state.packs.packData.cardPacks);
-  const packName = useAppSelector((state) => state.cards.cardsData.packName);
-  const [openModal, setOpenModal] = useState(false);
+export const CardsPage = () => {
   const nav = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
+  const { setError } = useActions(cardActions);
 
   const {
     totalCount,
@@ -26,9 +26,13 @@ const CardsPage = () => {
     cards,
     status,
     isUserPackOwner,
-    setPackName,
+    isPrivatePack,
+    packName,
+    errorCardsMsg,
     id: packId,
   } = useCardsTableData();
+
+  const isFetching = status === 'loading';
 
   const handleModal = () => {
     setOpenModal(true);
@@ -38,13 +42,7 @@ const CardsPage = () => {
     nav('learn');
   };
 
-  useEffect(() => {
-    const findIndexPack = packs.findIndex((pack) => pack._id === packId);
-    const findPackName = findIndexPack > -1 ? packs[findIndexPack].name : 'No pack Name';
-    setPackName(findPackName);
-  }, [packName]);
-
-  if (status === 'loading' && !cards.length) {
+  if (isFetching && !cards.length) {
     return <Preloader />;
   }
 
@@ -68,7 +66,16 @@ const CardsPage = () => {
       </Stack>
       <Box display="flex" flexDirection="column" alignItems="center" marginY={3} gap={3}>
         <Typography variant="h5" alignSelf="flex-start" textAlign="left">
-          {packName}
+          <Stack direction={'row'}>
+            <Typography variant="h4">{packName}</Typography>
+            {packId && isUserPackOwner ? (
+              <EditPackMenu
+                isPrivatePack={isPrivatePack}
+                packId={packId}
+                packName={packName}
+              />
+            ) : null}
+          </Stack>
         </Typography>
         {!cards.length && isUserPackOwner ? (
           <Stack alignItems="center" gap={3} marginTop={10}>
@@ -96,6 +103,8 @@ const CardsPage = () => {
           />
         ) : null}
       </Box>
+
+      <AlertError errorMsg={errorCardsMsg} onCloseAction={setError} />
     </Box>
   );
 };

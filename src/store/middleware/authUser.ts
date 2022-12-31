@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { authAPI } from 'services/api/auth';
 import {
-  authAPI,
   GetForgotPasswordDataType,
   GetLoginType,
   getRegisterType,
@@ -9,7 +9,7 @@ import {
   ResponseLogOutDataType,
   ResponseNewPassword,
   ResponseRegisterDataType,
-} from 'services/api/auth';
+} from 'services/type';
 import { setIsForgotEmail } from 'store/slices';
 import { handlerAsyncError } from 'utils/error-utils';
 

@@ -19,11 +19,13 @@ import {
 } from '@mui/material';
 import { AlertError } from 'components';
 import { Preloader } from 'components/Preloader/Preloader';
+import { useActions } from 'hooks';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { appRoutes } from 'routes';
 import { loginUser } from 'store/middleware/authUser';
+import { authActions } from 'store/slices';
 import { useAppDispatch, useAppSelector } from 'store/store';
 
 interface IFormInput {
@@ -38,6 +40,8 @@ const LoginPage = () => {
   const errorMsg = useAppSelector((state) => state.auth.error);
   const loading = useAppSelector((state) => state.auth.status);
   const isAuth = useAppSelector((state) => state.auth.isAuth);
+
+  const { setErrorMsg } = useActions(authActions);
 
   const nav = useNavigate();
   const dispatch = useAppDispatch();
@@ -164,7 +168,7 @@ const LoginPage = () => {
           </CardActions>
         </FormGroup>
       </CardContent>
-      <AlertError errorMsg={errorMsg} />
+      <AlertError errorMsg={errorMsg} onCloseAction={setErrorMsg} />
     </Card>
   );
 };

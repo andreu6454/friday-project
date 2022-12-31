@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { ResponseLoginDataType } from 'services/api';
+import { ResponseLoginDataType } from 'services/type';
 import { isAuthUser, loginUser, logOutUser } from 'store/middleware/authUser';
 import { changeUserAvatar, changeUserName } from 'store/middleware/user';
 

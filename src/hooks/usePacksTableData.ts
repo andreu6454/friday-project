@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { ICardPack } from 'services/type';
 
-import { ICardPack } from './../services/api/packs';
 import { asyncPackActions } from './../store/middleware/packs';
 import { packActions } from './../store/slices/packs-slice';
 import { useAppSelector } from './../store/store';
