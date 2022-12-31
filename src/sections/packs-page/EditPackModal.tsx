@@ -20,6 +20,7 @@ interface EditPackModalProps {
   setOpenModal: (v: boolean) => void;
   packId: string;
   packName: string;
+  isPrivatePack: boolean;
 }
 
 export interface IEditPackSubmit {
@@ -32,12 +33,13 @@ export const EditPackModal: FC<EditPackModalProps> = ({
   setOpenModal,
   packId,
   packName,
+  isPrivatePack,
 }) => {
   const { editPack } = useActions(asyncPackActions);
 
   const { register, handleSubmit, watch } = useForm<IEditPackSubmit>({
     defaultValues: {
-      private: false,
+      private: isPrivatePack,
       name: packName,
     },
   });
@@ -61,7 +63,13 @@ export const EditPackModal: FC<EditPackModalProps> = ({
         </FormControl>
         {/* pack name checkbox */}
         <FormControlLabel
-          control={<Checkbox {...register('private')} name="private-pack" />}
+          control={
+            <Checkbox
+              checked={watch('private')}
+              {...register('private')}
+              name="private-pack"
+            />
+          }
           label="Private Pack"
         />
         <DialogActions

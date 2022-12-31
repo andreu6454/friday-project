@@ -94,6 +94,7 @@ export interface ICardsResponse {
   pageCount: number;
   packUserId: string;
   packName: string;
+  private: boolean;
 }
 
 export interface BaseCard {

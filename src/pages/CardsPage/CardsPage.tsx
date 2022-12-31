@@ -1,6 +1,3 @@
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import SchoolIcon from '@mui/icons-material/School';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { BackLinkButton } from 'components';
 import { Preloader } from 'components/Preloader/Preloader';
@@ -28,6 +25,7 @@ export const CardsPage = () => {
     cards,
     status,
     isUserPackOwner,
+    isPrivatePack,
     packName,
     id: packId,
   } = useCardsTableData();
@@ -69,7 +67,11 @@ export const CardsPage = () => {
           <Stack direction={'row'}>
             <Typography variant="h4">{packName}</Typography>
             {packId && isUserPackOwner ? (
-              <EditPackMenu packId={packId} packName={packName} />
+              <EditPackMenu
+                isPrivatePack={isPrivatePack}
+                packId={packId}
+                packName={packName}
+              />
             ) : null}
           </Stack>
         </Typography>
