@@ -1,6 +1,6 @@
 import { IAddPackSubmit } from 'sections/packs-page/NewPackModal';
 import { instance } from 'services/config';
-import { ICardPack, IGetCardsPacksParams } from 'services/type';
+import { ICardPack, IEditPackRequest, IGetCardsPacksParams } from 'services/type';
 
 export const packsAPI = {
   getCardsPacks(params: IGetCardsPacksParams) {
@@ -25,7 +25,7 @@ export const packsAPI = {
   deletePack(cardPackId: string) {
     return instance.delete('/cards/pack', { params: { id: cardPackId } });
   },
-  editPack(cardPackId: string, name: string) {
-    return instance.put('/cards/pack', { cardsPack: { _id: cardPackId, name } });
+  editPack(editedPack: IEditPackRequest) {
+    return instance.put('/cards/pack', { cardsPack: editedPack });
   },
 };

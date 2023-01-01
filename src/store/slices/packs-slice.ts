@@ -42,8 +42,8 @@ const { reducer, actions } = createSlice({
     setActionStatus: (state) => {
       state.actionStatus = null;
     },
-    setError: (state) => {
-      state.error = null;
+    setError: (state, { payload }) => {
+      state.error = payload;
     },
   },
   extraReducers(builder) {
@@ -98,6 +98,8 @@ const { reducer, actions } = createSlice({
         );
         if (findIndexPack > -1) {
           state.packData.cardPacks[findIndexPack].name = payload.updatedCardsPack.name;
+          state.packData.cardPacks[findIndexPack].deckCover =
+            payload.updatedCardsPack.deckCover;
         }
         state.status = 'succeeded';
         state.actionStatus = 'CardPack successfully edited';

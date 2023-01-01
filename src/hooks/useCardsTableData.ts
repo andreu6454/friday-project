@@ -19,6 +19,7 @@ export const useCardsTableData = () => {
   const packName = useAppSelector((state) => state.cards.cardsData.packName);
   const errorCardsMsg = useAppSelector((state) => state.cards.error);
   const isPrivatePack = useAppSelector((state) => state.cards.cardsData.private);
+  const deckCover = useAppSelector((state) => state.cards.cardsData.deckCover);
 
   const isLoadingStatus = status === 'loading';
   const isUserPackOwner = packUserId === loginUserId;
@@ -60,5 +61,6 @@ export const useCardsTableData = () => {
     isPrivatePack,
     id,
     errorCardsMsg,
+    deckCover,
   };
 };

@@ -42,6 +42,7 @@ const ActionButtons = (params: GridRenderCellParams<any, ICardPack>) => {
         </>
       )}
       <EditPackModal
+        deckCover={params.row.deckCover}
         isPrivatePack={params.row.private}
         openModal={openEditModal}
         setOpenModal={setOpenEditModal}

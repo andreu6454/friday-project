@@ -27,9 +27,10 @@ export const fetchCards = createAsyncThunk<
         ...response.data,
         packName: cardPacks[findIndexPack].name,
         private: cardPacks[findIndexPack].private,
+        deckCover: cardPacks[findIndexPack].deckCover,
       };
     }
-    return { ...response.data, packName: 'No pack Name', private: false };
+    return { ...response.data, packName: 'No pack Name', private: false, deckCover: '' };
   } catch (error) {
     return handlerAsyncError(error, thunkApi);
   }
