@@ -14,12 +14,14 @@ interface EditCardPackMenuProps {
   packId: string;
   packName: string;
   isPrivatePack: boolean;
+  deckCover: string;
 }
 
 export const EditPackMenu: FC<EditCardPackMenuProps> = ({
   packId,
   packName,
   isPrivatePack,
+  deckCover,
 }) => {
   const [openEditModal, setOpenEditModal] = useState<boolean>(false);
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
@@ -59,6 +61,7 @@ export const EditPackMenu: FC<EditCardPackMenuProps> = ({
   return (
     <>
       <EditPackModal
+        deckCover={deckCover}
         isPrivatePack={isPrivatePack}
         openModal={openEditModal}
         setOpenModal={setOpenEditModal}

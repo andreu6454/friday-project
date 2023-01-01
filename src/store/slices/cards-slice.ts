@@ -22,6 +22,7 @@ const initialState: initialStateType = {
     packUserId: '',
     packName: '',
     private: false,
+    deckCover: '',
   },
   status: 'loading' as RequestStatusType,
   actionStatus: null,

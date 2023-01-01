@@ -58,7 +58,7 @@ export interface ICardPack {
   _id: string;
   user_id?: string;
   name: string;
-  deckCover?: string;
+  deckCover: string;
   cardsCount: number;
   created: string;
   updated: string;
@@ -84,6 +84,12 @@ export interface IGetCardsPacksParams {
   user_id?: string;
 }
 
+export interface IEditPackRequest {
+  _id: string;
+  name: string;
+  deckCover?: string;
+}
+
 ////cards API types
 
 export interface ICardsResponse {
@@ -96,6 +102,7 @@ export interface ICardsResponse {
   packUserId: string;
   packName: string;
   private: boolean;
+  deckCover: string;
 }
 
 export interface BaseCard {

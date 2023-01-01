@@ -10,10 +10,12 @@ import {
 } from '@mui/material';
 import { BasicModal } from 'components';
 import { useActions } from 'hooks';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { asyncPackActions } from 'store/middleware/packs';
+
+import { UploadImageCover } from './UploadImageCover';
 
 interface EditPackModalProps {
   openModal: boolean;
@@ -21,21 +23,26 @@ interface EditPackModalProps {
   packId: string;
   packName: string;
   isPrivatePack: boolean;
+  deckCover: string;
 }
 
 export interface IEditPackSubmit {
   name: string;
   private?: boolean;
+  deckCover?: string;
 }
 
 export const EditPackModal: FC<EditPackModalProps> = ({
   openModal,
   setOpenModal,
-  packId,
+  packId: _id,
   packName,
   isPrivatePack,
+  deckCover,
 }) => {
   const { editPack } = useActions(asyncPackActions);
+
+  const [editDeckCover, setEditDeckCover] = useState<string>(deckCover);
 
   const { register, handleSubmit, watch } = useForm<IEditPackSubmit>({
     defaultValues: {
@@ -45,13 +52,14 @@ export const EditPackModal: FC<EditPackModalProps> = ({
   });
 
   const onSubmit: SubmitHandler<IEditPackSubmit> = (data: IEditPackSubmit) => {
-    editPack({ name: data.name, id: packId });
+    editPack({ name: data.name, _id, deckCover: editDeckCover });
     setOpenModal(false);
   };
 
   return (
     <BasicModal open={openModal} setOpen={setOpenModal} title="Edit pack">
       <Box display="flex" flexDirection="column" gap={1}>
+        <UploadImageCover cover={editDeckCover} setCover={setEditDeckCover} />
         {/* pack name input */}
         <FormControl variant="standard" sx={{ m: 1, minWidth: '347px' }}>
           <InputLabel htmlFor="standard-adornment-name">Pack Name</InputLabel>

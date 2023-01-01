@@ -9,15 +9,16 @@ import {
   Typography,
 } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
-import { DoubleSlider } from 'components';
+import { AlertError, DoubleSlider } from 'components';
 import { AlertSuccess } from 'components/AlerSuccess/AlertSucess';
 import { NoCoverImage } from 'components/NoCoverImage/NoCoverImage';
-import { usePacksTableData } from 'hooks';
+import { useActions, usePacksTableData } from 'hooks';
 import React, { useState } from 'react';
 import { MemoizedActionButtons } from 'sections/packs-page/ActionButtons';
 import { CustomPagination } from 'sections/packs-page/CustomPagination';
 import { NewPackModal } from 'sections/packs-page/NewPackModal';
 import { ICardPack } from 'services/type';
+import { packActions } from 'store/slices';
 import { StyledTextField } from 'styles/styles';
 
 const columns: GridColDef[] = [
@@ -63,6 +64,8 @@ const CardPacksPage = () => {
     setOpenModal(true);
   };
 
+  const { setError } = useActions(packActions);
+
   const {
     search,
     isActiveCategory,
@@ -73,12 +76,14 @@ const CardPacksPage = () => {
     setNewPage,
     loadingStatus,
     setPageCount,
+    error,
     activeCategoryHandle,
     onSearchChange,
   } = usePacksTableData();
 
   return (
     <Box marginTop={2}>
+      <NewPackModal openModal={openModal} setOpenModal={setOpenModal} />
       <Stack justifyContent="space-between" direction="row">
         <Typography variant="h5">Pack list</Typography>
         <Button variant="contained" onClick={handleOpenModal}>
@@ -181,7 +186,7 @@ const CardPacksPage = () => {
       )}
 
       <AlertSuccess msg={'Success'} />
-      <NewPackModal openModal={openModal} setOpenModal={setOpenModal} />
+      <AlertError errorMsg={error} onCloseAction={setError} />
     </Box>
   );
 };

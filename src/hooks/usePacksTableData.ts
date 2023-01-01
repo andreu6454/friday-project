@@ -17,6 +17,7 @@ export const usePacksTableData = () => {
   const page = useAppSelector((state) => state.packs.packData.page);
   const pageCount = useAppSelector((state) => state.packs.packData.pageCount);
   const totalCount = useAppSelector((state) => state.packs.packData.cardPacksTotalCount);
+  const error = useAppSelector((state) => state.packs.error);
 
   const { setNewPage, setPageCount } = useActions(packActions);
   const { fetchPacks, addNewPack } = useActions(asyncPackActions);
@@ -89,5 +90,6 @@ export const usePacksTableData = () => {
     setPageCount,
     activeCategoryHandle,
     onSearchChange,
+    error,
   };
 };

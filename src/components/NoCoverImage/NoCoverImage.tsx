@@ -1,14 +1,22 @@
 import PanoramaIcon from '@mui/icons-material/Panorama';
 import { Box } from '@mui/material';
 import { grey } from '@mui/material/colors';
-import React from 'react';
+import React, { FC } from 'react';
 
-export const NoCoverImage = () => {
+interface NoCoverImageProps {
+  width?: string;
+  height?: string;
+}
+
+export const NoCoverImage: FC<NoCoverImageProps> = ({
+  width = '50px',
+  height = '30px',
+}) => {
   return (
     <Box
       sx={{
-        width: '50px',
-        height: '30px',
+        width: `${width}`,
+        height: `${height}`,
         alignItems: 'center',
         backgroundColor: grey[200],
         display: 'flex',

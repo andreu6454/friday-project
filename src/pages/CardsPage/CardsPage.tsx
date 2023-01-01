@@ -29,6 +29,7 @@ export const CardsPage = () => {
     isPrivatePack,
     packName,
     errorCardsMsg,
+    deckCover,
     id: packId,
   } = useCardsTableData();
 
@@ -70,6 +71,7 @@ export const CardsPage = () => {
             <Typography variant="h4">{packName}</Typography>
             {packId && isUserPackOwner ? (
               <EditPackMenu
+                deckCover={deckCover}
                 isPrivatePack={isPrivatePack}
                 packId={packId}
                 packName={packName}

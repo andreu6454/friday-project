@@ -1,6 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { packsAPI } from 'services/api/packs';
-import { ICardPack, ICardsPacks, IGetCardsPacksParams } from 'services/type';
+import {
+  ICardPack,
+  ICardsPacks,
+  IEditPackRequest,
+  IGetCardsPacksParams,
+} from 'services/type';
 import { handlerAsyncError } from 'utils';
 
 import { IAddPackSubmit } from './../../sections/packs-page/NewPackModal';
@@ -46,11 +51,11 @@ export const deletePack = createAsyncThunk<
 
 export const editPack = createAsyncThunk<
   { updatedCardsPack: ICardPack },
-  { id: string; name: string },
+  IEditPackRequest,
   { rejectValue: string }
->('card/editCardPack', async ({ id, name }, thunkApi) => {
+>('card/editCardPack', async (params, thunkApi) => {
   try {
-    const response = await packsAPI.editPack(id, name);
+    const response = await packsAPI.editPack(params);
     return response.data;
   } catch (error) {
     return handlerAsyncError(error, thunkApi);
