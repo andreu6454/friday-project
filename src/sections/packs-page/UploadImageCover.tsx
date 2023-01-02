@@ -22,7 +22,7 @@ export const UploadImageCover: FC<UploadImageCoverProps> = ({ cover, setCover })
 
   return !cover ? (
     <CardActionArea>
-      <UploadFileWrapper setCover={setCover} cover={cover}>
+      <UploadFileWrapper callback={setCover}>
         <Box
           component={'span'}
           sx={{
@@ -47,7 +47,7 @@ export const UploadImageCover: FC<UploadImageCoverProps> = ({ cover, setCover })
     <Box>
       <Stack direction={'row'} justifyContent="space-between">
         <Typography>Cover</Typography>
-        <UploadFileWrapper cover={cover} setCover={setCover}>
+        <UploadFileWrapper callback={setCover}>
           <Link component={'span'} sx={{ cursor: 'pointer' }}>
             Change Cover
           </Link>
