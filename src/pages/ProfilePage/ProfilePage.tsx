@@ -6,12 +6,13 @@ import {
   Button,
   Card,
   CircularProgress,
+  IconButton,
   Typography,
 } from '@mui/material';
 import { Container } from '@mui/system';
 import { BackLinkButton } from 'components';
 import { EditableSpan } from 'components/EditableSpan/EditableSpan';
-import { useNavigate } from 'react-router-dom';
+import { UploadFileWrapper } from 'components/UploadFileWrapper/UploadFileWrapper';
 import { appRoutes } from 'routes';
 import { logOutUser } from 'store/middleware/authUser';
 import { changeUserAvatar, changeUserName } from 'store/middleware/user';
@@ -21,7 +22,6 @@ const ProfilePage = () => {
   const dispatch = useAppDispatch();
   const status = useAppSelector((state) => state.auth.status);
   const { user } = useAppSelector((state) => state.user);
-  const nav = useNavigate();
 
   const logOutHandle = () => {
     dispatch(logOutUser());
@@ -30,12 +30,15 @@ const ProfilePage = () => {
   const changeNameHandle = (name: string) => {
     dispatch(changeUserName({ name }));
   };
-  const changePhotoHandle = () => {
-    const avatar =
-      'https://abrakadabra.fun/uploads/posts/2022-03/1647337144_2-abrakadabra-fun-p-avatarka-dlya-estetiki-6.png';
+
+  const changeAvatarHandle = (base64Url: string) => {
+    if (!base64Url) {
+      return;
+    }
+
     dispatch(
       changeUserAvatar({
-        avatar,
+        avatar: base64Url,
       }),
     );
   };
@@ -70,15 +73,19 @@ const ProfilePage = () => {
             overlap="circular"
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             badgeContent={
-              <AddAPhoto
-                fontSize="medium"
-                sx={{
-                  background: 'white',
-                  border: '3px solid white',
-                  borderRadius: '50%',
-                }}
-                onClick={changePhotoHandle}
-              />
+              <UploadFileWrapper callback={changeAvatarHandle}>
+                <IconButton component={'span'}>
+                  <AddAPhoto
+                    fontSize="medium"
+                    sx={{
+                      background: 'white',
+                      border: '3px solid white',
+                      borderRadius: '50%',
+                    }}
+                    // onClick={changePhotoHandle}
+                  />
+                </IconButton>
+              </UploadFileWrapper>
             }
           >
             <Avatar

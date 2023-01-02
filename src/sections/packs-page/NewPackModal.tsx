@@ -1,29 +1,19 @@
 import {
   Box,
   Button,
-  CardActionArea,
-  CardActions,
   Checkbox,
   DialogActions,
   FormControl,
   FormControlLabel,
   Input,
   InputLabel,
-  Link,
-  Stack,
-  TextField,
-  Typography,
 } from '@mui/material';
-import { grey } from '@mui/material/colors';
 import { BasicModal } from 'components';
-import { NoCoverImage } from 'components/NoCoverImage/NoCoverImage';
-import { UploadFileWrapper } from 'components/UploadFileWrapper/UploadFileWrapper';
 import { useActions } from 'hooks';
-import React, { ChangeEvent } from 'react';
 import { FC } from 'react';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { addNewPack, asyncPackActions } from 'store/middleware/packs';
+import { asyncPackActions } from 'store/middleware/packs';
 
 import { UploadImageCover } from './UploadImageCover';
 
@@ -43,7 +33,7 @@ export const NewPackModal: FC<NewPackModalProps> = ({ openModal, setOpenModal })
 
   const [deckCover, setDeckCover] = useState<string>('');
 
-  const { register, handleSubmit, watch, reset } = useForm<IAddPackSubmit>({
+  const { register, handleSubmit, reset } = useForm<IAddPackSubmit>({
     defaultValues: {
       private: false,
       deckCover,
