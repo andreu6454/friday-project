@@ -16,7 +16,7 @@ export const DoubleSlider = () => {
 
   const [display, setDisplay] = useState([+min, +max]);
 
-  const onMinMaxChanged = useMemo(() => debounce(setSearchParams, 500), []);
+  const onMinMaxChanged = useMemo(() => debounce(setSearchParams, 300), []);
 
   const onChangeSlider = (event: Event, newValue: number | number[]) => {
     setDisplay(newValue as number[]);

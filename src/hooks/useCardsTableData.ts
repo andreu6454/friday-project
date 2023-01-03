@@ -1,66 +1,45 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { ICard } from 'services/type';
+import { useEffect } from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { asyncCardActions } from 'store/middleware/cards';
-import { cardActions } from 'store/slices/cards-slice';
 import { useAppSelector } from 'store/store';
-import { formateDate } from 'utils/formateDate';
 
 import { useActions } from './useActions';
 
 export const useCardsTableData = () => {
-  const status = useAppSelector((state) => state.cards.status);
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const cards = useAppSelector((state) => state.cards.cardsData.cards);
   const totalCount = useAppSelector((state) => state.cards.cardsData.cardsTotalCount);
-  const page = useAppSelector((state) => state.cards.cardsData.page);
-  const pageCount = useAppSelector((state) => state.cards.cardsData.pageCount);
-  const packUserId = useAppSelector((state) => state.cards.cardsData.packUserId);
-  const loginUserId = useAppSelector((state) => state.user.user._id);
-  const packName = useAppSelector((state) => state.cards.cardsData.packName);
-  const errorCardsMsg = useAppSelector((state) => state.cards.error);
-  const isPrivatePack = useAppSelector((state) => state.cards.cardsData.private);
-  const deckCover = useAppSelector((state) => state.cards.cardsData.deckCover);
 
-  const isLoadingStatus = status === 'loading';
-  const isUserPackOwner = packUserId === loginUserId;
+  const packName = useAppSelector((state) => state.cards.cardsData.packName);
 
   const { id } = useParams();
-
   const { fetchCards } = useActions(asyncCardActions);
-  const { setNewPage, setPageCount, clearCardsData } = useActions(cardActions);
 
-  const renderActionsCells = (cards ? cards : []).map((el: ICard) => ({
-    ...el,
-    id: el._id,
-    updated: formateDate(el.updated),
-  }));
+  const page = searchParams.get('page') || '1';
+  const pageCount = searchParams.get('page') || '10';
 
   useEffect(() => {
-    if (id) {
-      fetchCards({ cardsPack_id: id, page, pageCount });
+    if (![...searchParams].length && id) {
+      fetchCards({
+        cardsPack_id: id,
+        page: Number(page),
+        pageCount: Number(pageCount),
+      });
     }
+  }, []);
 
-    return () => {
-      /// clean cards data on unmount
-      clearCardsData();
-    };
-  }, [page, pageCount]);
+  useEffect(() => {
+    const currentParams = Object.fromEntries([...searchParams]);
+    if ([...searchParams].length && id) {
+      fetchCards({ ...currentParams, cardsPack_id: id });
+    }
+  }, [searchParams]);
 
   return {
-    page,
-    pageCount,
     totalCount,
-    isLoadingStatus,
-    renderActionsCells,
-    setNewPage,
-    setPageCount,
     cards,
-    status,
-    isUserPackOwner,
     packName,
-    isPrivatePack,
     id,
-    errorCardsMsg,
-    deckCover,
   };
 };

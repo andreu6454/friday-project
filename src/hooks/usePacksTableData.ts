@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { asyncPackActions } from './../store/middleware/packs';
@@ -35,12 +35,14 @@ export const usePacksTableData = () => {
     }
   }, []);
 
+  ///set first page if items < 10
   useEffect(() => {
     if (cardData.cardPacks.length < 10) {
       const currentParams = Object.fromEntries([...searchParams]);
       setSearchParams({ ...currentParams, page: '1' });
     }
   }, [cardData.cardPacks]);
+  /////////////
 
   useEffect(() => {
     const currentParams = Object.fromEntries([...searchParams]);
