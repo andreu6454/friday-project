@@ -19,7 +19,7 @@ export interface CustomPaginationProps {
   rowsPerPageOptions: number[];
 }
 
-export const CustomPagination: FC<CustomPaginationProps> = ({
+export const CustomTablePagination: FC<CustomPaginationProps> = ({
   page,
   pageCount,
   totalCount,

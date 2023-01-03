@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { IAddPackSubmit } from 'sections/packs-page/AddNewPackModal';
 import { packsAPI } from 'services/api/packs';
 import {
   ICardPack,
@@ -7,8 +8,6 @@ import {
   IGetCardsPacksParams,
 } from 'services/type';
 import { handlerAsyncError } from 'utils';
-
-import { IAddPackSubmit } from './../../sections/packs-page/NewPackModal';
 
 export const fetchPacks = createAsyncThunk<
   ICardsPacks,

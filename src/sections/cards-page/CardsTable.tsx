@@ -1,8 +1,8 @@
 import { Rating, Stack } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { AnyAction } from '@reduxjs/toolkit';
+import { CustomTablePagination } from 'components/CustomTablePagination/CustomTablePagination';
 import React, { FC } from 'react';
-import { CustomPagination } from 'sections/packs-page/CustomPagination';
 import { ICard } from 'services/type';
 
 const columns: GridColDef[] = [
@@ -50,7 +50,7 @@ export const CardsTable: FC<CardTableProps> = ({
         columns={columns}
         hideFooter={true}
       />
-      <CustomPagination
+      <CustomTablePagination
         page={page}
         pageCount={pageCount}
         totalCount={totalCount}

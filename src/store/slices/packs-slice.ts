@@ -9,17 +9,19 @@ interface initialStateType {
   status: RequestStatusType;
   error: null | string;
   actionStatus: null | string;
+  filterMin: number;
+  filterMax: number;
 }
 
 const initialState: initialStateType = {
   packData: {
     cardPacks: [] as ICardPack[],
-    cardPacksTotalCount: 100,
-    maxCardsCount: 100,
-    minCardsCount: 0,
     page: 1,
     pageCount: 10,
   },
+  filterMin: 0,
+  filterMax: 100,
+
   status: 'idle' as RequestStatusType,
   actionStatus: null,
   error: null,

@@ -1,11 +1,9 @@
 import { Box, Button, DialogActions, Typography } from '@mui/material';
 import { BasicModal } from 'components';
-import { useActions } from 'hooks';
 import { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { appRoutes } from 'routes';
-import { asyncPackActions, deletePack } from 'store/middleware/packs';
+import { deletePack } from 'store/middleware/packs';
 import { useAppDispatch } from 'store/store';
 
 interface DeletePackModalProps {

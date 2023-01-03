@@ -1,4 +1,4 @@
-import { IAddPackSubmit } from 'sections/packs-page/NewPackModal';
+import { IAddPackSubmit } from 'sections/packs-page/AddNewPackModal';
 import { instance } from 'services/config';
 import { ICardPack, IEditPackRequest, IGetCardsPacksParams } from 'services/type';
 

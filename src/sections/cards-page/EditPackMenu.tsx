@@ -5,8 +5,8 @@ import { EditMenu } from 'components/Menu/EditMenu';
 import { useActions } from 'hooks';
 import React, { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DeletePackModal } from 'sections/packs-page/DeletePackModal';
-import { EditPackModal } from 'sections/packs-page/EditPackModal';
+import { DeletePackModal } from 'sections/packs-page/TableActions/DeletePackModal';
+import { EditPackModal } from 'sections/packs-page/TableActions/EditPackModal';
 import { cardActions } from 'store/slices';
 import { useAppSelector } from 'store/store';
 
