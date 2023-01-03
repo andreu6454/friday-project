@@ -3,14 +3,12 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import thunk from 'redux-thunk';
 
 import { authSlice, cardsSlice, packsSlice, userSlice } from './slices';
-import { filterSlice } from './slices/fliter-slice';
 
 const rootReducer = combineReducers({
   auth: authSlice,
   packs: packsSlice,
   cards: cardsSlice,
   user: userSlice,
-  filter: filterSlice,
 });
 
 export const setupStore = () => {

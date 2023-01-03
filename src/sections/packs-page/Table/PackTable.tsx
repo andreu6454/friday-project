@@ -2,12 +2,9 @@ import { Stack, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { CustomTablePagination } from 'components';
 import { NoCoverImage } from 'components/NoCoverImage/NoCoverImage';
-import { useActions } from 'hooks';
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { MemoizedActionButtons } from 'sections/packs-page/TableActions/RowActions';
 import { ICardPack, ICardsPacks } from 'services/type';
-import { filterActions } from 'store/slices/fliter-slice';
-import { useAppSelector } from 'store/store';
 import { formateDate } from 'utils/formateDate';
 
 const columns: GridColDef[] = [
@@ -57,9 +54,6 @@ export const PackTable: FC<PackTableProps> = ({
   cardData,
   totalCount,
 }) => {
-  const { page, pageCount } = useAppSelector((state) => state.filter);
-  const { setCurrentPage, setPageCount } = useActions(filterActions);
-
   const renderActionsCells = (cardData ? cardData.cardPacks : []).map(
     (el: ICardPack) => ({
       ...el,
@@ -80,14 +74,7 @@ export const PackTable: FC<PackTableProps> = ({
         columns={columns}
         hideFooter={true}
       />
-      <CustomTablePagination
-        page={page}
-        pageCount={pageCount}
-        totalCount={totalCount}
-        onChangePage={setCurrentPage}
-        onChangePageSize={setPageCount}
-        rowsPerPageOptions={[10, 20, 50]}
-      />
+      <CustomTablePagination totalCount={totalCount} rowsPerPageOptions={[10, 20, 50]} />
     </Stack>
   );
 };

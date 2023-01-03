@@ -68,8 +68,8 @@ export interface ICardPack {
 export interface ICardsPacks {
   cardPacks: ICardPack[];
   cardPacksTotalCount?: number;
-  page: number;
-  pageCount: number;
+  page?: number;
+  pageCount?: number;
 }
 
 export interface IGetCardsPacksParams {

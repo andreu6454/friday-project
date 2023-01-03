@@ -31,12 +31,8 @@ interface CardTableProps {
 
 export const CardsTable: FC<CardTableProps> = ({
   totalCount,
-  page,
   renderActionsCells,
   isLoadingStatus,
-  pageCount,
-  setNewPage,
-  setPageCount,
 }) => {
   return (
     <Stack spacing={4} direction="column" width="100%">
@@ -50,14 +46,7 @@ export const CardsTable: FC<CardTableProps> = ({
         columns={columns}
         hideFooter={true}
       />
-      <CustomTablePagination
-        page={page}
-        pageCount={pageCount}
-        totalCount={totalCount}
-        onChangePage={setNewPage}
-        onChangePageSize={setPageCount}
-        rowsPerPageOptions={[10, 20, 50]}
-      />
+      <CustomTablePagination totalCount={totalCount} rowsPerPageOptions={[10, 20, 50]} />
     </Stack>
   );
 };

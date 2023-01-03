@@ -1,25 +1,23 @@
 import { Search } from '@mui/icons-material';
 import { InputAdornment } from '@mui/material';
-import { useActions } from 'hooks';
 import { debounce } from 'lodash';
-import React, { ChangeEvent, useMemo, useState } from 'react';
-import { filterActions } from 'store/slices/fliter-slice';
-import { useAppSelector } from 'store/store';
+import { ChangeEvent, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { StyledTextField } from 'styles/styles';
 
 export const SearchPack = () => {
-  const { setSearchValue } = useActions(filterActions);
-
-  const searchValue = useAppSelector((state) => state.filter.searchValue);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchValue = searchParams.get('packName') || '';
 
   const [displayValue, setDisplayValue] = useState(searchValue);
-  const onValueChanged = useMemo(() => debounce(setSearchValue, 500), []);
+  const onValueChanged = useMemo(() => debounce(setSearchParams, 500), []);
 
   const handleSearchChange = (
     event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
   ) => {
     setDisplayValue(event.target.value);
-    onValueChanged(event.target.value);
+    const currentParams = Object.fromEntries([...searchParams]);
+    onValueChanged({ ...currentParams, packName: event.target.value });
   };
 
   return (

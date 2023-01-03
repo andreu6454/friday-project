@@ -4,24 +4,29 @@ import { AlertError, DoubleSlider } from 'components';
 import { AlertSuccess } from 'components/AlerSuccess/AlertSucess';
 import { useActions, usePacksTableData } from 'hooks';
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { AddNewPackModal } from 'sections/packs-page/AddNewPackModal';
 import { SearchPack } from 'sections/packs-page/SearchPack/SearchPack';
 import { PackTable } from 'sections/packs-page/Table/PackTable';
 import { packActions } from 'store/slices';
-import { filterActions } from 'store/slices/fliter-slice';
 import { useAppSelector } from 'store/store';
 
 const CardPacksPage = () => {
-  const category = useAppSelector((state) => state.filter.category);
+  // const category = useAppSelector((state) => state.filter.category);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const isMineCategory = category === 'my';
+  const isMineCategory = searchParams.get('category') === 'my';
 
   const { setError } = useActions(packActions);
-  const { setCategory, clearFilters } = useActions(filterActions);
 
   const { cardData, isLoadingPack, totalCount, error } = usePacksTableData();
 
   const [openAddNewPackModal, setOpenAddNewPackModal] = useState<boolean>(false);
+
+  const handleQueryCategory = (category: string) => {
+    const currentParams = Object.fromEntries([...searchParams]);
+    setSearchParams({ ...currentParams, category });
+  };
 
   return (
     <Box marginTop={2}>
@@ -60,12 +65,12 @@ const CardPacksPage = () => {
           <Stack direction="row" gap={1}>
             <Button
               variant={isMineCategory ? 'contained' : 'outlined'}
-              onClick={() => setCategory('my')}
+              onClick={() => handleQueryCategory('my')}
             >
               MY
             </Button>
             <Button
-              onClick={() => setCategory('all')}
+              onClick={() => handleQueryCategory('all')}
               variant={!isMineCategory ? 'contained' : 'outlined'}
             >
               All
@@ -79,7 +84,7 @@ const CardPacksPage = () => {
         </Box>
         {/* filter button */}
         <Box alignSelf="flex-end">
-          <IconButton onClick={() => clearFilters()}>
+          <IconButton>
             <FilterAltIcon />
           </IconButton>
         </Box>

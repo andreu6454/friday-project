@@ -1,9 +1,7 @@
 import { Grid, Slider, styled, TextField } from '@mui/material';
-import { useActions } from 'hooks';
 import { debounce } from 'lodash';
-import React, { useEffect, useMemo, useState } from 'react';
-import { filterActions } from 'store/slices/fliter-slice';
-import { useAppSelector } from 'store/store';
+import { useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 const StyledTextField = styled(TextField)`
   .MuiInputBase-root {
@@ -12,27 +10,29 @@ const StyledTextField = styled(TextField)`
 `;
 
 export const DoubleSlider = () => {
-  const minMaxCount = useAppSelector((state) => state.filter.minMax);
-  const [display, setDisplay] = useState(minMaxCount);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const min = searchParams.get('min') || '0';
+  const max = searchParams.get('max') || '100';
 
-  const { setMinMax } = useActions(filterActions);
+  const [display, setDisplay] = useState([+min, +max]);
 
-  const onMinMaxChanged = useMemo(() => debounce(setMinMax, 500), []);
+  const onMinMaxChanged = useMemo(() => debounce(setSearchParams, 500), []);
 
   const onChangeSlider = (event: Event, newValue: number | number[]) => {
     setDisplay(newValue as number[]);
-    onMinMaxChanged(newValue);
+    const currentParams = Object.fromEntries([...searchParams]);
+    onMinMaxChanged({
+      ...currentParams,
+      min: display[0].toString(),
+      max: display[1].toString(),
+    });
   };
-
-  useEffect(() => {
-    setDisplay(minMaxCount);
-  }, [minMaxCount]);
 
   return (
     <Grid container spacing={3} alignItems="center" justifyContent="space-between">
       <Grid item>
         <StyledTextField
-          value={minMaxCount[0]}
+          value={display[0]}
           size="small"
           sx={{ width: '60px' }}
           inputProps={{
@@ -55,7 +55,7 @@ export const DoubleSlider = () => {
       {/* max input value */}
       <Grid item>
         <StyledTextField
-          value={minMaxCount[1]}
+          value={display[1]}
           size="small"
           sx={{ width: '60px' }}
           inputProps={{
