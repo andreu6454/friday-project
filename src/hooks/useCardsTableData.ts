@@ -6,7 +6,7 @@ import { useAppSelector } from 'store/store';
 import { useActions } from './useActions';
 
 export const useCardsTableData = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const cards = useAppSelector((state) => state.cards.cardsData.cards);
   const totalCount = useAppSelector((state) => state.cards.cardsData.cardsTotalCount);

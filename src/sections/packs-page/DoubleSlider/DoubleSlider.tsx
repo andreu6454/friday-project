@@ -1,6 +1,6 @@
 import { Grid, Slider, styled, TextField } from '@mui/material';
 import { debounce } from 'lodash';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 const StyledTextField = styled(TextField)`
