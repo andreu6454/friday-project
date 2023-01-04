@@ -37,7 +37,7 @@ export const usePacksTableData = () => {
 
   ///set first page if items < 10
   useEffect(() => {
-    if (cardData.cardPacks.length < 10) {
+    if (cardData.cardPacks.length < 10 && cardData.cardPacks.length > 1) {
       const currentParams = Object.fromEntries([...searchParams]);
       setSearchParams({ ...currentParams, page: '1' });
     }

@@ -1,6 +1,6 @@
 import { Grid, Slider, styled, TextField } from '@mui/material';
 import { debounce } from 'lodash';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 const StyledTextField = styled(TextField)`
@@ -19,8 +19,8 @@ export const DoubleSlider = () => {
   const onMinMaxChanged = useMemo(() => debounce(setSearchParams, 300), []);
 
   const onChangeSlider = (event: Event, newValue: number | number[]) => {
-    setDisplay(newValue as number[]);
     const currentParams = Object.fromEntries([...searchParams]);
+    setDisplay(newValue as number[]);
     onMinMaxChanged({
       ...currentParams,
       min: display[0].toString(),
