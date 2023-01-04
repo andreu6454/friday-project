@@ -12,7 +12,7 @@ import { useAppSelector } from 'store/store';
 import { DeletePackModal } from './DeletePackModal';
 import { EditPackModal } from './EditPackModal';
 
-const ActionButtons = (params: GridRenderCellParams<any, ICardPack>) => {
+const RowActions = (params: GridRenderCellParams<any, ICardPack>) => {
   const userId = useAppSelector((state) => state.user.user._id);
   const nav = useNavigate();
 
@@ -59,4 +59,4 @@ const ActionButtons = (params: GridRenderCellParams<any, ICardPack>) => {
   );
 };
 
-export const MemoizedActionButtons = memo(ActionButtons);
+export const MemoizedActionButtons = memo(RowActions);

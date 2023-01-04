@@ -1,92 +1,42 @@
-import { Search } from '@mui/icons-material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import {
-  Box,
-  Button,
-  IconButton,
-  InputAdornment,
-  Stack,
-  Typography,
-} from '@mui/material';
-import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import { Box, Button, IconButton, Stack, Typography } from '@mui/material';
 import { AlertError, DoubleSlider } from 'components';
 import { AlertSuccess } from 'components/AlerSuccess/AlertSucess';
-import { NoCoverImage } from 'components/NoCoverImage/NoCoverImage';
 import { useActions, usePacksTableData } from 'hooks';
-import React, { useState } from 'react';
-import { MemoizedActionButtons } from 'sections/packs-page/ActionButtons';
-import { CustomPagination } from 'sections/packs-page/CustomPagination';
-import { NewPackModal } from 'sections/packs-page/NewPackModal';
-import { ICardPack } from 'services/type';
+import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { AddNewPackModal } from 'sections/packs-page/AddNewPackModal';
+import { SearchPack } from 'sections/packs-page/SearchPack/SearchPack';
+import { PackTable } from 'sections/packs-page/Table/PackTable';
 import { packActions } from 'store/slices';
-import { StyledTextField } from 'styles/styles';
-
-const columns: GridColDef[] = [
-  {
-    field: 'name',
-    headerName: 'Name',
-    flex: 1.5,
-    renderCell: (params: GridRenderCellParams<any, ICardPack>) => {
-      return (
-        <Stack direction={'row'} alignItems={'center'} spacing={1}>
-          {params.row.deckCover ? (
-            <img
-              width={'50px'}
-              height={'30px'}
-              style={{ objectFit: 'cover' }}
-              src={params.row.deckCover}
-            />
-          ) : (
-            <NoCoverImage />
-          )}
-          <Typography>{params.row.name}</Typography>
-        </Stack>
-      );
-    },
-  },
-  { field: 'cardsCount', headerName: 'Cards', flex: 0.5 },
-  { field: 'updated', headerName: 'Last Updates', flex: 1 },
-  { field: 'user_name', headerName: 'Created by', flex: 1 },
-  {
-    field: 'actions',
-    headerName: 'Actions',
-    renderCell: (params: GridRenderCellParams<ICardPack>) => (
-      <MemoizedActionButtons {...params} />
-    ),
-    flex: 0.7,
-  },
-];
+import { useAppSelector } from 'store/store';
 
 const CardPacksPage = () => {
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  // const category = useAppSelector((state) => state.filter.category);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleOpenModal = () => {
-    setOpenModal(true);
-  };
+  const isMineCategory = searchParams.get('category') === 'my';
 
   const { setError } = useActions(packActions);
 
-  const {
-    search,
-    isActiveCategory,
-    page,
-    totalCount,
-    renderActionsCells,
-    pageCount,
-    setNewPage,
-    loadingStatus,
-    setPageCount,
-    error,
-    activeCategoryHandle,
-    onSearchChange,
-  } = usePacksTableData();
+  const { cardData, isLoadingPack, totalCount, error } = usePacksTableData();
+
+  const [openAddNewPackModal, setOpenAddNewPackModal] = useState<boolean>(false);
+
+  const handleQueryCategory = (category: string) => {
+    const currentParams = Object.fromEntries([...searchParams]);
+    setSearchParams({ ...currentParams, category });
+  };
 
   return (
     <Box marginTop={2}>
-      <NewPackModal openModal={openModal} setOpenModal={setOpenModal} />
+      <AddNewPackModal
+        openModal={openAddNewPackModal}
+        setOpenModal={setOpenAddNewPackModal}
+      />
       <Stack justifyContent="space-between" direction="row">
         <Typography variant="h5">Pack list</Typography>
-        <Button variant="contained" onClick={handleOpenModal}>
+        <Button variant="contained" onClick={() => setOpenAddNewPackModal(true)}>
           Add new pack
         </Button>
       </Stack>
@@ -101,23 +51,7 @@ const CardPacksPage = () => {
         <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <Typography variant="body2">Search</Typography>
 
-          <StyledTextField
-            onChange={onSearchChange}
-            defaultValue={search.get('search_term') ?? ''}
-            fullWidth
-            hiddenLabel
-            id="filled-size-small"
-            variant="outlined"
-            size="small"
-            placeholder="Provide your text"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Search />
-                </InputAdornment>
-              ),
-            }}
-          />
+          <SearchPack />
         </Box>
         {/* pack category */}
         <Box
@@ -130,14 +64,14 @@ const CardPacksPage = () => {
           <Typography variant="body2">Show packs cards</Typography>
           <Stack direction="row" gap={1}>
             <Button
-              variant={!isActiveCategory ? 'contained' : 'outlined'}
-              onClick={() => activeCategoryHandle('my')}
+              variant={isMineCategory ? 'contained' : 'outlined'}
+              onClick={() => handleQueryCategory('my')}
             >
               MY
             </Button>
             <Button
-              onClick={() => activeCategoryHandle('all')}
-              variant={isActiveCategory ? 'contained' : 'outlined'}
+              onClick={() => handleQueryCategory('all')}
+              variant={!isMineCategory ? 'contained' : 'outlined'}
             >
               All
             </Button>
@@ -156,34 +90,19 @@ const CardPacksPage = () => {
         </Box>
       </Stack>
       {/* packs not found */}
-      {!totalCount && (
+      {!totalCount ? (
         <Typography textAlign={'center'} mt={20}>
           Колоды с данным фильтром не найдены. Измените параметры поиска
         </Typography>
-      )}
+      ) : null}
       {/* table */}
-      {!!totalCount && (
-        <Stack spacing={4} direction="column">
-          <DataGrid
-            getRowId={(row) => row._id}
-            sx={{ minHeight: '432px' }}
-            rowCount={totalCount}
-            rows={renderActionsCells}
-            loading={loadingStatus}
-            paginationMode="server"
-            columns={columns}
-            hideFooter={true}
-          />
-          <CustomPagination
-            page={page}
-            pageCount={pageCount}
-            totalCount={totalCount}
-            onChangePage={setNewPage}
-            onChangePageSize={setPageCount}
-            rowsPerPageOptions={[10, 20, 50]}
-          />
-        </Stack>
-      )}
+      {totalCount ? (
+        <PackTable
+          cardData={cardData}
+          loadingStatus={isLoadingPack}
+          totalCount={totalCount}
+        />
+      ) : null}
 
       <AlertSuccess msg={'Success'} />
       <AlertError errorMsg={error} onCloseAction={setError} />

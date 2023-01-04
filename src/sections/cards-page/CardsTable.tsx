@@ -1,9 +1,10 @@
 import { Rating, Stack } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { AnyAction } from '@reduxjs/toolkit';
+import { CustomTablePagination } from 'components/CustomTablePagination/CustomTablePagination';
 import React, { FC } from 'react';
-import { CustomPagination } from 'sections/packs-page/CustomPagination';
-import { ICard } from 'services/type';
+import { ICard, ICardsResponse } from 'services/type';
+import { formateDate } from 'utils/formateDate';
 
 const columns: GridColDef[] = [
   { field: 'question', headerName: 'Question', flex: 1.5 },
@@ -21,23 +22,21 @@ const columns: GridColDef[] = [
 
 interface CardTableProps {
   totalCount: number;
-  page: number;
-  renderActionsCells: ICard[];
-  isLoadingStatus: boolean;
-  pageCount: number;
-  setNewPage: (page: number) => AnyAction;
-  setPageCount: (pageSize: number) => AnyAction;
+  cards: any[];
+  isFetchingCards: boolean;
 }
 
 export const CardsTable: FC<CardTableProps> = ({
   totalCount,
-  page,
-  renderActionsCells,
-  isLoadingStatus,
-  pageCount,
-  setNewPage,
-  setPageCount,
+  cards,
+  isFetchingCards,
 }) => {
+  const renderActionsCells = (cards ? cards : []).map((el: ICard) => ({
+    ...el,
+    id: el._id,
+    updated: formateDate(el.updated),
+  }));
+
   return (
     <Stack spacing={4} direction="column" width="100%">
       <DataGrid
@@ -45,19 +44,12 @@ export const CardsTable: FC<CardTableProps> = ({
         sx={{ minHeight: '300px', minWidth: '100%' }}
         rowCount={totalCount}
         rows={renderActionsCells}
-        loading={isLoadingStatus}
+        loading={isFetchingCards}
         paginationMode="server"
         columns={columns}
         hideFooter={true}
       />
-      <CustomPagination
-        page={page}
-        pageCount={pageCount}
-        totalCount={totalCount}
-        onChangePage={setNewPage}
-        onChangePageSize={setPageCount}
-        rowsPerPageOptions={[10, 20, 50]}
-      />
+      <CustomTablePagination totalCount={totalCount} rowsPerPageOptions={[10, 20, 50]} />
     </Stack>
   );
 };

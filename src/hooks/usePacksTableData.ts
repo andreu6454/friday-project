@@ -1,95 +1,64 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { ICardPack } from 'services/type';
 
 import { asyncPackActions } from './../store/middleware/packs';
-import { packActions } from './../store/slices/packs-slice';
 import { useAppSelector } from './../store/store';
-import { formateDate } from './../utils/formateDate';
 import { useActions } from './useActions';
-import { useDebounce } from './useDebounce';
 
 export const usePacksTableData = () => {
-  const [search, setSearch] = useSearchParams();
+  const { fetchPacks } = useActions(asyncPackActions);
 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeCategory = searchParams.get('category');
+  const currentPageCount = searchParams.get('pageCount') || '10';
+
+  const error = useAppSelector((state) => state.packs.error);
   const cardData = useAppSelector((state) => state.packs.packData);
   const loading = useAppSelector((state) => state.packs.status);
-  const page = useAppSelector((state) => state.packs.packData.page);
-  const pageCount = useAppSelector((state) => state.packs.packData.pageCount);
   const totalCount = useAppSelector((state) => state.packs.packData.cardPacksTotalCount);
-  const error = useAppSelector((state) => state.packs.error);
-
-  const { setNewPage, setPageCount } = useActions(packActions);
-  const { fetchPacks, addNewPack } = useActions(asyncPackActions);
-
-  const category = search.get('category');
-  const packName = search.get('search_term') || '';
-  const min = search.get('min') || '';
-  const max = search.get('max') || '';
 
   const userId = useAppSelector((state) => state.user.user._id);
-  const fetchActiveCategory = category === 'my' ? userId : '';
-  const loadingStatus = loading === 'loading';
-  const isActiveCategory = category === 'all';
+
+  const isLoadingPack = loading === 'loading';
+  const isMineCategory = activeCategory === 'my';
 
   useEffect(() => {
-    if (!category) {
-      search.set('category', 'all');
-      setSearch(search);
-      return;
-    }
-
-    fetchPacks({
-      page: page,
-      pageCount: pageCount,
-      user_id: fetchActiveCategory,
-      packName: packName,
-      max: +max,
-      min: +min,
-    });
-  }, [search, pageCount, page]);
-
-  const renderActionsCells = (cardData ? cardData.cardPacks : []).map(
-    (el: ICardPack) => ({
-      ...el,
-      id: el._id,
-      updated: formateDate(el.updated),
-    }),
-  );
-
-  const activeCategoryHandle = (newCategory: string) => {
-    search.set('category', newCategory);
-    setSearch(search);
-  };
-
-  const onSearchChange = useDebounce((e: React.ChangeEvent<HTMLInputElement>) => {
-    const text = e.target.value;
-
-    if (text.length === 0) {
-      search.delete('search_term');
-      setSearch(search, {
-        replace: true,
-      });
-    } else {
-      search.set('search_term', text);
-      setSearch(search, {
-        replace: true,
+    if (![...searchParams].length) {
+      fetchPacks({
+        page: 1,
+        pageCount: 10,
+        user_id: '',
+        packName: '',
+        min: 0,
+        max: 100,
       });
     }
-  }, 500);
+  }, []);
+
+  ///set first page if items < 10
+  useEffect(() => {
+    if (cardData.cardPacks.length < 10 && cardData.cardPacks.length > 1) {
+      const currentParams = Object.fromEntries([...searchParams]);
+      setSearchParams({ ...currentParams, page: '1' });
+    }
+  }, [cardData.cardPacks]);
+  /////////////
+
+  useEffect(() => {
+    const currentParams = Object.fromEntries([...searchParams]);
+    if ([...searchParams].length) {
+      fetchPacks({
+        ...currentParams,
+        user_id: isMineCategory ? userId : '',
+        pageCount: +currentPageCount,
+      });
+    }
+  }, [searchParams]);
 
   return {
-    search,
-    isActiveCategory,
-    page,
     totalCount,
-    renderActionsCells,
-    pageCount,
-    setNewPage,
-    loadingStatus,
-    setPageCount,
-    activeCategoryHandle,
-    onSearchChange,
+    cardData,
+    isLoadingPack,
     error,
   };
 };

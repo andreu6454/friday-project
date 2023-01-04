@@ -14,12 +14,8 @@ interface initialStateType {
 const initialState: initialStateType = {
   packData: {
     cardPacks: [] as ICardPack[],
-    cardPacksTotalCount: 100,
-    maxCardsCount: 100,
-    minCardsCount: 0,
-    page: 1,
-    pageCount: 10,
   },
+
   status: 'idle' as RequestStatusType,
   actionStatus: null,
   error: null,

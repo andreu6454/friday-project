@@ -67,11 +67,9 @@ export interface ICardPack {
 
 export interface ICardsPacks {
   cardPacks: ICardPack[];
-  cardPacksTotalCount: number;
-  maxCardsCount: number;
-  minCardsCount: number;
-  page: number;
-  pageCount: number;
+  cardPacksTotalCount?: number;
+  page?: number;
+  pageCount?: number;
 }
 
 export interface IGetCardsPacksParams {

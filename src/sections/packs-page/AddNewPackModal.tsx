@@ -28,7 +28,7 @@ export interface IAddPackSubmit {
   private?: boolean;
 }
 
-export const NewPackModal: FC<NewPackModalProps> = ({ openModal, setOpenModal }) => {
+export const AddNewPackModal: FC<NewPackModalProps> = ({ openModal, setOpenModal }) => {
   const { addNewPack } = useActions(asyncPackActions);
 
   const [deckCover, setDeckCover] = useState<string>('');

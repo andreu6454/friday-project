@@ -6,37 +6,34 @@ import {
   SelectChangeEvent,
   Typography,
 } from '@mui/material';
-import { AnyAction } from '@reduxjs/toolkit';
 import { ChangeEvent, FC } from 'react';
-import { useAppDispatch } from 'store/store';
+import { useSearchParams } from 'react-router-dom';
 
 export interface CustomPaginationProps {
-  page: number;
-  pageCount: number;
   totalCount: number;
-  onChangePage: (page: number) => AnyAction;
-  onChangePageSize: (pageSize: number) => AnyAction;
   rowsPerPageOptions: number[];
 }
 
-export const CustomPagination: FC<CustomPaginationProps> = ({
-  page,
-  pageCount,
+export const CustomTablePagination: FC<CustomPaginationProps> = ({
   totalCount,
-  onChangePage,
-  onChangePageSize,
   rowsPerPageOptions,
 }) => {
-  const dispatch = useAppDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleChangePage = (event: ChangeEvent<unknown>, newPage: number) => {
-    dispatch(onChangePage(newPage));
+  const page = searchParams.get('page') || '1';
+  const pageCount = searchParams.get('pageCount') || '10';
+
+  const handleChangePage = (event: any, newPage: number) => {
+    const currentParams = Object.fromEntries([...searchParams]);
+    setSearchParams({ ...currentParams, page: newPage.toString() });
   };
 
-  const handlePageSizeChange = (event: SelectChangeEvent<number>) => {
-    dispatch(onChangePageSize(Number(event.target.value)));
+  const handleChangePageCount = (event: SelectChangeEvent<any>) => {
+    const currentParams = Object.fromEntries([...searchParams]);
+    setSearchParams({ ...currentParams, pageCount: event.target.value });
   };
-  const totalPages = Math.ceil(totalCount / pageCount);
+
+  const totalPages = Math.ceil(totalCount / Number(pageCount));
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -44,7 +41,7 @@ export const CustomPagination: FC<CustomPaginationProps> = ({
         color="primary"
         siblingCount={1}
         count={totalPages}
-        page={page}
+        page={Number(page)}
         onChange={(event: ChangeEvent<unknown>, newPage) =>
           handleChangePage(event, newPage)
         }
@@ -55,7 +52,7 @@ export const CustomPagination: FC<CustomPaginationProps> = ({
         size="small"
         sx={{ maxHeight: '30px' }}
         defaultValue={pageCount}
-        onChange={handlePageSizeChange}
+        onChange={handleChangePageCount}
       >
         {rowsPerPageOptions.map((el) => (
           <MenuItem key={el} value={el}>

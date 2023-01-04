@@ -9,49 +9,45 @@ import { CardsTable } from 'sections/cards-page/CardsTable';
 import { EditPackMenu } from 'sections/cards-page/EditPackMenu';
 import { NewCardModal } from 'sections/cards-page/NewCardModal';
 import { cardActions } from 'store/slices';
+import { useAppSelector } from 'store/store';
 
 export const CardsPage = () => {
+  const errorMessage = useAppSelector((state) => state.cards.error);
+  const packUserId = useAppSelector((state) => state.cards.cardsData.packUserId);
+  const loginUserId = useAppSelector((state) => state.user.user._id);
+  const deckCover = useAppSelector((state) => state.cards.cardsData.deckCover);
+  const isPrivatePack = useAppSelector((state) => state.cards.cardsData.private);
+  const status = useAppSelector((state) => state.cards.status);
+
   const nav = useNavigate();
-  const [openModal, setOpenModal] = useState(false);
   const { setError } = useActions(cardActions);
+  const [openAddNewCardModal, setOpenAddNewCardModal] = useState(false);
+  const { totalCount, cards, packName, id: packId } = useCardsTableData();
 
-  const {
-    totalCount,
-    page,
-    renderActionsCells,
-    isLoadingStatus,
-    pageCount,
-    setNewPage,
-    setPageCount,
-    cards,
-    status,
-    isUserPackOwner,
-    isPrivatePack,
-    packName,
-    errorCardsMsg,
-    deckCover,
-    id: packId,
-  } = useCardsTableData();
-
-  const isFetching = status === 'loading';
+  const isUserPackOwner = packUserId === loginUserId;
+  const isFetchingCards = status === 'loading';
 
   const handleModal = () => {
-    setOpenModal(true);
+    setOpenAddNewCardModal(true);
   };
 
   const learnHandleNavigate = () => {
     nav('learn');
   };
 
-  if (isFetching && !cards.length) {
+  if (isFetchingCards && !cards.length) {
     return <Preloader />;
   }
 
   return (
     <Box marginTop={3}>
-      {packId && (
-        <NewCardModal packId={packId} setOpenModal={setOpenModal} openModal={openModal} />
-      )}
+      {packId ? (
+        <NewCardModal
+          packId={packId}
+          openModal={openAddNewCardModal}
+          setOpenModal={setOpenAddNewCardModal}
+        />
+      ) : null}
       <Stack direction={'row'} justifyContent="space-between">
         <BackLinkButton link={appRoutes.PACKS}>Back To Pack List</BackLinkButton>
         {isUserPackOwner && cards.length ? (
@@ -95,18 +91,14 @@ export const CardsPage = () => {
 
         {cards.length ? (
           <CardsTable
+            isFetchingCards={isFetchingCards}
+            cards={cards}
             totalCount={totalCount}
-            page={page}
-            renderActionsCells={renderActionsCells}
-            isLoadingStatus={isLoadingStatus}
-            pageCount={pageCount}
-            setNewPage={setNewPage}
-            setPageCount={setPageCount}
           />
         ) : null}
       </Box>
 
-      <AlertError errorMsg={errorCardsMsg} onCloseAction={setError} />
+      <AlertError errorMsg={errorMessage} onCloseAction={setError} />
     </Box>
   );
 };

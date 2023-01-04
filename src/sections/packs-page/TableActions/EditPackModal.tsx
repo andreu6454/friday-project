@@ -13,9 +13,8 @@ import { useActions } from 'hooks';
 import React, { FC, useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
+import { UploadImageCover } from 'sections/packs-page/UploadImageCover';
 import { asyncPackActions } from 'store/middleware/packs';
-
-import { UploadImageCover } from './UploadImageCover';
 
 interface EditPackModalProps {
   openModal: boolean;
